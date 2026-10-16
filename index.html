@@ -193,18 +193,6 @@
 
     .hidden { display: none !important; }
 
-    .check {
-      display: flex;
-      gap: 9px;
-      align-items: center;
-      color: var(--muted);
-      font-size: 12px;
-      margin-top: 13px;
-      line-height: 1.5;
-    }
-
-    .check input { width: auto; }
-
     .wide { grid-column: 1 / -1; }
 
     footer {
@@ -347,14 +335,13 @@
     <footer>PILTAE CHATTER · Foundation build</footer>
   </main>
 
-  <!-- Supabase JavaScript client v2 -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <script>
-    // IMPORTANT: replace this placeholder with your NEW project's Project URL.
-    const SUPABASE_URL = "PASTE_YOUR_SUPABASE_PROJECT_URL_HERE";
+    // Your new Supabase project URL
+    const SUPABASE_URL = "https://mfawkedwvjzxqqmflutu.supabase.co";
 
-    // Your supplied publishable key. This is intended for browser use.
+    // Your Supabase publishable key
     const SUPABASE_PUBLISHABLE_KEY =
       "sb_publishable_n-iBWfw_2hmDhjV9Iyk1Rw_QhqT-e0Q";
 
@@ -363,6 +350,14 @@
     let client = null;
     let currentUser = null;
     let profileRequest = 0;
+
+    const checks = {
+      connection: false,
+      signup: false,
+      confirmation: false,
+      session: false,
+      profile: false
+    };
 
     function setStatus(id, message, type = "") {
       const el = $(id);
@@ -380,59 +375,40 @@
       return error?.message || "Something went wrong. Check your project settings.";
     }
 
-    function updateChecks(items) {
+    function renderChecks() {
+      const items = [
+        ["connection", "Supabase connection"],
+        ["signup", "Account creation"],
+        ["confirmation", "Email confirmation"],
+        ["session", "Login and session"],
+        ["profile", "Profile row and profile editing"]
+      ];
+
       $("checks").replaceChildren();
 
-      for (const item of items) {
+      for (const [key, label] of items) {
         const line = document.createElement("div");
-        line.textContent = item.done ? "✓ " + item.label : "○ " + item.label;
-        line.style.color = item.done ? "var(--good)" : "var(--muted)";
+        line.textContent = (checks[key] ? "✓ " : "○ ") + label;
+        line.style.color = checks[key] ? "var(--good)" : "var(--muted)";
         line.style.margin = "5px 0";
         $("checks").appendChild(line);
       }
     }
 
-    const checks = {
-      connection: false,
-      signup: false,
-      confirmation: false,
-      session: false,
-      profile: false
-    };
-
-    function renderChecks() {
-      updateChecks([
-        { label: "Supabase connection", done: checks.connection },
-        { label: "Account creation", done: checks.signup },
-        { label: "Email confirmation", done: checks.confirmation },
-        { label: "Login and session", done: checks.session },
-        { label: "Profile row and profile editing", done: checks.profile }
-      ]);
-    }
-
     function getEmailRedirectUrl() {
-      // Keep the repository's /888222888222/ path.
       return window.location.href.split("#")[0].split("?")[0];
     }
 
     function validateConfig() {
-      if (
-        !SUPABASE_URL.startsWith("https://") ||
-        SUPABASE_URL.includes("PASTE_YOUR_")
-      ) {
-        setStatus(
-          "signupStatus",
-          "Setup needed: paste your actual Supabase Project URL into index.html.",
-          "bad"
-        );
-        setStatus("loginStatus", "Supabase Project URL is not configured.", "bad");
+      if (!SUPABASE_URL.startsWith("https://")) {
+        setStatus("signupStatus", "Invalid Supabase Project URL.", "bad");
         return false;
       }
 
-      if (!window.supabase || !window.supabase.createClient) {
+      if (!window.supabase?.createClient) {
         setStatus(
           "signupStatus",
-          "The Supabase library did not load. Check your connection or CDN access.",
+          "Supabase library failed to load. Check your internet connection.",
           "bad"
         );
         return false;
@@ -455,18 +431,17 @@
         .eq("user_id", userAtStart.id)
         .maybeSingle();
 
-      if (requestId !== profileRequest || currentUser?.id !== userAtStart.id) return;
-
-      if (error) {
-        setStatus(
-          "profileStatus",
-          "Could not read profile: " + cleanError(error),
-          "bad"
-        );
+      if (requestId !== profileRequest || currentUser?.id !== userAtStart.id) {
         return;
       }
 
-      // Recovery path if the signup trigger did not create the row.
+      if (error) {
+        setStatus("profileStatus", "Could not read profile: " + cleanError(error), "bad");
+        checks.profile = false;
+        renderChecks();
+        return;
+      }
+
       if (!profile) {
         const fallbackName =
           userAtStart.user_metadata?.display_name ||
@@ -475,18 +450,17 @@
 
         const result = await client
           .from("profiles")
-          .upsert(
-            {
-              user_id: userAtStart.id,
-              display_name: fallbackName.slice(0, 24),
-              bio: ""
-            },
-            { onConflict: "user_id" }
-          )
+          .upsert({
+            user_id: userAtStart.id,
+            display_name: fallbackName.slice(0, 24),
+            bio: ""
+          }, { onConflict: "user_id" })
           .select("user_id, display_name, bio, created_at, updated_at")
           .single();
 
-        if (requestId !== profileRequest || currentUser?.id !== userAtStart.id) return;
+        if (requestId !== profileRequest || currentUser?.id !== userAtStart.id) {
+          return;
+        }
 
         profile = result.data;
         error = result.error;
@@ -495,7 +469,7 @@
       if (error || !profile) {
         setStatus(
           "profileStatus",
-          "Profile row could not be created or loaded: " +
+          "Profile could not be created or loaded: " +
             cleanError(error || new Error("No profile was returned.")),
           "bad"
         );
@@ -521,6 +495,7 @@
       $("signedOut").classList.toggle("hidden", signedIn);
 
       if (!signedIn) {
+        profileRequest++;
         $("profileName").textContent = "";
         $("profileEmail").textContent = "";
         setStatus("profileStatus", "Log in to load your profile.");
@@ -550,16 +525,28 @@
         }
       );
 
-      // A small API call verifies the project URL/key can reach Auth.
-      const { error } = await client.auth.getSession();
+      const { data, error } = await client.auth.getSession();
 
       if (error) {
         setStatus("signupStatus", "Supabase connection failed: " + cleanError(error), "bad");
-        setStatus("loginStatus", "Check your Project URL and publishable key.", "bad");
+        setStatus("loginStatus", "Check your project URL and publishable key.", "bad");
         return;
       }
 
       checks.connection = true;
+
+      if (window.location.hash.includes("access_token=")) {
+        checks.confirmation = true;
+        setStatus("loginStatus", "Confirmation link detected. Checking your session...", "good");
+      } else if (window.location.hash.includes("error=")) {
+        const params = new URLSearchParams(window.location.hash.slice(1));
+        setStatus(
+          "loginStatus",
+          params.get("error_description") || "Email confirmation failed.",
+          "bad"
+        );
+      }
+
       renderChecks();
 
       client.auth.onAuthStateChange((_event, session) => {
@@ -567,19 +554,8 @@
         renderAuth();
       });
 
-      const { data } = await client.auth.getSession();
       currentUser = data.session?.user || null;
       renderAuth();
-
-      if (window.location.hash.includes("error=")) {
-        const params = new URLSearchParams(window.location.hash.slice(1));
-        const message = params.get("error_description") || "Email confirmation failed.";
-        setStatus("loginStatus", decodeURIComponent(message.replace(/\+/g, " ")), "bad");
-      } else if (window.location.hash.includes("access_token=")) {
-        checks.confirmation = true;
-        renderChecks();
-        setStatus("loginStatus", "Confirmation link opened. Checking your session...", "good");
-      }
     }
 
     $("signupForm").addEventListener("submit", async (event) => {
@@ -613,16 +589,13 @@
         renderChecks();
 
         if (data.session) {
-          setStatus(
-            "signupStatus",
-            "Account created and signed in. Your profile should appear on the right.",
-            "good"
-          );
+          currentUser = data.user;
+          renderAuth();
+          setStatus("signupStatus", "Account created and signed in.", "good");
         } else {
           setStatus(
             "signupStatus",
-            "Signup request accepted. Open your email and click the confirmation link. " +
-            "Then return to this site. If no email arrives, check spam and Supabase email settings.",
+            "Signup accepted. Open your email and click the confirmation link. Then return here and log in.",
             "good"
           );
         }
@@ -648,9 +621,7 @@
         if (error) throw error;
 
         currentUser = data.user;
-        checks.session = true;
         renderAuth();
-
         setStatus("loginStatus", "Login successful.", "good");
       } catch (error) {
         setStatus("loginStatus", cleanError(error), "bad");
@@ -680,7 +651,7 @@
 
         setStatus(
           "loginStatus",
-          "If the account can receive a new confirmation, Supabase will send an email.",
+          "If a new confirmation can be sent, check your email and spam folder.",
           "good"
         );
       } catch (error) {
@@ -746,10 +717,10 @@
     });
 
     renderChecks();
+
     startApp().catch((error) => {
       setStatus("signupStatus", "Startup error: " + cleanError(error), "bad");
     });
   </script>
 </body>
 </html>
-
