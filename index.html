@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#090b12">
   <title>PILTAE CHATTER</title>
 
@@ -16,13 +16,11 @@
       --text: #f1f4ff;
       --muted: #929bb3;
       --accent: #8b5cf6;
-      --accent2: #5eead4;
+      --mint: #5eead4;
       --danger: #fb7185;
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
@@ -33,41 +31,29 @@
         radial-gradient(ellipse at 100% 90%, #115e5940, transparent 38%),
         var(--bg);
       color: var(--text);
-      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont,
-        "Segoe UI", sans-serif;
+      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
     }
 
-    button, input, textarea {
-      font: inherit;
-    }
+    button, input, textarea { font: inherit; }
+    button { cursor: pointer; }
+    button:disabled { opacity: .6; cursor: wait; }
+    [hidden] { display: none !important; }
 
-    button {
-      cursor: pointer;
-    }
-
-    button:disabled {
-      cursor: wait;
-      opacity: 0.6;
-    }
-
-    .shell {
-      width: min(100%, 980px);
-      margin: 0 auto;
-    }
+    .shell { width: min(100%, 720px); margin: auto; }
 
     header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 16px;
-      margin-bottom: 38px;
+      gap: 15px;
+      margin-bottom: 48px;
     }
 
     .brand {
       display: flex;
       align-items: center;
       gap: 12px;
-      font-size: 19px;
+      font-size: 17px;
       font-weight: 900;
       letter-spacing: 1.5px;
     }
@@ -78,92 +64,50 @@
       width: 44px;
       height: 44px;
       border-radius: 14px;
-      background: linear-gradient(135deg, var(--accent), #4338ca);
+      background: linear-gradient(135deg, #a78bfa, #4338ca);
       box-shadow: 0 8px 30px #8b5cf633;
-      font-size: 19px;
+      font-size: 20px;
     }
 
-    .connection {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      color: var(--muted);
-      font-size: 12px;
-    }
-
-    .dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: #fbbf24;
-    }
-
-    .dot.good {
-      background: #34d399;
-      box-shadow: 0 0 12px #34d39966;
-    }
-
-    .dot.bad {
-      background: var(--danger);
-    }
-
-    .hero {
-      margin-bottom: 24px;
-    }
+    .hero { margin-bottom: 25px; }
 
     .eyebrow {
-      color: var(--accent2);
-      font-weight: 800;
+      color: var(--mint);
       font-size: 11px;
+      font-weight: 800;
       letter-spacing: 2.5px;
-      text-transform: uppercase;
     }
 
     h1 {
       margin: 10px 0;
-      font-size: clamp(34px, 7vw, 58px);
-      line-height: 1.05;
+      font-size: clamp(36px, 7vw, 58px);
       letter-spacing: -2px;
+      line-height: 1.05;
     }
 
     .gradient {
-      color: transparent;
+      color: #a78bfa;
       background: linear-gradient(90deg, #a78bfa, #5eead4);
       background-clip: text;
       -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
 
-    .subtitle {
-      max-width: 610px;
+    .muted {
       color: var(--muted);
+      font-size: 13px;
       line-height: 1.7;
     }
 
-    .layout {
-      display: grid;
-      grid-template-columns: minmax(0, 1.1fr) minmax(260px, 0.9fr);
-      gap: 18px;
-      align-items: start;
-    }
-
     .card {
-      padding: 24px;
+      padding: 25px;
       border: 1px solid var(--border);
       border-radius: 20px;
       background: linear-gradient(160deg, #151a28f5, #0e121cf5);
       box-shadow: 0 20px 70px #00000025;
     }
 
-    .card h2 {
-      margin: 0 0 7px;
-      font-size: 21px;
-    }
-
-    .muted {
-      color: var(--muted);
-      line-height: 1.6;
-      font-size: 13px;
-    }
+    h2 { margin: 0 0 8px; font-size: 22px; }
 
     .tabs {
       display: grid;
@@ -177,22 +121,17 @@
     }
 
     .tab {
+      padding: 12px 8px;
       border: 0;
       border-radius: 8px;
-      padding: 11px;
-      background: transparent;
       color: var(--muted);
+      background: transparent;
       font-weight: 750;
     }
 
-    .tab.active {
-      color: white;
-      background: #292344;
-    }
+    .tab.active { color: white; background: #292344; }
 
-    .field {
-      margin: 15px 0;
-    }
+    .field { margin: 16px 0; }
 
     label {
       display: block;
@@ -203,15 +142,15 @@
     }
 
     input, textarea {
+      display: block;
       width: 100%;
       min-width: 0;
       padding: 13px 14px;
-      color: var(--text);
-      background: #090d16;
       border: 1px solid #30384c;
       border-radius: 11px;
       outline: none;
-      transition: border-color 0.15s, box-shadow 0.15s;
+      color: var(--text);
+      background: #090d16;
     }
 
     input:focus, textarea:focus {
@@ -219,10 +158,7 @@
       box-shadow: 0 0 0 3px #8b5cf622;
     }
 
-    textarea {
-      min-height: 100px;
-      resize: vertical;
-    }
+    textarea { min-height: 100px; resize: vertical; }
 
     .btn {
       width: 100%;
@@ -233,35 +169,27 @@
       color: white;
       background: linear-gradient(100deg, #7c3aed, #5b55dd);
       font-weight: 850;
-      box-shadow: 0 8px 24px #7c3aed22;
-    }
-
-    .btn:hover:not(:disabled) {
-      filter: brightness(1.12);
     }
 
     .btn.secondary {
-      color: #e6eaf8;
-      background: #202637;
       border: 1px solid #353e54;
-      box-shadow: none;
+      background: #202637;
     }
 
     .btn.danger {
-      background: #431b2a;
       border: 1px solid #703044;
-      box-shadow: none;
+      background: #431b2a;
     }
 
     .notice {
-      margin: 16px 0 0;
+      margin-top: 16px;
       padding: 12px 14px;
       border: 1px solid #3d4560;
       border-radius: 11px;
       color: #e5e7eb;
       background: #171d2b;
       font-size: 13px;
-      line-height: 1.55;
+      line-height: 1.6;
       overflow-wrap: anywhere;
     }
 
@@ -275,55 +203,9 @@
       background: #321722;
     }
 
-    [hidden] {
-      display: none !important;
-    }
-
-    .feature-list {
-      display: grid;
-      gap: 14px;
-      margin-top: 22px;
-    }
-
-    .feature {
-      display: flex;
-      gap: 12px;
-      align-items: flex-start;
-      padding: 14px;
-      border: 1px solid #252c3d;
-      border-radius: 13px;
-      background: #101521;
-    }
-
-    .feature-icon {
-      display: grid;
-      place-items: center;
-      flex: 0 0 34px;
-      height: 34px;
-      border-radius: 10px;
-      background: #282044;
-      font-size: 16px;
-    }
-
-    .feature strong {
-      display: block;
-      margin-bottom: 4px;
-      font-size: 13px;
-    }
-
-    .feature span {
-      color: var(--muted);
-      font-size: 12px;
-      line-height: 1.5;
-    }
-
     .account-line {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-      margin: 18px 0;
-      padding: 12px;
+      margin: 19px 0;
+      padding: 13px;
       border: 1px solid var(--border);
       border-radius: 11px;
       background: #0b0f18;
@@ -331,7 +213,7 @@
 
     .account-line small {
       display: block;
-      margin-bottom: 4px;
+      margin-bottom: 5px;
       color: var(--muted);
     }
 
@@ -341,45 +223,17 @@
       font-size: 13px;
     }
 
-    .pill {
-      flex-shrink: 0;
-      padding: 6px 9px;
-      border-radius: 99px;
-      color: #a7f3d0;
-      background: #123329;
-      font-size: 10px;
-      font-weight: 850;
-    }
-
     footer {
-      margin-top: 28px;
+      margin-top: 25px;
       text-align: center;
       color: #727c94;
       font-size: 11px;
-      line-height: 1.7;
     }
 
-    @media (max-width: 720px) {
-      body {
-        padding: 20px 12px;
-      }
-
-      header {
-        align-items: flex-start;
-        margin-bottom: 30px;
-      }
-
-      .connection {
-        margin-top: 5px;
-      }
-
-      .layout {
-        grid-template-columns: 1fr;
-      }
-
-      .card {
-        padding: 19px;
-      }
+    @media (max-width: 560px) {
+      body { padding: 20px 12px; }
+      .card { padding: 19px; }
+      header { margin-bottom: 35px; }
     }
   </style>
 </head>
@@ -391,219 +245,122 @@
         <div class="logo">P</div>
         <span>PILTAE CHATTER</span>
       </div>
-
-      <div class="connection" aria-live="polite">
-        <span id="connectionDot" class="dot"></span>
-        <span id="connectionText">Checking setup...</span>
-      </div>
     </header>
 
     <section class="hero">
       <div class="eyebrow">YOUR COMMUNITY STARTS HERE</div>
       <h1>Welcome to <span class="gradient">PILTAE.</span></h1>
-      <p class="subtitle">
-        Create your account, choose your display name, and set up your profile.
-        Your account is powered by Supabase.
+      <p class="muted">
+        Create your account and join the community.
       </p>
     </section>
 
-    <div class="layout">
-      <section class="card" id="authPanel">
-        <h2>Your account</h2>
-        <p class="muted">
-          Sign up for a new account or log in to an existing one.
-        </p>
+    <section class="card" id="authPanel">
+      <h2 id="authTitle">Create your account</h2>
+      <p class="muted" id="authDescription">
+        Choose a display name, email address, and password to get started.
+      </p>
 
-        <div class="tabs">
-          <button class="tab active" id="signupTab" type="button">
-            Create account
-          </button>
-          <button class="tab" id="loginTab" type="button">Log in</button>
+      <div class="tabs">
+        <button class="tab active" id="signupTab" type="button">
+          Create account
+        </button>
+        <button class="tab" id="loginTab" type="button">
+          Log in
+        </button>
+      </div>
+
+      <form id="signupForm">
+        <div class="field">
+          <label for="signupName">DISPLAY NAME</label>
+          <input id="signupName" type="text" minlength="1" maxlength="24"
+            autocomplete="nickname" placeholder="Choose a username" required>
         </div>
 
-        <form id="signupForm">
-          <div class="field">
-            <label for="signupName">DISPLAY NAME</label>
-            <input
-              id="signupName"
-              name="display_name"
-              type="text"
-              minlength="1"
-              maxlength="24"
-              autocomplete="nickname"
-              placeholder="Choose a username"
-              required
-            >
-          </div>
-
-          <div class="field">
-            <label for="signupEmail">EMAIL ADDRESS</label>
-            <input
-              id="signupEmail"
-              name="email"
-              type="email"
-              autocomplete="email"
-              placeholder="you@example.com"
-              required
-            >
-          </div>
-
-          <div class="field">
-            <label for="signupPassword">PASSWORD</label>
-            <input
-              id="signupPassword"
-              name="password"
-              type="password"
-              minlength="6"
-              autocomplete="new-password"
-              placeholder="At least 6 characters"
-              required
-            >
-          </div>
-
-          <button class="btn" id="signupButton" type="submit">
-            Create my account →
-          </button>
-        </form>
-
-        <form id="loginForm" hidden>
-          <div class="field">
-            <label for="loginEmail">EMAIL ADDRESS</label>
-            <input
-              id="loginEmail"
-              name="email"
-              type="email"
-              autocomplete="email"
-              placeholder="you@example.com"
-              required
-            >
-          </div>
-
-          <div class="field">
-            <label for="loginPassword">PASSWORD</label>
-            <input
-              id="loginPassword"
-              name="password"
-              type="password"
-              autocomplete="current-password"
-              placeholder="Your password"
-              required
-            >
-          </div>
-
-          <button class="btn" id="loginButton" type="submit">
-            Log in →
-          </button>
-        </form>
-
-        <div id="notice" class="notice" role="status" aria-live="polite" hidden></div>
-      </section>
-
-      <section class="card" id="accountPanel" hidden>
-        <h2>Your profile</h2>
-        <p class="muted">
-          You're signed in. Edit your public display name and bio below.
-        </p>
-
-        <div class="account-line">
-          <div>
-            <small>Logged in as</small>
-            <strong id="accountEmail"></strong>
-          </div>
-          <span class="pill" id="confirmationBadge">ACCOUNT</span>
+        <div class="field">
+          <label for="signupEmail">EMAIL ADDRESS</label>
+          <input id="signupEmail" type="email" autocomplete="email"
+            placeholder="you@example.com" required>
         </div>
 
-        <form id="profileForm">
-          <div class="field">
-            <label for="profileName">DISPLAY NAME</label>
-            <input
-              id="profileName"
-              type="text"
-              minlength="1"
-              maxlength="24"
-              autocomplete="nickname"
-              required
-            >
-          </div>
+        <div class="field">
+          <label for="signupPassword">PASSWORD</label>
+          <input id="signupPassword" type="password" minlength="6"
+            autocomplete="new-password" placeholder="At least 6 characters" required>
+        </div>
 
-          <div class="field">
-            <label for="profileBio">BIO (OPTIONAL)</label>
-            <textarea
-              id="profileBio"
-              maxlength="160"
-              placeholder="Tell the community a little about yourself..."
-            ></textarea>
-            <div class="muted">
-              <span id="bioCount">0</span>/160 characters
-            </div>
-          </div>
+        <button class="btn" id="signupButton" type="submit">
+          Create my account →
+        </button>
+      </form>
 
-          <button class="btn" id="saveProfileButton" type="submit">
-            Save profile
-          </button>
-        </form>
+      <form id="loginForm" hidden>
+        <div class="field">
+          <label for="loginEmail">EMAIL ADDRESS</label>
+          <input id="loginEmail" type="email" autocomplete="email"
+            placeholder="you@example.com" required>
+        </div>
 
-        <button class="btn secondary" id="refreshProfileButton" type="button">
-          Reload profile
+        <div class="field">
+          <label for="loginPassword">PASSWORD</label>
+          <input id="loginPassword" type="password"
+            autocomplete="current-password" placeholder="Your password" required>
+        </div>
+
+        <button class="btn" id="loginButton" type="submit">
+          Log in →
         </button>
 
-        <button class="btn danger" id="logoutButton" type="button">
-          Log out
+        <button class="btn secondary" id="resendButton" type="button">
+          Resend confirmation email
         </button>
+      </form>
 
-        <div id="profileNotice" class="notice" role="status" aria-live="polite" hidden></div>
-      </section>
+      <div id="notice" class="notice" role="status" aria-live="polite" hidden></div>
+    </section>
 
-      <aside class="card">
-        <h2>Inside PILTAE</h2>
-        <p class="muted">
-          This is the starting foundation for your community website.
-        </p>
+    <section class="card" id="accountPanel" hidden>
+      <h2>You're in PILTAE.</h2>
+      <p class="muted">
+        Your account is active. Set up your profile below.
+      </p>
 
-        <div class="feature-list">
-          <div class="feature">
-            <div class="feature-icon">🔐</div>
-            <div>
-              <strong>Account authentication</strong>
-              <span>Sign up and log in with your email and password.</span>
-            </div>
-          </div>
+      <div class="account-line">
+        <small>Logged in as</small>
+        <strong id="accountEmail"></strong>
+      </div>
 
-          <div class="feature">
-            <div class="feature-icon">✉️</div>
-            <div>
-              <strong>Email confirmation</strong>
-              <span>
-                Supports confirmation links when email confirmation is enabled in Supabase.
-              </span>
-            </div>
-          </div>
-
-          <div class="feature">
-            <div class="feature-icon">👤</div>
-            <div>
-              <strong>Custom profiles</strong>
-              <span>Store your display name and bio in the profiles table.</span>
-            </div>
-          </div>
-
-          <div class="feature">
-            <div class="feature-icon">⚡</div>
-            <div>
-              <strong>Built to expand</strong>
-              <span>
-                Chat, friends, groups, games, a shop, and leaderboards can be added next.
-              </span>
-            </div>
-          </div>
+      <form id="profileForm">
+        <div class="field">
+          <label for="profileName">DISPLAY NAME</label>
+          <input id="profileName" type="text" minlength="1"
+            maxlength="24" autocomplete="nickname" required>
         </div>
-      </aside>
-    </div>
 
-    <footer>
-      PILTAE CHATTER · Built for the community<br>
-      Never share your password with anyone.
-    </footer>
+        <div class="field">
+          <label for="profileBio">BIO</label>
+          <textarea id="profileBio" maxlength="160"
+            placeholder="Tell the community about yourself..."></textarea>
+          <p class="muted"><span id="bioCount">0</span>/160 characters</p>
+        </div>
+
+        <button class="btn" id="saveProfileButton" type="submit">
+          Save profile
+        </button>
+      </form>
+
+      <button class="btn secondary" id="refreshProfileButton" type="button">
+        Reload profile
+      </button>
+
+      <button class="btn danger" id="logoutButton" type="button">
+        Log out
+      </button>
+
+      <div id="profileNotice" class="notice" role="status" aria-live="polite" hidden></div>
+    </section>
+
+    <footer>PILTAE CHATTER</footer>
   </main>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -611,39 +368,54 @@
   <script>
     "use strict";
 
-    // YOUR SUPABASE PROJECT SETTINGS
-    const SUPABASE_URL = "https://mfawkedwvjzxqqmflutu.supabase.co";
+    // YOUR EXISTING SUPABASE PROJECT SETTINGS
+    const SUPABASE_URL =
+      "https://mfawkedwvjzxqqmflutu.supabase.co";
 
     const SUPABASE_PUBLISHABLE_KEY =
       "sb_publishable_n-iBWfw_2hmDhjV9Iyk1Rw_QhqT-e0Q";
 
-    // IMPORTANT: Always redirect email confirmation to GitHub Pages.
-    // Never build this from window.location because that could be localhost.
+    // Always return to the published website, never localhost.
     const REDIRECT_URL =
       "https://noahlangedu.github.io/888222888222/";
 
     const $ = (id) => document.getElementById(id);
 
-    let supabaseClient = null;
+    let supabaseClient;
     let currentUser = null;
+    let profileRequestNumber = 0;
 
-    function setNotice(message, type = "") {
-      const box = $("notice");
-      box.textContent = message;
-      box.className = "notice" + (type ? " " + type : "");
-      box.hidden = false;
+    function notice(message, type = "") {
+      const element = $("notice");
+      element.textContent = message;
+      element.className = "notice" + (type ? " " + type : "");
+      element.hidden = false;
     }
 
-    function setProfileNotice(message, type = "") {
-      const box = $("profileNotice");
-      box.textContent = message;
-      box.className = "notice" + (type ? " " + type : "");
-      box.hidden = false;
+    function profileNotice(message, type = "") {
+      const element = $("profileNotice");
+      element.textContent = message;
+      element.className = "notice" + (type ? " " + type : "");
+      element.hidden = false;
     }
 
-    function setConnection(message, state = "") {
-      $("connectionText").textContent = message;
-      $("connectionDot").className = "dot" + (state ? " " + state : "");
+    function showMode(mode) {
+      const signup = mode === "signup";
+
+      $("signupForm").hidden = !signup;
+      $("loginForm").hidden = signup;
+      $("signupTab").classList.toggle("active", signup);
+      $("loginTab").classList.toggle("active", !signup);
+
+      $("authTitle").textContent = signup
+        ? "Create your account"
+        : "Welcome back";
+
+      $("authDescription").textContent = signup
+        ? "Choose a display name, email address, and password to get started."
+        : "Log in to return to your account.";
+
+      $("notice").hidden = true;
     }
 
     function setBusy(button, busy, busyText, normalText) {
@@ -651,164 +423,99 @@
       button.textContent = busy ? busyText : normalText;
     }
 
-    function showAuthMode(mode) {
-      const signupMode = mode === "signup";
-
-      $("signupForm").hidden = !signupMode;
-      $("loginForm").hidden = signupMode;
-      $("signupTab").classList.toggle("active", signupMode);
-      $("loginTab").classList.toggle("active", !signupMode);
-      $("notice").hidden = true;
+    function errorMessage(error) {
+      return error?.message || "Something went wrong. Please try again.";
     }
 
-    $("signupTab").addEventListener("click", () => showAuthMode("signup"));
-    $("loginTab").addEventListener("click", () => showAuthMode("login"));
+    $("signupTab").addEventListener("click", () => showMode("signup"));
+    $("loginTab").addEventListener("click", () => showMode("login"));
 
     $("profileBio").addEventListener("input", () => {
       $("bioCount").textContent = $("profileBio").value.length;
     });
 
-    function friendlyError(error) {
-      return error?.message || "An unexpected error occurred.";
+    function showLoggedOut() {
+      currentUser = null;
+      profileRequestNumber++;
+
+      $("authPanel").hidden = false;
+      $("accountPanel").hidden = true;
     }
 
-    function renderSession(session, eventName = "") {
-      const previousUserId = currentUser?.id || null;
-      currentUser = session?.user || null;
-
-      if (!currentUser) {
-        $("authPanel").hidden = false;
-        $("accountPanel").hidden = true;
-
-        if (eventName === "SIGNED_OUT") {
-          showAuthMode("login");
-          setNotice("You have successfully logged out.", "success");
-        }
-        return;
-      }
+    function showLoggedIn(user) {
+      currentUser = user;
 
       $("authPanel").hidden = true;
       $("accountPanel").hidden = false;
-      $("accountEmail").textContent =
-        currentUser.email || "Email unavailable";
+      $("accountEmail").textContent = user.email || "Signed-in account";
 
-      const isConfirmed = Boolean(currentUser.email_confirmed_at);
-
-      $("confirmationBadge").textContent = isConfirmed
-        ? "EMAIL VERIFIED"
-        : "EMAIL NOT VERIFIED";
-
-      $("confirmationBadge").style.color =
-        isConfirmed ? "#a7f3d0" : "#fde68a";
-
-      $("confirmationBadge").style.background =
-        isConfirmed ? "#123329" : "#453718";
-
-      if (previousUserId !== currentUser.id) {
-        const userForLoad = currentUser;
-
-        // Keep database calls outside the auth callback.
-        window.setTimeout(() => {
-          if (currentUser?.id === userForLoad.id) {
-            loadProfile(userForLoad);
-          }
-        }, 0);
-      }
-
-      if (eventName === "SIGNED_IN") {
-        setProfileNotice("You're logged in successfully.", "success");
-      }
+      const requestNumber = ++profileRequestNumber;
+      loadProfile(user, requestNumber);
     }
 
-    async function checkDatabaseSetup() {
-      setConnection("Checking database...");
+    async function loadProfile(user, requestNumber) {
+      if (!supabaseClient || !user) return;
 
-      const { error } = await supabaseClient
-        .from("profiles")
-        .select("user_id")
-        .limit(1);
-
-      if (error) {
-        setConnection("Database setup needs attention", "bad");
-
-        if (currentUser) {
-          setProfileNotice(
-            "The profiles table could not be checked. Run the profile SQL setup in Supabase. Details: " +
-            friendlyError(error),
-            "error"
-          );
-        } else {
-          setNotice(
-            "The Supabase URL was loaded, but the profiles table could not be checked. " +
-            "Run the profile SQL setup in Supabase. Details: " +
-            friendlyError(error),
-            "error"
-          );
-        }
-
-        return false;
-      }
-
-      setConnection("Supabase ready", "good");
-      return true;
-    }
-
-    async function loadProfile(user) {
-      if (!supabaseClient || !user || currentUser?.id !== user.id) return;
-
-      setProfileNotice("Loading your profile...");
+      profileNotice("Opening your account...");
 
       try {
         const { data, error } = await supabaseClient
           .from("profiles")
-          .select("user_id, display_name, bio, created_at, updated_at")
+          .select("user_id, display_name, bio")
           .eq("user_id", user.id)
           .maybeSingle();
 
         if (error) throw error;
 
+        if (
+          requestNumber !== profileRequestNumber ||
+          currentUser?.id !== user.id
+        ) return;
+
         let profile = data;
 
-        // Create a profile if the account does not have one yet.
+        // Normally the database trigger creates this during signup.
+        // This is a fallback if an older account has no profile row.
         if (!profile) {
-          const emailName = (user.email || "Player").split("@")[0];
-          const metadataName = user.user_metadata?.display_name;
-
-          const defaultName = String(metadataName || emailName || "Player")
-            .trim()
-            .slice(0, 24) || "Player";
+          const fallbackName = String(
+            user.user_metadata?.display_name ||
+            (user.email || "Player").split("@")[0] ||
+            "Player"
+          ).trim().slice(0, 24) || "Player";
 
           const result = await supabaseClient
             .from("profiles")
-            .upsert(
-              {
-                user_id: user.id,
-                display_name: defaultName,
-                bio: "",
-                updated_at: new Date().toISOString()
-              },
-              { onConflict: "user_id" }
-            )
-            .select("user_id, display_name, bio, created_at, updated_at")
+            .upsert({
+              user_id: user.id,
+              display_name: fallbackName,
+              bio: "",
+              updated_at: new Date().toISOString()
+            }, { onConflict: "user_id" })
+            .select("user_id, display_name, bio")
             .single();
 
           if (result.error) throw result.error;
           profile = result.data;
         }
 
-        if (currentUser?.id !== user.id) return;
+        if (
+          requestNumber !== profileRequestNumber ||
+          currentUser?.id !== user.id
+        ) return;
 
         $("profileName").value = profile.display_name || "";
         $("profileBio").value = profile.bio || "";
         $("bioCount").textContent = $("profileBio").value.length;
 
-        setProfileNotice("Profile loaded successfully.", "success");
+        $("profileNotice").hidden = true;
       } catch (error) {
-        console.error("Profile load error:", error);
+        console.error("Profile loading failed:", error);
 
-        setProfileNotice(
-          "Could not load your profile. Check that the profile SQL and row-level security policies were installed. Details: " +
-          friendlyError(error),
+        if (requestNumber !== profileRequestNumber) return;
+
+        profileNotice(
+          "Your account opened, but the profile could not load. Check the profiles SQL setup. " +
+          errorMessage(error),
           "error"
         );
       }
@@ -817,26 +524,16 @@
     $("signupForm").addEventListener("submit", async (event) => {
       event.preventDefault();
 
-      if (!supabaseClient) {
-        setNotice("Supabase has not initialized. Refresh and try again.", "error");
-        return;
-      }
-
       const displayName = $("signupName").value.trim();
       const email = $("signupEmail").value.trim();
       const password = $("signupPassword").value;
+
+      if (!displayName || displayName.length > 24) {
+        notice("Your display name must be between 1 and 24 characters.", "error");
+        return;
+      }
+
       const button = $("signupButton");
-
-      if (displayName.length < 1 || displayName.length > 24) {
-        setNotice("Your display name must be between 1 and 24 characters.", "error");
-        return;
-      }
-
-      if (password.length < 6) {
-        setNotice("Your password must contain at least 6 characters.", "error");
-        return;
-      }
-
       setBusy(button, true, "Creating account...", "Create my account →");
 
       try {
@@ -844,11 +541,7 @@
           email,
           password,
           options: {
-            data: {
-              display_name: displayName
-            },
-
-            // THIS IS THE FIX: confirmation always returns to GitHub Pages.
+            data: { display_name: displayName },
             emailRedirectTo: REDIRECT_URL
           }
         });
@@ -858,24 +551,24 @@
         $("signupPassword").value = "";
 
         if (data.session) {
-          setNotice(
-            "Your account was created and you are logged in.",
-            "success"
-          );
-        } else {
-          setNotice(
-            "Your signup was accepted. Check your email and click the new confirmation link. " +
-            "Then return here and log in. Check spam if the email does not arrive.",
-            "success"
-          );
-
-          showAuthMode("login");
-          $("loginEmail").value = email;
+          // Email confirmation is disabled, or a session was returned.
+          showLoggedIn(data.session.user);
+          return;
         }
-      } catch (error) {
-        console.error("Signup error:", error);
 
-        setNotice("Signup failed: " + friendlyError(error), "error");
+        // With email confirmation enabled, Supabase normally sends an email
+        // instead of creating an authenticated browser session immediately.
+        showMode("login");
+        $("loginEmail").value = email;
+
+        notice(
+          "Check your email and click the new confirmation link. " +
+          "You'll return to PILTAE CHATTER when the link is confirmed.",
+          "success"
+        );
+      } catch (error) {
+        console.error("Signup failed:", error);
+        notice("Signup failed: " + errorMessage(error), "error");
       } finally {
         setBusy(button, false, "Creating account...", "Create my account →");
       }
@@ -884,33 +577,23 @@
     $("loginForm").addEventListener("submit", async (event) => {
       event.preventDefault();
 
-      if (!supabaseClient) {
-        setNotice("Supabase has not initialized. Refresh and try again.", "error");
-        return;
-      }
-
-      const email = $("loginEmail").value.trim();
-      const password = $("loginPassword").value;
       const button = $("loginButton");
-
       setBusy(button, true, "Logging in...", "Log in →");
 
       try {
-        const { error } = await supabaseClient.auth.signInWithPassword({
-          email,
-          password
+        const { data, error } = await supabaseClient.auth.signInWithPassword({
+          email: $("loginEmail").value.trim(),
+          password: $("loginPassword").value
         });
 
         if (error) throw error;
 
         $("loginPassword").value = "";
-        setNotice("Login successful.", "success");
+        showLoggedIn(data.user);
       } catch (error) {
-        console.error("Login error:", error);
-
-        setNotice(
-          "Login failed: " + friendlyError(error) +
-          " If email confirmation is enabled, confirm your email first.",
+        console.error("Login failed:", error);
+        notice(
+          "Login failed: " + errorMessage(error),
           "error"
         );
       } finally {
@@ -918,92 +601,103 @@
       }
     });
 
+    $("resendButton").addEventListener("click", async () => {
+      const email = $("loginEmail").value.trim();
+
+      if (!email) {
+        notice("Enter your email address first.", "error");
+        return;
+      }
+
+      const button = $("resendButton");
+      setBusy(button, true, "Sending...", "Resend confirmation email");
+
+      try {
+        const { error } = await supabaseClient.auth.resend({
+          type: "signup",
+          email,
+          options: { emailRedirectTo: REDIRECT_URL }
+        });
+
+        if (error) throw error;
+
+        notice(
+          "If a new confirmation email is available for this account, it should arrive shortly. Check your spam folder too.",
+          "success"
+        );
+      } catch (error) {
+        notice("Could not send the email: " + errorMessage(error), "error");
+      } finally {
+        setBusy(button, false, "Sending...", "Resend confirmation email");
+      }
+    });
+
     $("profileForm").addEventListener("submit", async (event) => {
       event.preventDefault();
 
-      if (!supabaseClient || !currentUser) {
-        setProfileNotice(
-          "Please log in again before saving your profile.",
-          "error"
-        );
+      if (!currentUser) {
+        profileNotice("Please log in again.", "error");
         return;
       }
 
       const displayName = $("profileName").value.trim();
       const bio = $("profileBio").value.trim();
-      const button = $("saveProfileButton");
 
-      if (displayName.length < 1 || displayName.length > 24) {
-        setProfileNotice(
-          "Your display name must be between 1 and 24 characters.",
-          "error"
-        );
+      if (!displayName || displayName.length > 24) {
+        profileNotice("Display name must be between 1 and 24 characters.", "error");
         return;
       }
 
       if (bio.length > 160) {
-        setProfileNotice("Your bio cannot exceed 160 characters.", "error");
+        profileNotice("Your bio cannot exceed 160 characters.", "error");
         return;
       }
 
+      const button = $("saveProfileButton");
       setBusy(button, true, "Saving...", "Save profile");
 
       try {
-        const userId = currentUser.id;
-
-        const { error: profileError } = await supabaseClient
+        const { error } = await supabaseClient
           .from("profiles")
-          .upsert(
-            {
-              user_id: userId,
-              display_name: displayName,
-              bio,
-              updated_at: new Date().toISOString()
-            },
-            { onConflict: "user_id" }
-          );
+          .upsert({
+            user_id: currentUser.id,
+            display_name: displayName,
+            bio,
+            updated_at: new Date().toISOString()
+          }, { onConflict: "user_id" });
 
-        if (profileError) throw profileError;
+        if (error) throw error;
 
-        const { error: metadataError } =
-          await supabaseClient.auth.updateUser({
-            data: { display_name: displayName }
-          });
+        const { error: metadataError } = await supabaseClient.auth.updateUser({
+          data: { display_name: displayName }
+        });
 
         if (metadataError) {
-          console.warn(
-            "Profile saved, but account metadata update failed:",
-            metadataError
-          );
-
-          setProfileNotice(
-            "Your profile was saved, but account metadata could not be refreshed: " +
-            friendlyError(metadataError),
-            "error"
-          );
-          return;
+          console.warn("Profile saved; metadata update failed:", metadataError);
         }
 
-        setProfileNotice("Profile saved successfully.", "success");
-      } catch (error) {
-        console.error("Profile save error:", error);
-
-        setProfileNotice(
-          "Could not save your profile: " + friendlyError(error),
-          "error"
+        profileNotice(
+          metadataError
+            ? "Profile saved, but your account metadata did not update: " +
+              errorMessage(metadataError)
+            : "Profile saved successfully.",
+          metadataError ? "error" : "success"
         );
+      } catch (error) {
+        console.error("Profile save failed:", error);
+        profileNotice("Could not save profile: " + errorMessage(error), "error");
       } finally {
         setBusy(button, false, "Saving...", "Save profile");
       }
     });
 
     $("refreshProfileButton").addEventListener("click", () => {
-      if (currentUser) loadProfile(currentUser);
+      if (currentUser) {
+        loadProfile(currentUser, ++profileRequestNumber);
+      }
     });
 
     $("logoutButton").addEventListener("click", async () => {
-      if (!supabaseClient) return;
-
       const button = $("logoutButton");
       setBusy(button, true, "Logging out...", "Log out");
 
@@ -1012,18 +706,11 @@
 
         if (error) throw error;
 
-        currentUser = null;
-        $("accountPanel").hidden = true;
-        $("authPanel").hidden = false;
-        showAuthMode("login");
-        setNotice("You have successfully logged out.", "success");
+        showLoggedOut();
+        showMode("login");
+        notice("You have logged out.", "success");
       } catch (error) {
-        console.error("Logout error:", error);
-
-        setProfileNotice(
-          "Logout failed: " + friendlyError(error),
-          "error"
-        );
+        profileNotice("Could not log out: " + errorMessage(error), "error");
       } finally {
         setBusy(button, false, "Logging out...", "Log out");
       }
@@ -1031,12 +718,9 @@
 
     async function initialize() {
       try {
-        if (
-          !window.supabase ||
-          typeof window.supabase.createClient !== "function"
-        ) {
+        if (!window.supabase?.createClient) {
           throw new Error(
-            "The Supabase library did not load. Check your internet connection and refresh."
+            "Supabase did not load. Check your internet connection and refresh."
           );
         }
 
@@ -1044,9 +728,7 @@
           !/^https:\/\/[a-z0-9-]+\.supabase\.co\/?$/.test(SUPABASE_URL) ||
           !SUPABASE_PUBLISHABLE_KEY.startsWith("sb_publishable_")
         ) {
-          throw new Error(
-            "The Supabase URL or publishable key is missing or incorrectly formatted."
-          );
+          throw new Error("The Supabase URL or publishable key is incorrect.");
         }
 
         supabaseClient = window.supabase.createClient(
@@ -1061,27 +743,60 @@
           }
         );
 
-        const { data, error } = await supabaseClient.auth.getSession();
-
-        if (error) throw error;
-
-        renderSession(data.session, "INITIAL_SESSION");
-
+        // Supabase processes valid confirmation links and restores the
+        // session in this browser. A restored session opens the account view.
         supabaseClient.auth.onAuthStateChange((eventName, session) => {
           window.setTimeout(() => {
-            renderSession(session, eventName);
+            if (session?.user) {
+              if (currentUser?.id !== session.user.id) {
+                showLoggedIn(session.user);
+              }
+            } else if (
+              eventName === "SIGNED_OUT" ||
+              eventName === "INITIAL_SESSION"
+            ) {
+              showLoggedOut();
+            }
           }, 0);
         });
 
-        await checkDatabaseSetup();
+        const { data, error } = await supabaseClient.auth.getSession();
+        if (error) throw error;
+
+        if (data.session?.user) {
+          showLoggedIn(data.session.user);
+        } else {
+          showMode("signup");
+
+          // If confirmation succeeded but no session was returned,
+          // the user can log in with the same account.
+          const hashParams = new URLSearchParams(
+            window.location.hash.replace(/^#/, "")
+          );
+
+          const searchParams = new URLSearchParams(window.location.search);
+
+          const arrivedFromAuthLink =
+            hashParams.has("access_token") ||
+            hashParams.get("type") === "signup" ||
+            searchParams.has("code");
+
+          if (arrivedFromAuthLink) {
+            showMode("login");
+            notice(
+              "Your confirmation link brought you back to PILTAE. " +
+              "If you're not already signed in, log in with the account you just confirmed.",
+              "success"
+            );
+          }
+        }
       } catch (error) {
-        console.error("PILTAE initialization error:", error);
+        console.error("PILTAE initialization failed:", error);
 
-        setConnection("Setup error", "bad");
-
-        setNotice(
-          "PILTAE could not initialize Supabase. Check the URL and publishable key in index.html. Details: " +
-          friendlyError(error),
+        showMode("login");
+        notice(
+          "PILTAE could not connect to Supabase. Check the project URL, publishable key, and internet connection. Details: " +
+          errorMessage(error),
           "error"
         );
       }
