@@ -716,93 +716,122 @@
       }
     });
 
-    async function initialize() {
-      try {
-        if (!window.supabase?.createClient) {
-          throw new Error(
-            "Supabase did not load. Check your internet connection and refresh."
-          );
-        }
-
-        if (
-          !/^https:\/\/[a-z0-9-]+\.supabase\.co\/?$/.test(SUPABASE_URL) ||
-          !SUPABASE_PUBLISHABLE_KEY.startsWith("sb_publishable_")
-        ) {
-          throw new Error("The Supabase URL or publishable key is incorrect.");
-        }
-
-        supabaseClient = window.supabase.createClient(
-          SUPABASE_URL,
-          SUPABASE_PUBLISHABLE_KEY,
-          {
-            auth: {
-              autoRefreshToken: true,
-              persistSession: true,
-              detectSessionInUrl: true
-            }
-          }
-        );
-
-        // Supabase processes valid confirmation links and restores the
-        // session in this browser. A restored session opens the account view.
-        supabaseClient.auth.onAuthStateChange((eventName, session) => {
-          window.setTimeout(() => {
-            if (session?.user) {
-              if (currentUser?.id !== session.user.id) {
-                showLoggedIn(session.user);
-              }
-            } else if (
-              eventName === "SIGNED_OUT" ||
-              eventName === "INITIAL_SESSION"
-            ) {
-              showLoggedOut();
-            }
-          }, 0);
-        });
-
-        const { data, error } = await supabaseClient.auth.getSession();
-        if (error) throw error;
-
-        if (data.session?.user) {
-          showLoggedIn(data.session.user);
-        } else {
-          showMode("signup");
-
-          // If confirmation succeeded but no session was returned,
-          // the user can log in with the same account.
-          const hashParams = new URLSearchParams(
-            window.location.hash.replace(/^#/, "")
-          );
-
-          const searchParams = new URLSearchParams(window.location.search);
-
-          const arrivedFromAuthLink =
-            hashParams.has("access_token") ||
-            hashParams.get("type") === "signup" ||
-            searchParams.has("code");
-
-          if (arrivedFromAuthLink) {
-            showMode("login");
-            notice(
-              "Your confirmation link brought you back to PILTAE. " +
-              "If you're not already signed in, log in with the account you just confirmed.",
-              "success"
-            );
-          }
-        }
-      } catch (error) {
-        console.error("PILTAE initialization failed:", error);
-
-        showMode("login");
-        notice(
-          "PILTAE could not connect to Supabase. Check the project URL, publishable key, and internet connection. Details: " +
-          errorMessage(error),
-          "error"
-        );
-      }
+    
+async function initialize() {
+  try {
+    if (!window.supabase?.createClient) {
+      throw new Error(
+        "Supabase's JavaScript library did not load. Check your internet connection."
+      );
     }
 
-    initialize();
-  </script>
-</body>
-</html>
+    supabaseClient = window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_PUBLISHABLE_KEY,
+      {
+        auth: {
+          autoRefreshToken: true,
+          persistSession: true,
+          detectSessionInUrl: true
+        }
+      }
+    );
+
+    supabaseClient.auth.onAuthStateChange((eventName, session) => {
+      window.setTimeout(() => {
+        if (session?.user) {
+          if (currentUser?.id !== session.user.id) {
+            showLoggedIn(session.user);
+          }
+        } else if (
+          eventName === "SIGNED_OUT" ||
+          eventName === "INITIAL_SESSION"
+        ) {
+          showLoggedOut();
+        }
+      }, 0);
+    });
+
+    const hashParams = new URLSearchParams(
+      window.location.hash.replace(/^#/, "")
+    );
+
+    const searchParams = new URLSearchParams(window.location.search);
+
+    const callbackError =
+      hashParams.get("error_description") ||
+      hashParams.get("error") ||
+      searchParams.get("error_description") ||
+      searchParams.get("error");
+
+    const callbackErrorCode =
+      hashParams.get("error_code") ||
+      searchParams.get("error_code");
+
+    let sessionData;
+
+    try {
+      const result = await supabaseClient.auth.getSession();
+
+      if (result.error) throw result.error;
+
+      sessionData = result.data;
+    } catch (error) {
+      console.error("Supabase session error:", error);
+
+      showMode("login");
+
+      notice(
+        "Supabase loaded, but the login session could not be restored. " +
+        "Details: " + (error?.message || String(error)) +
+        (callbackError
+          ? " Confirmation link details: " + callbackError
+          : "") +
+        " Try logging in again. If this continues, share this exact error.",
+        "error"
+      );
+
+      return;
+    }
+
+    if (sessionData?.session?.user) {
+      showLoggedIn(sessionData.session.user);
+      return;
+    }
+
+    showMode("login");
+
+    if (callbackError) {
+      notice(
+        "The confirmation link returned an authentication error: " +
+        callbackError +
+        (callbackErrorCode ? " (" + callbackErrorCode + ")" : "") +
+        ". Request a new confirmation email and use its latest link.",
+        "error"
+      );
+      return;
+    }
+
+    const arrivedFromConfirmation =
+      hashParams.get("type") === "signup" ||
+      searchParams.has("code");
+
+    if (arrivedFromConfirmation) {
+      notice(
+        "You've returned to PILTAE CHATTER. Log in using the email and password for your confirmed account.",
+        "success"
+      );
+    }
+
+  } catch (error) {
+    console.error("PILTAE initialization error:", error);
+
+    showMode("login");
+
+    notice(
+      "PILTAE could not initialize Supabase. Details: " +
+      (error?.message || String(error)),
+      "error"
+    );
+  }
+}
