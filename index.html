@@ -25,12 +25,12 @@
     body {
       margin: 0;
       min-height: 100vh;
-      padding: 28px 16px;
+      padding: 26px 14px;
+      color: var(--text);
       background:
         radial-gradient(ellipse at 10% 0%, #31205b66, transparent 42%),
         radial-gradient(ellipse at 100% 90%, #115e5940, transparent 38%),
         var(--bg);
-      color: var(--text);
       font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
     }
 
@@ -39,23 +39,13 @@
     button:disabled { opacity: .6; cursor: wait; }
     [hidden] { display: none !important; }
 
-    .shell { width: min(100%, 720px); margin: auto; }
+    .shell { width: min(100%, 760px); margin: 0 auto; }
 
     header {
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 15px;
-      margin-bottom: 48px;
-    }
-
-    .brand {
-      display: flex;
       align-items: center;
       gap: 12px;
-      font-size: 17px;
-      font-weight: 900;
-      letter-spacing: 1.5px;
+      margin-bottom: 48px;
     }
 
     .logo {
@@ -67,6 +57,13 @@
       background: linear-gradient(135deg, #a78bfa, #4338ca);
       box-shadow: 0 8px 30px #8b5cf633;
       font-size: 20px;
+      font-weight: 900;
+    }
+
+    .brand {
+      font-size: 17px;
+      font-weight: 900;
+      letter-spacing: 1.5px;
     }
 
     .hero { margin-bottom: 25px; }
@@ -80,7 +77,7 @@
 
     h1 {
       margin: 10px 0;
-      font-size: clamp(36px, 7vw, 58px);
+      font-size: clamp(35px, 7vw, 58px);
       letter-spacing: -2px;
       line-height: 1.05;
     }
@@ -204,7 +201,7 @@
     }
 
     .account-line {
-      margin: 19px 0;
+      margin: 18px 0;
       padding: 13px;
       border: 1px solid var(--border);
       border-radius: 11px;
@@ -224,7 +221,7 @@
     }
 
     footer {
-      margin-top: 25px;
+      margin-top: 26px;
       text-align: center;
       color: #727c94;
       font-size: 11px;
@@ -241,24 +238,22 @@
 <body>
   <main class="shell">
     <header>
-      <div class="brand">
-        <div class="logo">P</div>
-        <span>PILTAE CHATTER</span>
-      </div>
+      <div class="logo">P</div>
+      <div class="brand">PILTAE CHATTER</div>
     </header>
 
     <section class="hero">
       <div class="eyebrow">YOUR COMMUNITY STARTS HERE</div>
       <h1>Welcome to <span class="gradient">PILTAE.</span></h1>
       <p class="muted">
-        Create your account and join the community.
+        Create an account and jump straight into your community.
       </p>
     </section>
 
     <section class="card" id="authPanel">
       <h2 id="authTitle">Create your account</h2>
       <p class="muted" id="authDescription">
-        Choose a display name, email address, and password to get started.
+        Choose a display name, email address, and password.
       </p>
 
       <div class="tabs">
@@ -290,7 +285,7 @@
         </div>
 
         <button class="btn" id="signupButton" type="submit">
-          Create my account →
+          Create account and join →
         </button>
       </form>
 
@@ -307,34 +302,25 @@
             autocomplete="current-password" placeholder="Your password" required>
         </div>
 
-        <button class="btn" id="loginButton" type="submit">
-          Log in →
-        </button>
-
-        <button class="btn secondary" id="resendButton" type="button">
-          Resend confirmation email
-        </button>
+        <button class="btn" id="loginButton" type="submit">Log in →</button>
       </form>
 
       <div id="notice" class="notice" role="status" aria-live="polite" hidden></div>
     </section>
 
     <section class="card" id="accountPanel" hidden>
-      <h2>You're in PILTAE.</h2>
-      <p class="muted">
-        Your account is active. Set up your profile below.
-      </p>
+      <h2>Welcome to PILTAE.</h2>
+      <p class="muted">Your account is signed in. Set up your profile below.</p>
 
       <div class="account-line">
-        <small>Logged in as</small>
+        <small class="muted">Logged in as</small>
         <strong id="accountEmail"></strong>
       </div>
 
       <form id="profileForm">
         <div class="field">
           <label for="profileName">DISPLAY NAME</label>
-          <input id="profileName" type="text" minlength="1"
-            maxlength="24" autocomplete="nickname" required>
+          <input id="profileName" type="text" minlength="1" maxlength="24" required>
         </div>
 
         <div class="field">
@@ -368,54 +354,40 @@
   <script>
     "use strict";
 
-    // YOUR EXISTING SUPABASE PROJECT SETTINGS
+    // Existing Supabase project settings
     const SUPABASE_URL =
       "https://mfawkedwvjzxqqmflutu.supabase.co";
 
     const SUPABASE_PUBLISHABLE_KEY =
       "sb_publishable_n-iBWfw_2hmDhjV9Iyk1Rw_QhqT-e0Q";
 
-    // Always return to the published website, never localhost.
-    const REDIRECT_URL =
-      "https://noahlangedu.github.io/888222888222/";
-
     const $ = (id) => document.getElementById(id);
 
-    let supabaseClient;
+    let supabaseClient = null;
     let currentUser = null;
-    let profileRequestNumber = 0;
+    let loadedProfileUserId = null;
+    let profileRequestId = 0;
 
-    function notice(message, type = "") {
+    function showNotice(message, type = "") {
       const element = $("notice");
       element.textContent = message;
       element.className = "notice" + (type ? " " + type : "");
       element.hidden = false;
     }
 
-    function profileNotice(message, type = "") {
+    function showProfileNotice(message, type = "") {
       const element = $("profileNotice");
       element.textContent = message;
       element.className = "notice" + (type ? " " + type : "");
       element.hidden = false;
     }
 
-    function showMode(mode) {
-      const signup = mode === "signup";
-
-      $("signupForm").hidden = !signup;
-      $("loginForm").hidden = signup;
-      $("signupTab").classList.toggle("active", signup);
-      $("loginTab").classList.toggle("active", !signup);
-
-      $("authTitle").textContent = signup
-        ? "Create your account"
-        : "Welcome back";
-
-      $("authDescription").textContent = signup
-        ? "Choose a display name, email address, and password to get started."
-        : "Log in to return to your account.";
-
+    function hideNotice() {
       $("notice").hidden = true;
+    }
+
+    function errorText(error) {
+      return error?.message || "Something went wrong. Try again.";
     }
 
     function setBusy(button, busy, busyText, normalText) {
@@ -423,41 +395,29 @@
       button.textContent = busy ? busyText : normalText;
     }
 
-    function errorMessage(error) {
-      return error?.message || "Something went wrong. Please try again.";
+    function switchMode(mode) {
+      const signup = mode === "signup";
+
+      $("signupForm").hidden = !signup;
+      $("loginForm").hidden = signup;
+      $("signupTab").classList.toggle("active", signup);
+      $("loginTab").classList.toggle("active", !signup);
+      $("authTitle").textContent = signup ? "Create your account" : "Welcome back";
+      $("authDescription").textContent = signup
+        ? "Choose a display name, email address, and password."
+        : "Log in to return to your account.";
+
+      hideNotice();
     }
 
-    $("signupTab").addEventListener("click", () => showMode("signup"));
-    $("loginTab").addEventListener("click", () => showMode("login"));
+    $("signupTab").addEventListener("click", () => switchMode("signup"));
+    $("loginTab").addEventListener("click", () => switchMode("login"));
 
     $("profileBio").addEventListener("input", () => {
       $("bioCount").textContent = $("profileBio").value.length;
     });
 
-    function showLoggedOut() {
-      currentUser = null;
-      profileRequestNumber++;
-
-      $("authPanel").hidden = false;
-      $("accountPanel").hidden = true;
-    }
-
-    function showLoggedIn(user) {
-      currentUser = user;
-
-      $("authPanel").hidden = true;
-      $("accountPanel").hidden = false;
-      $("accountEmail").textContent = user.email || "Signed-in account";
-
-      const requestNumber = ++profileRequestNumber;
-      loadProfile(user, requestNumber);
-    }
-
-    async function loadProfile(user, requestNumber) {
-      if (!supabaseClient || !user) return;
-
-      profileNotice("Opening your account...");
-
+    async function loadProfile(user, requestId) {
       try {
         const { data, error } = await supabaseClient
           .from("profiles")
@@ -468,14 +428,13 @@
         if (error) throw error;
 
         if (
-          requestNumber !== profileRequestNumber ||
+          requestId !== profileRequestId ||
           currentUser?.id !== user.id
         ) return;
 
         let profile = data;
 
-        // Normally the database trigger creates this during signup.
-        // This is a fallback if an older account has no profile row.
+        // The database trigger should normally create this profile.
         if (!profile) {
           const fallbackName = String(
             user.user_metadata?.display_name ||
@@ -499,7 +458,7 @@
         }
 
         if (
-          requestNumber !== profileRequestNumber ||
+          requestId !== profileRequestId ||
           currentUser?.id !== user.id
         ) return;
 
@@ -507,42 +466,73 @@
         $("profileBio").value = profile.bio || "";
         $("bioCount").textContent = $("profileBio").value.length;
 
+        loadedProfileUserId = user.id;
         $("profileNotice").hidden = true;
       } catch (error) {
-        console.error("Profile loading failed:", error);
+        console.error("Profile loading error:", error);
 
-        if (requestNumber !== profileRequestNumber) return;
-
-        profileNotice(
-          "Your account opened, but the profile could not load. Check the profiles SQL setup. " +
-          errorMessage(error),
-          "error"
-        );
+        if (requestId === profileRequestId) {
+          showProfileNotice(
+            "You're signed in, but the profile could not load. Make sure the SQL setup below has been run. Details: " +
+            errorText(error),
+            "error"
+          );
+        }
       }
+    }
+
+    function showLoggedIn(user) {
+      if (!user) return;
+
+      const isNewUser = currentUser?.id !== user.id;
+      currentUser = user;
+
+      $("authPanel").hidden = true;
+      $("accountPanel").hidden = false;
+      $("accountEmail").textContent = user.email || "Account";
+
+      if (isNewUser || loadedProfileUserId !== user.id) {
+        const requestId = ++profileRequestId;
+        showProfileNotice("Opening your profile...");
+        loadProfile(user, requestId);
+      }
+    }
+
+    function showLoggedOut() {
+      currentUser = null;
+      loadedProfileUserId = null;
+      profileRequestId++;
+
+      $("authPanel").hidden = false;
+      $("accountPanel").hidden = true;
     }
 
     $("signupForm").addEventListener("submit", async (event) => {
       event.preventDefault();
+
+      if (!supabaseClient) {
+        showNotice("The website has not connected to Supabase yet. Refresh the page.", "error");
+        return;
+      }
 
       const displayName = $("signupName").value.trim();
       const email = $("signupEmail").value.trim();
       const password = $("signupPassword").value;
 
       if (!displayName || displayName.length > 24) {
-        notice("Your display name must be between 1 and 24 characters.", "error");
+        showNotice("Display name must be between 1 and 24 characters.", "error");
         return;
       }
 
       const button = $("signupButton");
-      setBusy(button, true, "Creating account...", "Create my account →");
+      setBusy(button, true, "Creating account...", "Create account and join →");
 
       try {
         const { data, error } = await supabaseClient.auth.signUp({
           email,
           password,
           options: {
-            data: { display_name: displayName },
-            emailRedirectTo: REDIRECT_URL
+            data: { display_name: displayName }
           }
         });
 
@@ -550,32 +540,30 @@
 
         $("signupPassword").value = "";
 
-        if (data.session) {
-          // Email confirmation is disabled, or a session was returned.
-          showLoggedIn(data.session.user);
+        if (data.session && data.user) {
+          showLoggedIn(data.user);
           return;
         }
 
-        // With email confirmation enabled, Supabase normally sends an email
-        // instead of creating an authenticated browser session immediately.
-        showMode("login");
-        $("loginEmail").value = email;
-
-        notice(
-          "Check your email and click the new confirmation link. " +
-          "You'll return to PILTAE CHATTER when the link is confirmed.",
-          "success"
+        showNotice(
+          "Supabase created the signup request but did not log you in. Open Supabase → Authentication → Providers → Email and turn OFF Confirm email, then save and try again.",
+          "error"
         );
       } catch (error) {
-        console.error("Signup failed:", error);
-        notice("Signup failed: " + errorMessage(error), "error");
+        console.error("Signup error:", error);
+        showNotice("Signup failed: " + errorText(error), "error");
       } finally {
-        setBusy(button, false, "Creating account...", "Create my account →");
+        setBusy(button, false, "Creating account...", "Create account and join →");
       }
     });
 
     $("loginForm").addEventListener("submit", async (event) => {
       event.preventDefault();
+
+      if (!supabaseClient) {
+        showNotice("The website has not connected to Supabase yet. Refresh the page.", "error");
+        return;
+      }
 
       const button = $("loginButton");
       setBusy(button, true, "Logging in...", "Log in →");
@@ -591,52 +579,18 @@
         $("loginPassword").value = "";
         showLoggedIn(data.user);
       } catch (error) {
-        console.error("Login failed:", error);
-        notice(
-          "Login failed: " + errorMessage(error),
-          "error"
-        );
+        console.error("Login error:", error);
+        showNotice("Login failed: " + errorText(error), "error");
       } finally {
         setBusy(button, false, "Logging in...", "Log in →");
-      }
-    });
-
-    $("resendButton").addEventListener("click", async () => {
-      const email = $("loginEmail").value.trim();
-
-      if (!email) {
-        notice("Enter your email address first.", "error");
-        return;
-      }
-
-      const button = $("resendButton");
-      setBusy(button, true, "Sending...", "Resend confirmation email");
-
-      try {
-        const { error } = await supabaseClient.auth.resend({
-          type: "signup",
-          email,
-          options: { emailRedirectTo: REDIRECT_URL }
-        });
-
-        if (error) throw error;
-
-        notice(
-          "If a new confirmation email is available for this account, it should arrive shortly. Check your spam folder too.",
-          "success"
-        );
-      } catch (error) {
-        notice("Could not send the email: " + errorMessage(error), "error");
-      } finally {
-        setBusy(button, false, "Sending...", "Resend confirmation email");
       }
     });
 
     $("profileForm").addEventListener("submit", async (event) => {
       event.preventDefault();
 
-      if (!currentUser) {
-        profileNotice("Please log in again.", "error");
+      if (!supabaseClient || !currentUser) {
+        showProfileNotice("Please log in again.", "error");
         return;
       }
 
@@ -644,12 +598,12 @@
       const bio = $("profileBio").value.trim();
 
       if (!displayName || displayName.length > 24) {
-        profileNotice("Display name must be between 1 and 24 characters.", "error");
+        showProfileNotice("Display name must be between 1 and 24 characters.", "error");
         return;
       }
 
       if (bio.length > 160) {
-        profileNotice("Your bio cannot exceed 160 characters.", "error");
+        showProfileNotice("Bio must be 160 characters or fewer.", "error");
         return;
       }
 
@@ -668,33 +622,35 @@
 
         if (error) throw error;
 
+        // Keep the display name in Supabase Auth metadata in sync too.
         const { error: metadataError } = await supabaseClient.auth.updateUser({
           data: { display_name: displayName }
         });
 
         if (metadataError) {
-          console.warn("Profile saved; metadata update failed:", metadataError);
+          console.warn("Metadata update failed:", metadataError);
         }
 
-        profileNotice(
+        showProfileNotice(
           metadataError
-            ? "Profile saved, but your account metadata did not update: " +
-              errorMessage(metadataError)
+            ? "Profile saved, but the account display-name metadata did not update."
             : "Profile saved successfully.",
           metadataError ? "error" : "success"
         );
       } catch (error) {
-        console.error("Profile save failed:", error);
-        profileNotice("Could not save profile: " + errorMessage(error), "error");
+        console.error("Profile save error:", error);
+        showProfileNotice("Could not save profile: " + errorText(error), "error");
       } finally {
         setBusy(button, false, "Saving...", "Save profile");
       }
     });
 
     $("refreshProfileButton").addEventListener("click", () => {
-      if (currentUser) {
-        loadProfile(currentUser, ++profileRequestNumber);
-      }
+      if (!currentUser) return;
+
+      const requestId = ++profileRequestId;
+      showProfileNotice("Reloading your profile...");
+      loadProfile(currentUser, requestId);
     });
 
     $("logoutButton").addEventListener("click", async () => {
@@ -707,131 +663,64 @@
         if (error) throw error;
 
         showLoggedOut();
-        showMode("login");
-        notice("You have logged out.", "success");
+        switchMode("login");
+        showNotice("You have logged out.", "success");
       } catch (error) {
-        profileNotice("Could not log out: " + errorMessage(error), "error");
+        showProfileNotice("Logout failed: " + errorText(error), "error");
       } finally {
         setBusy(button, false, "Logging out...", "Log out");
       }
     });
 
-    
-async function initialize() {
-  try {
-    if (!window.supabase?.createClient) {
-      throw new Error(
-        "Supabase's JavaScript library did not load. Check your internet connection."
-      );
-    }
-
-    supabaseClient = window.supabase.createClient(
-      SUPABASE_URL,
-      SUPABASE_PUBLISHABLE_KEY,
-      {
-        auth: {
-          autoRefreshToken: true,
-          persistSession: true,
-          detectSessionInUrl: true
+    async function initialize() {
+      try {
+        if (!window.supabase?.createClient) {
+          throw new Error("Supabase's JavaScript library failed to load. Check your internet connection.");
         }
-      }
-    );
 
-    supabaseClient.auth.onAuthStateChange((eventName, session) => {
-      window.setTimeout(() => {
-        if (session?.user) {
-          if (currentUser?.id !== session.user.id) {
-            showLoggedIn(session.user);
-          }
-        } else if (
-          eventName === "SIGNED_OUT" ||
-          eventName === "INITIAL_SESSION"
+        if (
+          !/^https:\/\/[a-z0-9-]+\.supabase\.co\/?$/.test(SUPABASE_URL) ||
+          !SUPABASE_PUBLISHABLE_KEY.startsWith("sb_publishable_")
         ) {
-          showLoggedOut();
+          throw new Error("The Supabase project URL or publishable key is missing or incorrect.");
         }
-      }, 0);
-    });
 
-    const hashParams = new URLSearchParams(
-      window.location.hash.replace(/^#/, "")
-    );
+        supabaseClient = window.supabase.createClient(
+          SUPABASE_URL,
+          SUPABASE_PUBLISHABLE_KEY,
+          {
+            auth: {
+              autoRefreshToken: true,
+              persistSession: true,
+              detectSessionInUrl: true
+            }
+          }
+        );
 
-    const searchParams = new URLSearchParams(window.location.search);
+        supabaseClient.auth.onAuthStateChange((eventName, session) => {
+          window.setTimeout(() => {
+            if (session?.user) {
+              showLoggedIn(session.user);
+            } else if (eventName === "SIGNED_OUT" || eventName === "INITIAL_SESSION") {
+              showLoggedOut();
+            }
+          }, 0);
+        });
 
-    const callbackError =
-      hashParams.get("error_description") ||
-      hashParams.get("error") ||
-      searchParams.get("error_description") ||
-      searchParams.get("error");
+        const { data, error } = await supabaseClient.auth.getSession();
 
-    const callbackErrorCode =
-      hashParams.get("error_code") ||
-      searchParams.get("error_code");
+        if (error) throw error;
 
-    let sessionData;
-
-    try {
-      const result = await supabaseClient.auth.getSession();
-
-      if (result.error) throw result.error;
-
-      sessionData = result.data;
-    } catch (error) {
-      console.error("Supabase session error:", error);
-
-      showMode("login");
-
-      notice(
-        "Supabase loaded, but the login session could not be restored. " +
-        "Details: " + (error?.message || String(error)) +
-        (callbackError
-          ? " Confirmation link details: " + callbackError
-          : "") +
-        " Try logging in again. If this continues, share this exact error.",
-        "error"
-      );
-
-      return;
+        if (data.session?.user) {
+          showLoggedIn(data.session.user);
+        }
+      } catch (error) {
+        console.error("Initialization error:", error);
+        showNotice("Could not connect to Supabase: " + errorText(error), "error");
+      }
     }
 
-    if (sessionData?.session?.user) {
-      showLoggedIn(sessionData.session.user);
-      return;
-    }
-
-    showMode("login");
-
-    if (callbackError) {
-      notice(
-        "The confirmation link returned an authentication error: " +
-        callbackError +
-        (callbackErrorCode ? " (" + callbackErrorCode + ")" : "") +
-        ". Request a new confirmation email and use its latest link.",
-        "error"
-      );
-      return;
-    }
-
-    const arrivedFromConfirmation =
-      hashParams.get("type") === "signup" ||
-      searchParams.has("code");
-
-    if (arrivedFromConfirmation) {
-      notice(
-        "You've returned to PILTAE CHATTER. Log in using the email and password for your confirmed account.",
-        "success"
-      );
-    }
-
-  } catch (error) {
-    console.error("PILTAE initialization error:", error);
-
-    showMode("login");
-
-    notice(
-      "PILTAE could not initialize Supabase. Details: " +
-      (error?.message || String(error)),
-      "error"
-    );
-  }
-}
+    initialize();
+  </script>
+</body>
+</html>
