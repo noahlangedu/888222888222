@@ -7,20 +7,159 @@
 <meta name="theme-color" content="#090b12">
 <title>PILTAE CHATTER</title>
 <style>
-:root{color-scheme:dark;--bg:#090b12;--panel:#111521;--panel2:#171d2b;--border:#293146;--text:#f1f4ff;--muted:#929bb3;--accent:#8b5cf6;--mint:#5eead4;--danger:#fb7185;--good:#34d399}*{box-sizing:border-box}body{margin:0;min-height:100vh;padding:20px 14px;background:radial-gradient(ellipse at 10% 0%,#31205b66,transparent 42%),radial-gradient(ellipse at 100% 90%,#115e5940,transparent 38%),var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",sans-serif}button,input,textarea,select{font:inherit}button{cursor:pointer}button:disabled{opacity:.55;cursor:wait}[hidden]{display:none!important}.shell{width:min(1180px,100%);margin:auto}.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:24px}.brand{display:flex;align-items:center;gap:11px;font-size:16px;font-weight:900;letter-spacing:1.4px}.logo{display:grid;place-items:center;width:42px;height:42px;border-radius:13px;background:linear-gradient(135deg,#a78bfa,#4338ca);box-shadow:0 8px 30px #8b5cf633;font-size:20px}.topright{display:flex;align-items:center;gap:10px}.wallet{padding:9px 12px;border:1px solid #3e365e;border-radius:999px;background:#1b1730;color:#ddd6fe;font-weight:800;font-size:13px}.smallbtn,.navbtn,.btn{border:1px solid var(--border);border-radius:11px;padding:10px 13px;background:#202637;color:var(--text);font-weight:750}.smallbtn:hover,.navbtn:hover,.btn:hover{filter:brightness(1.15)}.hero{margin:24px 0}.eyebrow{color:var(--mint);font-size:11px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase}h1{margin:10px 0;font-size:clamp(34px,6vw,56px);letter-spacing:-2px;line-height:1.06}.gradient{color:#a78bfa;background:linear-gradient(90deg,#a78bfa,#5eead4);background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent}.muted{color:var(--muted);font-size:13px;line-height:1.6}.card{padding:21px;border:1px solid var(--border);border-radius:18px;background:linear-gradient(160deg,#151a28f5,#0e121cf5);box-shadow:0 16px 55px #00000020;min-width:0}.card h2{margin:0 0 7px;font-size:20px}.card h3{margin:0 0 5px;font-size:15px}.auth-wrap{width:min(560px,100%);margin:42px auto}.tabs{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:20px 0;padding:5px;border:1px solid var(--border);border-radius:12px;background:#090c14}.tab{padding:11px 8px;border:0;border-radius:8px;background:transparent;color:var(--muted);font-weight:800}.tab.active{background:#292344;color:#fff}.field{margin:14px 0}label{display:block;margin-bottom:7px;color:#d5d9e8;font-size:12px;font-weight:800}input,textarea,select{width:100%;min-width:0;padding:12px 13px;border:1px solid #30384c;border-radius:10px;outline:none;background:#090d16;color:var(--text)}input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 0 0 3px #8b5cf622}textarea{min-height:90px;resize:vertical}.btn{width:100%;margin-top:8px;padding:12px 14px;border:0;background:linear-gradient(100deg,#7c3aed,#5b55dd)}.btn.secondary{border:1px solid #353e54;background:#202637}.btn.danger{background:#431b2a;border:1px solid #703044}.notice{margin:14px 0;padding:11px 13px;border:1px solid #3d4560;border-radius:10px;background:#171d2b;color:#e5e7eb;font-size:13px;line-height:1.55;overflow-wrap:anywhere}.notice.success{border-color:#246b5e;background:#102b29}.notice.error{border-color:#703044;background:#321722}.appgrid{display:grid;grid-template-columns:210px minmax(0,1fr);gap:16px;align-items:start}.sidebar{position:sticky;top:12px;display:grid;gap:7px}.navbtn{text-align:left;width:100%;background:#111521;color:#bdc5d9}.navbtn.active{background:#292344;border-color:#57438c;color:white}.navbtn .navicon{display:inline-block;width:24px}.maincol{min-width:0}.pagehead{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:17px}.pagehead h2{margin:0;font-size:24px}.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:17px 0}.stat{padding:16px;border:1px solid var(--border);border-radius:14px;background:#101521}.stat small{display:block;color:var(--muted);margin-bottom:8px}.stat strong{font-size:22px}.quickgrid,.itemsgrid,.eventgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.quickcard,.itemcard,.eventcard,.rowcard{padding:14px;border:1px solid #293146;border-radius:13px;background:#101521;min-width:0}.rowcard{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:9px 0}.rowcard .grow{min-width:0;flex:1}.rowcard strong,.itemcard strong,.eventcard strong{display:block;overflow-wrap:anywhere}.itemcard p,.eventcard p{margin:7px 0;color:var(--muted);font-size:12px;line-height:1.5;overflow-wrap:anywhere}.inlineform{display:flex;gap:8px;align-items:center}.inlineform input{flex:1;min-width:0}.inlineform .btn,.inlineform .smallbtn{width:auto;flex:0 0 auto;flex-shrink:0;margin:0}.inlineform .btn{flex:1}.chatbox{height:420px;overflow:auto;display:flex;flex-direction:column;gap:10px;padding:13px;border:1px solid #293146;border-radius:13px;background:#0a0e17;margin-bottom:12px}.message{padding:10px 12px;border:1px solid #252c3d;border-radius:12px;background:#121827;max-width:100%;overflow-wrap:anywhere}.messagehead{display:flex;gap:8px;align-items:center;justify-content:space-between;margin-bottom:5px}.messagehead strong{font-size:12px}.messagehead time{font-size:10px;color:var(--muted)}.message p{margin:0;font-size:13px;white-space:pre-wrap}.chatinput{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px}.chatinput textarea{min-height:44px;height:44px}.chatinput .btn{width:auto;margin:0}.tag{display:inline-block;padding:4px 7px;border-radius:99px;background:#25203b;color:#c4b5fd;font-size:10px;font-weight:900;text-transform:uppercase}.tag.owner{background:#4b3410;color:#fde68a}.tag.admin{background:#193b3a;color:#99f6e4}.mutedline{color:var(--muted);font-size:12px}.twoform{display:grid;grid-template-columns:1fr 1fr;gap:10px}.twoform .wide{grid-column:1/-1}.empty{padding:20px;text-align:center;color:var(--muted);font-size:13px}.sectiongap{margin-top:16px}.footer{margin:30px 0 8px;text-align:center;font-size:11px;color:#727c94}.staffonly{border-color:#51417a}.coin{color:#fde68a;font-weight:850}.dangertext{color:#fda4af}.selectedfriend{margin-bottom:10px;padding:10px 12px;border-radius:10px;background:#171d2b;color:#ddd6fe;font-size:13px}
-.owner-hud{position:fixed;inset:0;z-index:9999;display:grid;place-items:center;padding:18px;background:#03050ddd;backdrop-filter:blur(12px)}.owner-hud-card{width:min(520px,100%);padding:23px;border:1px solid #65519a;border-radius:19px;background:linear-gradient(155deg,#19162a,#0b101a);box-shadow:0 25px 100px #0009}.owner-hud-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}.owner-hud-head h2{margin:7px 0}.owner-hud-hint{margin:12px 0 18px;color:var(--muted);font-size:13px;line-height:1.6}.owner-hud-input{letter-spacing:1px}@media(max-width:800px){.appgrid{grid-template-columns:1fr}.sidebar{position:static;display:flex;overflow:auto;padding-bottom:4px}.navbtn{white-space:nowrap;width:auto;flex:0 0 auto}.stats{grid-template-columns:1fr 1fr}.quickgrid,.itemsgrid,.eventgrid{grid-template-columns:1fr 1fr}}@media(max-width:520px){body{padding:15px 10px}.card{padding:16px}.topbar{align-items:flex-start}.brand{font-size:13px}.topright{flex-direction:column;align-items:flex-end}.stats,.quickgrid,.itemsgrid,.eventgrid,.twoform{grid-template-columns:1fr}.twoform .wide{grid-column:auto}.rowcard{align-items:flex-start}.inlineform{flex-wrap:wrap}}
+:root {
+  color-scheme: dark;
+  --bg: #090b12;
+  --panel: #111521;
+  --border: #293146;
+  --text: #f1f4ff;
+  --muted: #929bb3;
+  --accent: #8b5cf6;
+  --mint: #5eead4;
+  --danger: #fb7185;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; min-height: 100vh; padding: 20px 14px;
+  background: radial-gradient(ellipse at 10% 0%, #31205b66, transparent 42%),
+              radial-gradient(ellipse at 100% 90%, #115e5940, transparent 38%),
+              var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+button, input, textarea, select { font: inherit; }
+button { cursor: pointer; }
+button:disabled { opacity: .55; cursor: wait; }
+[hidden] { display: none !important; }
+.shell { width: min(1180px, 100%); margin: auto; }
+.topbar { display:flex; align-items:center; justify-content:space-between; gap:16px; margin-bottom:24px; }
+.brand { display:flex; align-items:center; gap:11px; font-size:16px; font-weight:900; letter-spacing:1.4px; }
+.logo { display:grid; place-items:center; width:42px; height:42px; border-radius:13px; background:linear-gradient(135deg,#a78bfa,#4338ca); box-shadow:0 8px 30px #8b5cf633; font-size:20px; }
+.topright { display:flex; align-items:center; gap:10px; }
+.wallet { padding:9px 12px; border:1px solid #3e365e; border-radius:999px; background:#1b1730; color:#ddd6fe; font-weight:800; font-size:13px; }
+.smallbtn,.navbtn,.btn { border:1px solid var(--border); border-radius:11px; padding:10px 13px; background:#202637; color:var(--text); font-weight:750; }
+.smallbtn:hover,.navbtn:hover,.btn:hover { filter:brightness(1.15); }
+.hero { margin:24px 0; }
+.eyebrow { color:var(--mint); font-size:11px; font-weight:800; letter-spacing:2.5px; text-transform:uppercase; }
+h1 { margin:10px 0; font-size:clamp(34px,6vw,56px); letter-spacing:-2px; line-height:1.06; }
+.gradient { color:#a78bfa; background:linear-gradient(90deg,#a78bfa,#5eead4); background-clip:text; -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+.muted { color:var(--muted); font-size:13px; line-height:1.6; }
+.card { padding:21px; border:1px solid var(--border); border-radius:18px; background:linear-gradient(160deg,#151a28f5,#0e121cf5); box-shadow:0 16px 55px #00000020; min-width:0; }
+.card h2 { margin:0 0 7px; font-size:20px; }
+.card h3 { margin:0 0 5px; font-size:15px; }
+.auth-wrap { width:min(560px,100%); margin:42px auto; }
+.tabs { display:grid; grid-template-columns:1fr 1fr; gap:6px; margin:20px 0; padding:5px; border:1px solid var(--border); border-radius:12px; background:#090c14; }
+.tab { padding:11px 8px; border:0; border-radius:8px; background:transparent; color:var(--muted); font-weight:800; }
+.tab.active { background:#292344; color:#fff; }
+.field { margin:14px 0; }
+label { display:block; margin-bottom:7px; color:#d5d9e8; font-size:12px; font-weight:800; }
+input,textarea,select { width:100%; min-width:0; padding:12px 13px; border:1px solid #30384c; border-radius:10px; outline:none; background:#090d16; color:var(--text); }
+input:focus,textarea:focus,select:focus { border-color:var(--accent); box-shadow:0 0 0 3px #8b5cf622; }
+textarea { min-height:90px; resize:vertical; }
+.btn { width:100%; margin-top:8px; padding:12px 14px; border:0; background:linear-gradient(100deg,#7c3aed,#5b55dd); }
+.btn.secondary { border:1px solid #353e54; background:#202637; }
+.btn.danger { background:#431b2a; border:1px solid #703044; }
+.notice { margin:14px 0; padding:11px 13px; border:1px solid #3d4560; border-radius:10px; background:#171d2b; color:#e5e7eb; font-size:13px; line-height:1.55; overflow-wrap:anywhere; }
+.notice.success { border-color:#246b5e; background:#102b29; }
+.notice.error { border-color:#703044; background:#321722; }
+.appgrid { display:grid; grid-template-columns:210px minmax(0,1fr); gap:16px; align-items:start; }
+.sidebar { position:sticky; top:12px; display:grid; gap:7px; }
+.navbtn { text-align:left; width:100%; background:#111521; color:#bdc5d9; }
+.navbtn.active { background:#292344; border-color:#57438c; color:white; }
+.navbtn .navicon { display:inline-block; width:24px; }
+.maincol { min-width:0; }
+.pagehead { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; margin-bottom:17px; }
+.pagehead h2 { margin:0; font-size:24px; }
+.stats { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; margin:17px 0; }
+.stat { padding:16px; border:1px solid var(--border); border-radius:14px; background:#101521; }
+.stat small { display:block; color:var(--muted); margin-bottom:8px; }
+.stat strong { font-size:22px; }
+.quickgrid,.itemsgrid,.eventgrid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
+.quickcard,.itemcard,.eventcard,.rowcard { padding:14px; border:1px solid #293146; border-radius:13px; background:#101521; min-width:0; }
+.rowcard { display:flex; align-items:center; justify-content:space-between; gap:10px; margin:9px 0; }
+.rowcard .grow { min-width:0; flex:1; }
+.rowcard strong,.itemcard strong,.eventcard strong { display:block; overflow-wrap:anywhere; }
+.itemcard p,.eventcard p { margin:7px 0; color:var(--muted); font-size:12px; line-height:1.5; overflow-wrap:anywhere; }
+.inlineform { display:flex; gap:8px; align-items:center; }
+.inlineform input { flex:1; min-width:0; }
+.inlineform .btn,.inlineform .smallbtn { width:auto; flex:0 0 auto; margin:0; }
+.inlineform .btn { flex:1; }
+.chatbox { height:420px; overflow:auto; display:flex; flex-direction:column; gap:10px; padding:13px; border:1px solid #293146; border-radius:13px; background:#0a0e17; margin-bottom:12px; }
+.message { padding:10px 12px; border:1px solid #252c3d; border-radius:12px; background:#121827; max-width:100%; overflow-wrap:anywhere; }
+.messagehead { display:flex; gap:8px; align-items:center; justify-content:space-between; margin-bottom:5px; }
+.messagehead strong { font-size:12px; }
+.messagehead time { font-size:10px; color:var(--muted); }
+.message p { margin:0; font-size:13px; white-space:pre-wrap; }
+.chatinput { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:8px; }
+.chatinput textarea { min-height:44px; height:44px; }
+.chatinput .btn { width:auto; margin:0; }
+.tag { display:inline-block; padding:4px 7px; border-radius:99px; background:#25203b; color:#c4b5fd; font-size:10px; font-weight:900; text-transform:uppercase; }
+.tag.owner { background:#4b3410; color:#fde68a; }
+.tag.admin { background:#193b3a; color:#99f6e4; }
+.mutedline { color:var(--muted); font-size:12px; }
+.twoform { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.twoform .wide { grid-column:1/-1; }
+.empty { padding:20px; text-align:center; color:var(--muted); font-size:13px; }
+.sectiongap { margin-top:16px; }
+.footer { margin:30px 0 8px; text-align:center; font-size:11px; color:#727c94; }
+.staffonly { border-color:#51417a; }
+.coin { color:#fde68a; font-weight:850; }
+.dangertext { color:#fda4af; }
+.selectedfriend { margin-bottom:10px; padding:10px 12px; border-radius:10px; background:#171d2b; color:#ddd6fe; font-size:13px; }
+.owner-hud { position:fixed; inset:0; z-index:9999; display:grid; place-items:center; padding:18px; background:#03050ddd; backdrop-filter:blur(12px); }
+.owner-hud-card { width:min(520px,100%); padding:23px; border:1px solid #65519a; border-radius:19px; background:linear-gradient(155deg,#19162a,#0b101a); box-shadow:0 25px 100px #0009; }
+.owner-hud-head { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; }
+.owner-hud-head h2 { margin:7px 0; }
+.owner-hud-hint { margin:12px 0 18px; color:var(--muted); font-size:13px; line-height:1.6; }
+.owner-hud-input { letter-spacing:1px; }
 
-.shop-image{display:block;width:100%;aspect-ratio:16/10;object-fit:contain;background:#090d16;border:1px solid #293146;border-radius:11px;margin-bottom:11px}
-.inventory-quantity{display:inline-block;padding:4px 8px;border-radius:999px;background:#1d3440;color:#99f6e4;font-size:11px;font-weight:800}
-.mines-controls{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.mines-board{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px;margin-top:15px}
-.mine-tile{display:grid;place-items:center;aspect-ratio:1/1;min-width:0;padding:0;border:1px solid #39435d;border-radius:11px;background:linear-gradient(145deg,#1c2435,#101521);color:#e5e7eb;font-size:clamp(16px,3vw,24px);font-weight:900}
-.mine-tile:not(:disabled):hover{border-color:#a78bfa;transform:translateY(-1px)}
-.mine-tile.safe{background:#10332d;border-color:#278571;color:#99f6e4}
-.mine-tile.mine{background:#421a2a;border-color:#963f5b;color:#fecdd3}
-.mines-stat{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
-.mines-stat span{padding:7px 10px;border:1px solid #2b3448;border-radius:9px;background:#0c111b;color:#cbd5e1;font-size:12px}
-@media(max-width:520px){.mines-controls{grid-template-columns:1fr}.mines-board{gap:5px}}
+.mines-queue-layout { display:grid; grid-template-columns:minmax(230px,.82fr) minmax(0,1.18fr); gap:14px; align-items:start; }
+.mines-queue-card,.mines-play-card { min-width:0; }
+.mines-queue-buttons { display:grid; gap:7px; margin-top:13px; }
+.queue-count { display:flex; justify-content:space-between; align-items:center; padding:10px 12px; margin-top:14px; border:1px solid #293146; border-radius:10px; background:#0c111b; color:#bdc5d9; font-size:12px; }
+.queue-count strong { font-size:16px; color:#ddd6fe; }
+.mines-queue-list { display:grid; gap:8px; margin-top:10px; }
+.queue-player { display:flex; align-items:center; gap:9px; padding:10px; border:1px solid #293146; border-radius:11px; background:#0c111b; }
+.queue-rank { display:grid; place-items:center; flex:0 0 30px; height:30px; border-radius:9px; background:#25203b; color:#c4b5fd; font-weight:900; }
+.queue-player.current { border-color:#7c5acc; background:#1b1730; }
+.queue-player.playing { border-color:#278571; background:#10332d; }
+.queue-player .queue-player-info { min-width:0; flex:1; }
+.queue-player .queue-player-info strong { display:block; overflow-wrap:anywhere; font-size:12px; }
+.queue-player .queue-player-info span { display:block; color:var(--muted); font-size:11px; margin-top:3px; }
+.queue-badge { font-size:9px; font-weight:900; letter-spacing:.4px; text-transform:uppercase; color:#c4b5fd; }
+.queue-player.playing .queue-badge { color:#99f6e4; }
+.shop-image { display:block; width:100%; aspect-ratio:16/10; object-fit:contain; background:#090d16; border:1px solid #293146; border-radius:11px; margin-bottom:11px; }
+.inventory-quantity { display:inline-block; padding:4px 8px; border-radius:999px; background:#1d3440; color:#99f6e4; font-size:11px; font-weight:800; }
+.mines-controls { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.mines-board { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:7px; margin-top:15px; }
+.mine-tile { display:grid; place-items:center; aspect-ratio:1/1; min-width:0; padding:0; border:1px solid #39435d; border-radius:11px; background:linear-gradient(145deg,#1c2435,#101521); color:#e5e7eb; font-size:clamp(16px,3vw,24px); font-weight:900; }
+.mine-tile:not(:disabled):hover { border-color:#a78bfa; transform:translateY(-1px); }
+.mine-tile.safe { background:#10332d; border-color:#278571; color:#99f6e4; }
+.mine-tile.mine { background:#421a2a; border-color:#963f5b; color:#fecdd3; }
+.mines-stat { display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
+.mines-stat span { padding:7px 10px; border:1px solid #2b3448; border-radius:9px; background:#0c111b; color:#cbd5e1; font-size:12px; }
+
+@media(max-width:800px) {
+  .mines-queue-layout { grid-template-columns:1fr; }
+  .appgrid { grid-template-columns:1fr; }
+  .sidebar { position:static; display:flex; overflow:auto; padding-bottom:4px; }
+  .navbtn { white-space:nowrap; width:auto; flex:0 0 auto; }
+  .stats { grid-template-columns:1fr 1fr; }
+  .quickgrid,.itemsgrid,.eventgrid { grid-template-columns:1fr 1fr; }
+}
+@media(max-width:520px) {
+  body { padding:15px 10px; }
+  .card { padding:16px; }
+  .topbar { align-items:flex-start; }
+  .brand { font-size:13px; }
+  .topright { flex-direction:column; align-items:flex-end; }
+  .stats,.quickgrid,.itemsgrid,.eventgrid,.twoform { grid-template-columns:1fr; }
+  .twoform .wide { grid-column:auto; }
+  .rowcard { align-items:flex-start; }
+  .inlineform { flex-wrap:wrap; }
+  .mines-controls { grid-template-columns:1fr; }
+  .mines-board { gap:5px; }
+}
 </style>
 </head>
 <body>
@@ -89,7 +228,7 @@
           <div class="card"><h2>Choose your next move</h2><p class="muted">Everything is now in one place. Saving your profile returns you here.</p><div class="quickgrid sectiongap">
             <button class="quickcard navbtn" data-page="chat">💬 <strong>Open community chat</strong><span class="muted">Talk with everyone online.</span></button>
             <button class="quickcard navbtn" data-page="friends">♧ <strong>Add friends</strong><span class="muted">Search usernames and send requests.</span></button>
-            <button class="quickcard navbtn" data-page="shop">🛍️ <strong>Visit the shop</strong><span class="muted">Spend your fake coins on items.</span></button>
+            <button class="quickcard navbtn" data-page="shop">🛍️ <strong>Visit the shop</strong><span class="muted">Spend your fake coins.</span></button>
             <button class="quickcard navbtn" data-page="events">🎲 <strong>Fake-coin events</strong><span class="muted">Join no-cash-value coin flip events.</span></button>
           </div></div>
           <div class="card sectiongap"><div class="pagehead"><div><h2>Leaderboard</h2><p class="muted">Top members ranked by virtual coin balance.</p></div><button class="smallbtn" id="reloadLeaderboard" type="button">Refresh</button></div><div id="leaderboard"><div class="empty">Loading leaderboard...</div></div></div>
@@ -116,7 +255,7 @@
           <div class="card"><form id="friendSearchForm" class="inlineform"><input id="friendSearchName" maxlength="24" required placeholder="Search display name"><button class="btn" type="submit">Search</button></form><div id="friendSearchResults" class="sectiongap"></div></div>
           <div class="card sectiongap"><h3>Incoming requests</h3><div id="incomingRequests"><div class="empty">Loading requests...</div></div></div>
           <div class="card sectiongap"><h3>Your friends</h3><div id="friendsList"><div class="empty">Loading friends...</div></div></div>
-          <div class="card sectiongap"><h3>Send coins to a friend</h3><p class="muted">Send virtual coins to an accepted friend. Transfers cannot be reversed from the website.</p>
+          <div class="card sectiongap"><h3>Send coins to a friend</h3><p class="muted">Send virtual coins to an accepted friend.</p>
             <form id="coinTransferForm" class="twoform">
               <div class="field"><label for="coinTargetName">Friend display name</label><input id="coinTargetName" maxlength="24" required placeholder="Exact display name"></div>
               <div class="field"><label for="coinTransferAmount">Amount of coins</label><input id="coinTransferAmount" type="number" min="1" max="1000000" required value="100"></div>
@@ -126,7 +265,7 @@
         </section>
 
         <section class="page" id="page-dm" hidden>
-          <div class="pagehead"><div><h2>Private messages</h2><p class="muted">Select a friend first. Only you and that friend can read the thread.</p></div></div>
+          <div class="pagehead"><div><h2>Private messages</h2><p class="muted">Only you and an accepted friend can read the thread.</p></div></div>
           <div class="card"><div id="dmFriendChoices" class="sectiongap"></div><div id="dmSelected" class="selectedfriend" hidden></div><div id="dmMessages" class="chatbox"><div class="empty">Choose a friend to open a conversation.</div></div>
             <form id="dmForm" class="chatinput"><textarea id="dmText" maxlength="1000" required placeholder="Private message..." disabled></textarea><button class="btn" id="sendDmButton" type="submit" disabled>Send</button></form>
           </div>
@@ -140,32 +279,50 @@
         </section>
 
         <section class="page" id="page-events" hidden>
-          <div class="pagehead"><div><h2>Fake-coin events</h2><p class="muted">Coin-flip wagering uses virtual coins only: no deposits, cash-outs, or real-money value.</p></div><button class="smallbtn" id="reloadEvents" type="button">Refresh</button></div>
+          <div class="pagehead"><div><h2>Fake-coin events</h2><p class="muted">Virtual coins only; there are no deposits or cash-outs.</p></div><button class="smallbtn" id="reloadEvents" type="button">Refresh</button></div>
           <div id="eventsList" class="eventgrid"><div class="empty">Loading events...</div></div>
           <div class="card sectiongap"><h3>Recent results</h3><div id="eventHistory"><div class="empty">Loading event history...</div></div></div>
         </section>
 
         <section class="page" id="page-mines" hidden>
-          <div class="pagehead"><div><h2>Mines</h2><p class="muted">Choose your wager and the number of hidden mines, then reveal tiles. Cash out before hitting a mine. Virtual coins only.</p></div></div>
-          <div class="card">
-            <form id="minesStartForm">
-              <div class="mines-controls">
-                <div class="field"><label for="minesCount">NUMBER OF MINES (1–24)</label><input id="minesCount" type="number" min="1" max="24" value="3" required></div>
-                <div class="field"><label for="minesBet">WAGER IN COINS</label><input id="minesBet" type="number" min="1" max="1000000" value="50" required></div>
+          <div class="pagehead"><div><h2>Mines Queue</h2><p class="muted">Players take turns one at a time. You must have at least 100 virtual coins in your balance to join, and your wager cannot exceed your balance.</p></div><button class="smallbtn" id="refreshMinesQueue" type="button">Refresh queue</button></div>
+          <div class="mines-queue-layout">
+            <aside class="card mines-queue-card">
+              <div class="eyebrow">LIVE PLAYER LINE</div>
+              <h3 class="sectiongap">Waiting for a turn</h3>
+              <p class="muted">Join the queue on this panel. When you reach first place, choose your mines and bet. After you cash out or bust, you leave the queue and must join again.</p>
+              <div class="mines-queue-buttons">
+                <button class="btn" id="joinMinesQueueButton" type="button">Join Mines queue</button>
+                <button class="btn secondary" id="leaveMinesQueueButton" type="button" hidden>Leave queue</button>
               </div>
-              <button class="btn" id="minesStartButton" type="submit">Start a new round</button>
-            </form>
-            <div id="minesStatus" class="notice" role="status" aria-live="polite">Pick a mine count and wager to begin.</div>
-            <div class="mines-stat"><span>Safe tiles: <strong id="minesSafeCount">0</strong></span><span>Current multiplier: <strong id="minesMultiplier">—</strong></span><span>Potential payout: <strong id="minesPotentialPayout">—</strong></span></div>
-            <div id="minesBoard" class="mines-board" aria-label="Mines game board"></div>
-            <button class="btn secondary" id="minesCashoutButton" type="button" disabled>Cash out</button>
+              <div id="minesQueueStatus" class="notice" role="status" aria-live="polite">Loading queue...</div>
+              <div class="queue-count"><span>Players in queue</span><strong id="minesQueueCount">0</strong></div>
+              <div id="minesQueueList" class="mines-queue-list"><div class="empty">Loading players...</div></div>
+            </aside>
+
+            <div class="card mines-play-card">
+              <div class="eyebrow">YOUR ROUND</div>
+              <h3 class="sectiongap" id="minesPlayTitle">Waiting for your turn</h3>
+              <p class="muted" id="minesPlayDescription">Join the queue. Only the player at the front can start a round.</p>
+              <form id="minesStartForm" hidden>
+                <div class="mines-controls">
+                  <div class="field"><label for="minesCount">NUMBER OF MINES (1–24)</label><input id="minesCount" type="number" min="1" max="24" value="3" required></div>
+                  <div class="field"><label for="minesBet">YOUR WAGER (COINS)</label><input id="minesBet" type="number" min="1" max="1000000" value="100" required><p class="muted">Minimum wallet balance: 100 coins. Bet at least 1 coin and no more than your balance.</p></div>
+                </div>
+                <button class="btn" id="minesStartButton" type="submit">Start your turn</button>
+              </form>
+              <div id="minesStatus" class="notice" role="status" aria-live="polite">Join the queue to play.</div>
+              <div class="mines-stat"><span>Safe tiles: <strong id="minesSafeCount">0</strong></span><span>Current multiplier: <strong id="minesMultiplier">—</strong></span><span>Potential payout: <strong id="minesPotentialPayout">—</strong></span></div>
+              <div id="minesBoard" class="mines-board" aria-label="Mines game board" hidden></div>
+              <button class="btn secondary" id="minesCashoutButton" type="button" disabled>Cash out</button>
+            </div>
           </div>
-          <p class="muted">This game uses simulated coins only. Each tile is decided by the database; the browser never receives hidden mine positions until the round ends.</p>
+          <p class="muted">Virtual coins only; no real-money deposits or cash-outs. The database keeps mine positions secret until a round ends and removes the player from the queue after cash-out or bust.</p>
         </section>
 
         <section class="page" id="page-admin" hidden>
           <div class="pagehead"><div><h2>Admin panel</h2><p class="muted">Staff tools for shop items, fake-coin events, moderation, and member management.</p></div><span id="adminRoleBadge" class="tag admin">Staff</span></div>
-          <div id="adminForbidden" class="notice error" hidden>This area is only available to staff.</div>
+          <div id="adminForbidden" class="notice error" hidden>This area is only available to admins and the owner.</div>
           <div id="adminTools" class="stack">
             <div class="card staffonly"><h3>Create shop item</h3><form id="createItemForm" class="twoform">
               <div class="field"><label for="itemName">Item name</label><input id="itemName" maxlength="60" required></div>
@@ -202,7 +359,6 @@
       <p class="muted">Shortcut: Alt + F1 · Press Escape to close.</p>
     </div>
   </section>
-
   <div class="footer">PILTAE CHATTER · Community coins are simulated and have no real-world value.</div>
 </main>
 
@@ -210,7 +366,7 @@
 <script>
 "use strict";
 
-// Your existing Supabase project settings. Never expose a secret/service-role key here.
+// Your existing Supabase project settings. Never expose a secret/service-role key.
 const SUPABASE_URL = "https://mfawkedwvjzxqqmflutu.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_n-iBWfw_2hmDhjV9Iyk1Rw_QhqT-e0Q";
 const SITE_URL = "https://noahlangedu.github.io/888222888222/";
@@ -226,9 +382,13 @@ let realtimeChannels = [];
 let toastTimer = null;
 let activeMinesGame = null;
 let minesBusy = false;
+let minesQueueState = null;
+let minesQueueTimer = null;
 
 function esc(value) {
-  return String(value ?? "").replace(/[&<>"']/g, (ch) => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));
+  return String(value ?? "").replace(/[&<>"']/g, ch =>
+    ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch])
+  );
 }
 function money(value) { return Number(value || 0).toLocaleString(); }
 function timeText(value) {
@@ -275,7 +435,7 @@ function navigate(page) {
     return;
   }
   activePage = page;
-  document.querySelectorAll(".page").forEach(el => { el.hidden = el.id !== `page-${page}`; });
+  document.querySelectorAll(".page").forEach(el => { el.hidden = el.id !== "page-" + page; });
   document.querySelectorAll(".sidebar .navbtn").forEach(el => el.classList.toggle("active", el.dataset.page === page));
   if (page === "chat") loadChat();
   if (page === "friends") loadFriends();
@@ -285,7 +445,9 @@ function navigate(page) {
   if (page === "events") loadEvents();
   if (page === "admin" && isStaff()) { loadMembers(); loadShop(); loadEvents(); }
 }
-document.querySelectorAll("[data-page]").forEach(el => el.addEventListener("click", () => navigate(el.dataset.page)));
+document.querySelectorAll("[data-page]").forEach(el =>
+  el.addEventListener("click", () => navigate(el.dataset.page))
+);
 
 async function refreshMyProfile() {
   if (!currentUser) return;
@@ -294,6 +456,7 @@ async function refreshMyProfile() {
     .eq("user_id", currentUser.id).maybeSingle();
   if (error) throw error;
   if (!data) throw new Error("Your profile row is missing. Run the Supabase SQL setup file.");
+
   myProfile = data;
   $("topCoins").textContent = money(data.coins);
   $("dashCoins").textContent = money(data.coins);
@@ -317,6 +480,7 @@ async function handleSession(session) {
     $("authView").hidden = true;
     $("appView").hidden = false;
     $("topRight").hidden = false;
+
     if (isDifferentUser || !myProfile) {
       try {
         await refreshMyProfile();
@@ -332,6 +496,7 @@ async function handleSession(session) {
     currentUser = null;
     myProfile = null;
     activeMinesGame = null;
+    minesQueueState = null;
     selectedDmId = null;
     $("authView").hidden = false;
     $("appView").hidden = true;
@@ -342,21 +507,31 @@ async function handleSession(session) {
   }
 }
 
-$("signupForm").addEventListener("submit", async (event) => {
+$("signupForm").addEventListener("submit", async event => {
   event.preventDefault();
   const name = $("signupName").value.trim();
   const email = $("signupEmail").value.trim();
   const password = $("signupPassword").value;
-  if (!name || name.length > 24) { toast("Display name must be 1–24 characters.", "error"); return; }
+
+  if (!name || name.length > 24) {
+    toast("Display name must be 1–24 characters.", "error");
+    return;
+  }
+
   const button = $("signupButton");
   setBusy(button, true, "Creating account...", "Create account →");
   try {
     const { data, error } = await db.auth.signUp({
-      email, password,
-      options: { data: { display_name: name }, emailRedirectTo: SITE_URL }
+      email,
+      password,
+      options: {
+        data: { display_name: name },
+        emailRedirectTo: SITE_URL
+      }
     });
     if (error) throw error;
     $("signupPassword").value = "";
+
     if (data.session?.user) {
       await handleSession(data.session);
       toast("Account created. Welcome to PILTAE!", "success");
@@ -368,16 +543,19 @@ $("signupForm").addEventListener("submit", async (event) => {
   } catch (error) {
     console.error(error);
     toast("Signup failed: " + error.message, "error");
-  } finally { setBusy(button, false, "Creating account...", "Create account →"); }
+  } finally {
+    setBusy(button, false, "Creating account...", "Create account →");
+  }
 });
 
-$("loginForm").addEventListener("submit", async (event) => {
+$("loginForm").addEventListener("submit", async event => {
   event.preventDefault();
   const button = $("loginButton");
   setBusy(button, true, "Logging in...", "Log in →");
   try {
     const { data, error } = await db.auth.signInWithPassword({
-      email: $("loginEmail").value.trim(), password: $("loginPassword").value
+      email: $("loginEmail").value.trim(),
+      password: $("loginPassword").value
     });
     if (error) throw error;
     $("loginPassword").value = "";
@@ -385,7 +563,9 @@ $("loginForm").addEventListener("submit", async (event) => {
     toast("Welcome back!", "success");
   } catch (error) {
     toast("Login failed: " + error.message, "error");
-  } finally { setBusy(button, false, "Logging in...", "Log in →"); }
+  } finally {
+    setBusy(button, false, "Logging in...", "Log in →");
+  }
 });
 
 $("resendButton").addEventListener("click", async () => {
@@ -394,31 +574,48 @@ $("resendButton").addEventListener("click", async () => {
   const button = $("resendButton");
   setBusy(button, true, "Sending...", "Resend confirmation email");
   try {
-    const { error } = await db.auth.resend({ type: "signup", email, options: { emailRedirectTo: SITE_URL } });
+    const { error } = await db.auth.resend({
+      type: "signup", email,
+      options: { emailRedirectTo: SITE_URL }
+    });
     if (error) throw error;
     toast("If a new confirmation email is available, it should arrive shortly. Check your spam folder too.", "success");
-  } catch (error) { toast("Could not resend email: " + error.message, "error"); }
-  finally { setBusy(button, false, "Sending...", "Resend confirmation email"); }
+  } catch (error) {
+    toast("Could not resend email: " + error.message, "error");
+  } finally {
+    setBusy(button, false, "Sending...", "Resend confirmation email");
+  }
 });
 
-$("profileForm").addEventListener("submit", async (event) => {
+$("profileForm").addEventListener("submit", async event => {
   event.preventDefault();
   if (!currentUser) return;
   const name = $("profileName").value.trim();
   const bio = $("profileBio").value.trim();
-  if (!name || name.length > 24 || bio.length > 160) { toast("Check your display name and bio length.", "error"); return; }
+  if (!name || name.length > 24 || bio.length > 160) {
+    toast("Check your display name and bio length.", "error");
+    return;
+  }
+
   const button = $("saveProfileButton");
   setBusy(button, true, "Saving...", "Save profile and return to dashboard");
   try {
-    const { error } = await db.from("profiles").update({ display_name: name, bio, updated_at: new Date().toISOString() }).eq("user_id", currentUser.id);
+    const { error } = await db.from("profiles")
+      .update({ display_name: name, bio, updated_at: new Date().toISOString() })
+      .eq("user_id", currentUser.id);
     if (error) throw error;
+
     const { error: metaError } = await db.auth.updateUser({ data: { display_name: name } });
     if (metaError) console.warn("Auth metadata wasn't updated:", metaError.message);
+
     await refreshMyProfile();
     navigate("dashboard");
     toast("Profile saved. Welcome to your dashboard!", "success");
-  } catch (error) { toast("Profile could not be saved: " + error.message, "error"); }
-  finally { setBusy(button, false, "Saving...", "Save profile and return to dashboard"); }
+  } catch (error) {
+    toast("Profile could not be saved: " + error.message, "error");
+  } finally {
+    setBusy(button, false, "Saving...", "Save profile and return to dashboard");
+  }
 });
 
 async function logout() {
@@ -427,18 +624,25 @@ async function logout() {
 }
 $("topLogout").addEventListener("click", logout);
 
-
 async function loadLeaderboard() {
   if (!currentUser) return;
   const host = $("leaderboard");
-  if (!host) return;
   try {
     const { data, error } = await db.from("profiles")
       .select("user_id,display_name,role,coins,created_at")
-      .order("coins", { ascending: false }).order("created_at", { ascending: true }).limit(10);
+      .order("coins", { ascending: false })
+      .order("created_at", { ascending: true })
+      .limit(10);
     if (error) throw error;
-    if (!data?.length) { host.innerHTML = '<div class="empty">No leaderboard entries yet.</div>'; return; }
-    host.innerHTML = data.map((p, i) => `<div class="rowcard"><div class="grow"><strong>${i + 1}. ${esc(p.display_name)} ${p.user_id === currentUser.id ? '<span class="tag">You</span>' : ''}</strong><span class="mutedline">${esc(roleTitle(p.role))}</span></div><span class="coin">${money(p.coins)} 🪙</span></div>`).join("");
+
+    if (!data?.length) {
+      host.innerHTML = '<div class="empty">No leaderboard entries yet.</div>';
+      return;
+    }
+
+    host.innerHTML = data.map((p, i) =>
+      `<div class="rowcard"><div class="grow"><strong>${i + 1}. ${esc(p.display_name)} ${p.user_id === currentUser.id ? '<span class="tag">You</span>' : ''}</strong><span class="mutedline">${esc(roleTitle(p.role))}</span></div><span class="coin">${money(p.coins)} 🪙</span></div>`
+    ).join("");
   } catch (error) {
     host.innerHTML = `<div class="empty">Leaderboard failed to load: ${esc(error.message)}</div>`;
   }
@@ -447,27 +651,31 @@ $("reloadLeaderboard").addEventListener("click", loadLeaderboard);
 
 async function loadDashboardFriendsCount() {
   if (!currentUser) return;
-  const { count, error } = await db.from("friend_requests").select("id", { count: "exact", head: true })
-    .eq("status", "accepted").or(`sender_id.eq.${currentUser.id},receiver_id.eq.${currentUser.id}`);
+  const { count, error } = await db.from("friend_requests")
+    .select("id", { count: "exact", head: true })
+    .eq("status", "accepted")
+    .or(`sender_id.eq.${currentUser.id},receiver_id.eq.${currentUser.id}`);
   if (!error) $("dashFriends").textContent = String(count || 0);
 }
 
 function setupRealtime() {
   realtimeChannels.forEach(ch => db.removeChannel(ch));
   realtimeChannels = [];
-  const publicChatChannel = db.channel("piltae-public-chat")
-    .on("postgres_changes", { event: "*", schema: "public", table: "chat_messages" }, () => {
-      if (activePage === "chat") loadChat();
-    }).subscribe();
-  const dmChannel = db.channel("piltae-private-messages")
-    .on("postgres_changes", { event: "*", schema: "public", table: "direct_messages" }, () => {
-      if (activePage === "dm" && selectedDmId) loadDmMessages();
-    }).subscribe();
-  const profileChannel = db.channel("piltae-profile-changes")
-    .on("postgres_changes", { event: "UPDATE", schema: "public", table: "profiles", filter: `user_id=eq.${currentUser.id}` }, async () => {
-      try { await refreshMyProfile(); } catch (e) { console.warn(e); }
-    }).subscribe();
-  realtimeChannels.push(publicChatChannel, dmChannel, profileChannel);
+
+  realtimeChannels.push(
+    db.channel("piltae-public-chat")
+      .on("postgres_changes", { event: "*", schema: "public", table: "chat_messages" }, () => {
+        if (activePage === "chat") loadChat();
+      }).subscribe(),
+    db.channel("piltae-private-messages")
+      .on("postgres_changes", { event: "*", schema: "public", table: "direct_messages" }, () => {
+        if (activePage === "dm" && selectedDmId) loadDmMessages();
+      }).subscribe(),
+    db.channel("piltae-profile-changes")
+      .on("postgres_changes", { event: "UPDATE", schema: "public", table: "profiles", filter: `user_id=eq.${currentUser.id}` }, async () => {
+        try { await refreshMyProfile(); } catch (error) { console.warn(error); }
+      }).subscribe()
+  );
 }
 
 async function loadChat() {
@@ -476,14 +684,19 @@ async function loadChat() {
   try {
     const { data, error } = await db.from("chat_messages")
       .select("id,user_id,body,created_at,profiles(display_name,role)")
-      .order("created_at", { ascending: false }).limit(100);
+      .order("created_at", { ascending: false })
+      .limit(100);
     if (error) throw error;
-    if (!data?.length) { box.innerHTML = '<div class="empty">No messages yet. Start the conversation!</div>'; return; }
+    if (!data?.length) {
+      box.innerHTML = '<div class="empty">No messages yet. Start the conversation!</div>';
+      return;
+    }
+
     box.innerHTML = data.reverse().map(m => {
       const name = m.profiles?.display_name || "Member";
       const role = m.profiles?.role || "member";
-      const staffCanDelete = isStaff() || m.user_id === currentUser.id;
-      return `<div class="message"><div class="messagehead"><strong>${esc(name)} ${role !== "member" ? `<span class="tag ${esc(role)}">${esc(role)}</span>` : ""}</strong><time>${esc(timeText(m.created_at))}</time></div><p>${esc(m.body)}</p>${staffCanDelete ? `<button class="smallbtn" data-delete-chat="${esc(m.id)}" type="button">Delete</button>` : ""}</div>`;
+      const canDelete = isStaff() || m.user_id === currentUser.id;
+      return `<div class="message"><div class="messagehead"><strong>${esc(name)} ${role !== "member" ? `<span class="tag ${esc(role)}">${esc(role)}</span>` : ""}</strong><time>${esc(timeText(m.created_at))}</time></div><p>${esc(m.body)}</p>${canDelete ? `<button class="smallbtn" data-delete-chat="${esc(m.id)}" type="button">Delete</button>` : ""}</div>`;
     }).join("");
     box.scrollTop = box.scrollHeight;
   } catch (error) {
@@ -491,7 +704,7 @@ async function loadChat() {
   }
 }
 $("reloadChat").addEventListener("click", loadChat);
-$("chatForm").addEventListener("submit", async (event) => {
+$("chatForm").addEventListener("submit", async event => {
   event.preventDefault();
   const body = $("chatText").value.trim();
   if (!body) return;
@@ -502,19 +715,23 @@ $("chatForm").addEventListener("submit", async (event) => {
     if (error) throw error;
     $("chatText").value = "";
     await loadChat();
-  } catch (error) { toast("Message wasn't sent: " + error.message, "error"); }
-  finally { setBusy(button, false, "Sending...", "Send"); }
+  } catch (error) {
+    toast("Message wasn't sent: " + error.message, "error");
+  } finally {
+    setBusy(button, false, "Sending...", "Send");
+  }
 });
-$("chatMessages").addEventListener("click", async (event) => {
+$("chatMessages").addEventListener("click", async event => {
   const button = event.target.closest("[data-delete-chat]");
-  if (!button) return;
-  if (!confirm("Delete this public chat message?")) return;
+  if (!button || !confirm("Delete this public chat message?")) return;
   try {
     const { error } = await db.from("chat_messages").delete().eq("id", button.dataset.deleteChat);
     if (error) throw error;
     toast("Message deleted.", "success");
     loadChat();
-  } catch (error) { toast("Could not delete message: " + error.message, "error"); }
+  } catch (error) {
+    toast("Could not delete message: " + error.message, "error");
+  }
 });
 
 async function loadFriends() {
@@ -525,37 +742,48 @@ async function loadFriends() {
     const { data, error } = await db.from("friend_requests")
       .select("id,sender_id,receiver_id,status,created_at")
       .or(`sender_id.eq.${currentUser.id},receiver_id.eq.${currentUser.id}`)
-      .order("created_at", { ascending: false }).limit(200);
+      .order("created_at", { ascending: false })
+      .limit(200);
     if (error) throw error;
+
     const rows = data || [];
     const incoming = rows.filter(r => r.receiver_id === currentUser.id && r.status === "pending");
-    if (!incoming.length) $("incomingRequests").innerHTML = '<div class="empty">No pending requests.</div>';
-    else {
-      const ids = [...new Set(incoming.map(r => r.sender_id))];
-      const profiles = await fetchProfiles(ids);
+
+    if (!incoming.length) {
+      $("incomingRequests").innerHTML = '<div class="empty">No pending requests.</div>';
+    } else {
+      const profiles = await fetchProfiles([...new Set(incoming.map(r => r.sender_id))]);
       $("incomingRequests").innerHTML = incoming.map(r => {
         const p = profiles.get(r.sender_id);
         return `<div class="rowcard"><div class="grow"><strong>${esc(p?.display_name || "Member")}</strong><span class="mutedline">Wants to connect</span></div><button class="smallbtn" data-request="${esc(r.id)}" data-accept="true">Accept</button><button class="smallbtn" data-request="${esc(r.id)}" data-accept="false">Decline</button></div>`;
       }).join("");
     }
+
     const accepted = rows.filter(r => r.status === "accepted");
     const friendIds = [...new Set(accepted.map(r => r.sender_id === currentUser.id ? r.receiver_id : r.sender_id))];
     const friendProfiles = await fetchProfiles(friendIds);
-    if (!friendIds.length) $("friendsList").innerHTML = '<div class="empty">No friends yet. Search a display name above to add someone.</div>';
-    else $("friendsList").innerHTML = friendIds.map(id => {
-      const p = friendProfiles.get(id);
-      return `<div class="rowcard"><div class="grow"><strong>${esc(p?.display_name || "Member")}</strong><span class="mutedline">${esc(roleTitle(p?.role || "member"))}</span></div><button class="smallbtn" data-open-dm="${esc(id)}" data-friend-name="${esc(p?.display_name || "Member")}">Message</button></div>`;
-    }).join("");
+
+    if (!friendIds.length) {
+      $("friendsList").innerHTML = '<div class="empty">No friends yet. Search a display name above to add someone.</div>';
+    } else {
+      $("friendsList").innerHTML = friendIds.map(id => {
+        const p = friendProfiles.get(id);
+        return `<div class="rowcard"><div class="grow"><strong>${esc(p?.display_name || "Member")}</strong><span class="mutedline">${esc(roleTitle(p?.role || "member"))}</span></div><button class="smallbtn" data-open-dm="${esc(id)}" data-friend-name="${esc(p?.display_name || "Member")}">Message</button></div>`;
+      }).join("");
+    }
+
     $("dashFriends").textContent = String(friendIds.length);
   } catch (error) {
     $("incomingRequests").innerHTML = `<div class="empty">Couldn't load requests: ${esc(error.message)}</div>`;
     $("friendsList").innerHTML = '<div class="empty">Check the friend-request SQL setup.</div>';
   }
 }
+
 async function fetchProfiles(ids) {
   const result = new Map();
   if (!ids.length) return result;
-  const { data, error } = await db.from("profiles").select("user_id,display_name,role,coins").in("user_id", ids);
+  const { data, error } = await db.from("profiles")
+    .select("user_id,display_name,role,coins").in("user_id", ids);
   if (error) throw error;
   (data || []).forEach(p => result.set(p.user_id, p));
   return result;
@@ -567,13 +795,15 @@ $("coinTransferForm").addEventListener("submit", async event => {
   const targetName = $("coinTargetName").value.trim();
   const amount = Number($("coinTransferAmount").value);
   const button = $("coinTransferButton");
+
   if (!targetName || !Number.isSafeInteger(amount) || amount < 1 || amount > 1000000) {
     toast("Enter a friend's exact display name and an amount from 1 to 1,000,000 coins.", "error");
     return;
   }
+
   setBusy(button, true, "Sending coins...", "Send coins");
   try {
-    const { data, error } = await db.rpc("send_virtual_coins", {
+    const { error } = await db.rpc("send_virtual_coins", {
       p_target_display_name: targetName,
       p_amount: amount
     });
@@ -589,7 +819,8 @@ $("coinTransferForm").addEventListener("submit", async event => {
     setBusy(button, false, "Sending coins...", "Send coins");
   }
 });
-$("friendSearchForm").addEventListener("submit", async (event) => {
+
+$("friendSearchForm").addEventListener("submit", async event => {
   event.preventDefault();
   const term = $("friendSearchName").value.trim();
   if (!term) return;
@@ -599,25 +830,36 @@ $("friendSearchForm").addEventListener("submit", async (event) => {
     const { data, error } = await db.from("profiles")
       .select("user_id,display_name,role")
       .ilike("display_name", `%${term.replace(/[%_]/g, "")}%`)
-      .neq("user_id", currentUser.id).limit(20);
+      .neq("user_id", currentUser.id)
+      .limit(20);
     if (error) throw error;
-    if (!data?.length) { host.innerHTML = '<div class="empty">No matching members found.</div>'; return; }
-    host.innerHTML = data.map(p => `<div class="rowcard"><div class="grow"><strong>${esc(p.display_name)}</strong><span class="mutedline">${esc(roleTitle(p.role))}</span></div><button class="smallbtn" data-add-friend="${esc(p.display_name)}">Add friend</button></div>`).join("");
-  } catch (error) { host.innerHTML = `<div class="empty">Search failed: ${esc(error.message)}</div>`; }
+    if (!data?.length) {
+      host.innerHTML = '<div class="empty">No matching members found.</div>';
+      return;
+    }
+    host.innerHTML = data.map(p =>
+      `<div class="rowcard"><div class="grow"><strong>${esc(p.display_name)}</strong><span class="mutedline">${esc(roleTitle(p.role))}</span></div><button class="smallbtn" data-add-friend="${esc(p.display_name)}">Add friend</button></div>`
+    ).join("");
+  } catch (error) {
+    host.innerHTML = `<div class="empty">Search failed: ${esc(error.message)}</div>`;
+  }
 });
-$("friendSearchResults").addEventListener("click", async (event) => {
+$("friendSearchResults").addEventListener("click", async event => {
   const button = event.target.closest("[data-add-friend]");
   if (!button) return;
   button.disabled = true;
   try {
-    const { data, error } = await db.rpc("send_friend_request", { p_target_display_name: button.dataset.addFriend });
+    const { data, error } = await db.rpc("send_friend_request", {
+      p_target_display_name: button.dataset.addFriend
+    });
     if (error) throw error;
     toast(typeof data === "string" ? data : "Friend request sent.", "success");
     loadFriends();
-  } catch (error) { toast("Couldn't add friend: " + error.message, "error"); }
-  finally { button.disabled = false; }
+  } catch (error) {
+    toast("Couldn't add friend: " + error.message, "error");
+  } finally { button.disabled = false; }
 });
-$("incomingRequests").addEventListener("click", async (event) => {
+$("incomingRequests").addEventListener("click", async event => {
   const button = event.target.closest("[data-request]");
   if (!button) return;
   try {
@@ -629,23 +871,33 @@ $("incomingRequests").addEventListener("click", async (event) => {
     toast(button.dataset.accept === "true" ? "Friend request accepted." : "Request declined.", "success");
     await loadFriends();
     await loadDashboardFriendsCount();
-  } catch (error) { toast("Couldn't update request: " + error.message, "error"); }
+  } catch (error) {
+    toast("Couldn't update request: " + error.message, "error");
+  }
 });
 
 async function loadDmFriendChoices() {
   if (!currentUser) return;
   const host = $("dmFriendChoices");
   try {
-    const { data, error } = await db.from("friend_requests").select("sender_id,receiver_id")
-      .eq("status", "accepted").or(`sender_id.eq.${currentUser.id},receiver_id.eq.${currentUser.id}`).limit(200);
+    const { data, error } = await db.from("friend_requests")
+      .select("sender_id,receiver_id").eq("status", "accepted")
+      .or(`sender_id.eq.${currentUser.id},receiver_id.eq.${currentUser.id}`)
+      .limit(200);
     if (error) throw error;
     const ids = [...new Set((data || []).map(r => r.sender_id === currentUser.id ? r.receiver_id : r.sender_id))];
     const profiles = await fetchProfiles(ids);
-    if (!ids.length) { host.innerHTML = '<div class="empty">Add friends before starting private messages.</div>'; return; }
+
+    if (!ids.length) {
+      host.innerHTML = '<div class="empty">Add friends before starting private messages.</div>';
+      return;
+    }
+
     host.innerHTML = '<p class="muted">Choose a friend:</p>' + ids.map(id => {
       const p = profiles.get(id);
       return `<button class="smallbtn" style="margin:4px" data-open-dm="${esc(id)}" data-friend-name="${esc(p?.display_name || "Member")}">${esc(p?.display_name || "Member")}</button>`;
     }).join("");
+
     if (selectedDmId) {
       const p = profiles.get(selectedDmId);
       selectedDmName = p?.display_name || selectedDmName;
@@ -655,22 +907,32 @@ async function loadDmFriendChoices() {
       $("sendDmButton").disabled = false;
       loadDmMessages();
     }
-  } catch (error) { host.innerHTML = `<div class="empty">Friends couldn't load: ${esc(error.message)}</div>`; }
+  } catch (error) {
+    host.innerHTML = `<div class="empty">Friends couldn't load: ${esc(error.message)}</div>`;
+  }
 }
 async function loadDmMessages() {
   if (!currentUser || !selectedDmId) return;
   const box = $("dmMessages");
   try {
     const filter = `and(sender_id.eq.${currentUser.id},recipient_id.eq.${selectedDmId}),and(sender_id.eq.${selectedDmId},recipient_id.eq.${currentUser.id})`;
-    const { data, error } = await db.from("direct_messages").select("id,sender_id,recipient_id,body,created_at")
+    const { data, error } = await db.from("direct_messages")
+      .select("id,sender_id,recipient_id,body,created_at")
       .or(filter).order("created_at", { ascending: true }).limit(150);
     if (error) throw error;
-    if (!data?.length) { box.innerHTML = '<div class="empty">No private messages yet. Say hello!</div>'; return; }
-    box.innerHTML = data.map(m => `<div class="message"><div class="messagehead"><strong>${m.sender_id === currentUser.id ? "You" : esc(selectedDmName)}</strong><time>${esc(timeText(m.created_at))}</time></div><p>${esc(m.body)}</p></div>`).join("");
+    if (!data?.length) {
+      box.innerHTML = '<div class="empty">No private messages yet. Say hello!</div>';
+      return;
+    }
+    box.innerHTML = data.map(m =>
+      `<div class="message"><div class="messagehead"><strong>${m.sender_id === currentUser.id ? "You" : esc(selectedDmName)}</strong><time>${esc(timeText(m.created_at))}</time></div><p>${esc(m.body)}</p></div>`
+    ).join("");
     box.scrollTop = box.scrollHeight;
-  } catch (error) { box.innerHTML = `<div class="empty">Private messages couldn't load: ${esc(error.message)}</div>`; }
+  } catch (error) {
+    box.innerHTML = `<div class="empty">Private messages couldn't load: ${esc(error.message)}</div>`;
+  }
 }
-$("dmFriendChoices").addEventListener("click", async (event) => {
+$("dmFriendChoices").addEventListener("click", async event => {
   const button = event.target.closest("[data-open-dm]");
   if (!button) return;
   selectedDmId = button.dataset.openDm;
@@ -681,7 +943,7 @@ $("dmFriendChoices").addEventListener("click", async (event) => {
   $("sendDmButton").disabled = false;
   await loadDmMessages();
 });
-$("friendsList").addEventListener("click", async (event) => {
+$("friendsList").addEventListener("click", async event => {
   const button = event.target.closest("[data-open-dm]");
   if (!button) return;
   selectedDmId = button.dataset.openDm;
@@ -689,19 +951,24 @@ $("friendsList").addEventListener("click", async (event) => {
   navigate("dm");
   await loadDmFriendChoices();
 });
-$("dmForm").addEventListener("submit", async (event) => {
+$("dmForm").addEventListener("submit", async event => {
   event.preventDefault();
   const body = $("dmText").value.trim();
   if (!body || !selectedDmId) return;
   const button = $("sendDmButton");
   setBusy(button, true, "Sending...", "Send");
   try {
-    const { error } = await db.from("direct_messages").insert({ sender_id: currentUser.id, recipient_id: selectedDmId, body });
+    const { error } = await db.from("direct_messages").insert({
+      sender_id: currentUser.id,
+      recipient_id: selectedDmId,
+      body
+    });
     if (error) throw error;
     $("dmText").value = "";
     await loadDmMessages();
-  } catch (error) { toast("Private message failed: " + error.message, "error"); }
-  finally { setBusy(button, false, "Sending...", "Send"); }
+  } catch (error) {
+    toast("Private message failed: " + error.message, "error");
+  } finally { setBusy(button, false, "Sending...", "Send"); }
 });
 
 async function loadShop() {
@@ -719,7 +986,8 @@ async function loadShop() {
     }
     host.innerHTML = data.map(item => {
       const image = item.image_url && /^https:\/\//i.test(item.image_url)
-        ? `<img class="shop-image" src="${esc(item.image_url)}" alt="${esc(item.name)}" loading="lazy" referrerpolicy="no-referrer">` : "";
+        ? `<img class="shop-image" src="${esc(item.image_url)}" alt="${esc(item.name)}" loading="lazy" referrerpolicy="no-referrer">`
+        : "";
       return `<article class="itemcard">${image}<strong>${esc(item.name)}</strong><p>${esc(item.description || "No description.")}</p><div class="coin">🪙 ${money(item.price)} coins</div>${item.active ? `<button class="btn" data-buy-item="${esc(item.id)}">Buy item</button>` : `<p class="muted">Currently unavailable</p>`}${isStaff() ? `<button class="smallbtn" style="margin-top:7px" data-toggle-item="${esc(item.id)}" data-active="${item.active ? "false" : "true"}">${item.active ? "Disable" : "Enable"}</button>` : ""}</article>`;
     }).join("");
   } catch (error) {
@@ -743,7 +1011,8 @@ async function loadInventory() {
     }
     host.innerHTML = data.map(item => {
       const image = item.image_url && /^https:\/\//i.test(item.image_url)
-        ? `<img class="shop-image" src="${esc(item.image_url)}" alt="${esc(item.item_name)}" loading="lazy" referrerpolicy="no-referrer">` : "";
+        ? `<img class="shop-image" src="${esc(item.image_url)}" alt="${esc(item.item_name)}" loading="lazy" referrerpolicy="no-referrer">`
+        : "";
       return `<article class="itemcard">${image}<strong>${esc(item.item_name)}</strong><p class="muted">Owned quantity: <span class="inventory-quantity">×${money(item.quantity)}</span></p><p class="mutedline">Added ${esc(timeText(item.first_purchased_at))}</p></article>`;
     }).join("");
   } catch (error) {
@@ -755,14 +1024,24 @@ async function loadPurchases() {
   if (!currentUser) return;
   const host = $("purchasesList");
   try {
-    const { data, error } = await db.from("purchases").select("id,item_name,price,created_at").eq("user_id", currentUser.id).order("created_at", { ascending: false }).limit(50);
+    const { data, error } = await db.from("purchases")
+      .select("id,item_name,price,created_at")
+      .eq("user_id", currentUser.id)
+      .order("created_at", { ascending: false }).limit(50);
     if (error) throw error;
-    if (!data?.length) { host.innerHTML = '<div class="empty">You have not purchased anything yet.</div>'; return; }
-    host.innerHTML = data.map(p => `<div class="rowcard"><div class="grow"><strong>${esc(p.item_name)}</strong><span class="mutedline">${esc(timeText(p.created_at))}</span></div><span class="coin">−${money(p.price)} 🪙</span></div>`).join("");
-  } catch (error) { host.innerHTML = `<div class="empty">Purchase history failed: ${esc(error.message)}</div>`; }
+    if (!data?.length) {
+      host.innerHTML = '<div class="empty">You have not purchased anything yet.</div>';
+      return;
+    }
+    host.innerHTML = data.map(p =>
+      `<div class="rowcard"><div class="grow"><strong>${esc(p.item_name)}</strong><span class="mutedline">${esc(timeText(p.created_at))}</span></div><span class="coin">−${money(p.price)} 🪙</span></div>`
+    ).join("");
+  } catch (error) {
+    host.innerHTML = `<div class="empty">Purchase history failed: ${esc(error.message)}</div>`;
+  }
 }
 $("reloadShop").addEventListener("click", () => { loadShop(); loadInventory(); loadPurchases(); });
-$("shopItems").addEventListener("click", async (event) => {
+$("shopItems").addEventListener("click", async event => {
   const buy = event.target.closest("[data-buy-item]");
   const toggle = event.target.closest("[data-toggle-item]");
   if (buy) {
@@ -770,16 +1049,24 @@ $("shopItems").addEventListener("click", async (event) => {
     try {
       const { error } = await db.rpc("buy_shop_item", { p_item_id: buy.dataset.buyItem });
       if (error) throw error;
-      await refreshMyProfile(); await loadShop(); await loadInventory(); await loadPurchases(); await loadLeaderboard();
+      await refreshMyProfile();
+      await loadShop();
+      await loadInventory();
+      await loadPurchases();
+      await loadLeaderboard();
       toast("Purchase successful! Your item is in your inventory.", "success");
     } catch (error) { toast("Purchase failed: " + error.message, "error"); }
     finally { buy.disabled = false; }
   }
   if (toggle) {
     try {
-      const { error } = await db.rpc("set_shop_item_active", { p_item_id: toggle.dataset.toggleItem, p_active: toggle.dataset.active === "true" });
+      const { error } = await db.rpc("set_shop_item_active", {
+        p_item_id: toggle.dataset.toggleItem,
+        p_active: toggle.dataset.active === "true"
+      });
       if (error) throw error;
-      await loadShop(); toast("Shop item updated.", "success");
+      await loadShop();
+      toast("Shop item updated.", "success");
     } catch (error) { toast("Couldn't update item: " + error.message, "error"); }
   }
 });
@@ -789,47 +1076,57 @@ async function loadEvents() {
   const host = $("eventsList");
   const history = $("eventHistory");
   try {
-    const { data, error } = await db.from("fake_events").select("id,title,description,status,outcome,created_at,created_by,settled_at").order("created_at", { ascending: false }).limit(100);
+    const { data, error } = await db.from("fake_events")
+      .select("id,title,description,status,outcome,created_at,created_by,settled_at")
+      .order("created_at", { ascending: false }).limit(100);
     if (error) throw error;
     const events = data || [];
-    const { data: myBets, error: betError } = await db.from("fake_event_bets").select("event_id,choice,amount,payout").eq("user_id", currentUser.id).limit(200);
+    const { data: myBets, error: betError } = await db.from("fake_event_bets")
+      .select("event_id,choice,amount,payout").eq("user_id", currentUser.id).limit(200);
     if (betError) throw betError;
     const betMap = new Map((myBets || []).map(b => [b.event_id, b]));
-    const openEvents = events.filter(e => e.status === "open");
-    if (!events.length) host.innerHTML = '<div class="empty">No events yet. Staff can host one from the Admin panel.</div>';
-    else host.innerHTML = events.map(e => {
-      const bet = betMap.get(e.id);
-      return `<article class="eventcard"><strong>${esc(e.title)}</strong><p>${esc(e.description || "Choose heads or tails. Winning bets receive 2× their wager.")}</p><span class="tag ${e.status === "open" ? "admin" : ""}">${esc(e.status)}</span>${bet ? `<p>Your bet: <strong>${esc(bet.choice)}</strong> · ${money(bet.amount)} coins</p>` : ""}${e.status === "open" && !bet ? `<form class="betform" data-bet-form="${esc(e.id)}"><div class="field"><label>Wager (coins)</label><input name="amount" type="number" min="1" max="1000000" value="25" required></div><div class="inlineform"><button class="btn" name="choice" value="heads" type="submit">Heads</button><button class="btn secondary" name="choice" value="tails" type="submit">Tails</button></div></form>` : ""}${e.status === "open" && isStaff() ? `<button class="btn secondary" data-settle-event="${esc(e.id)}">Settle event (random)</button>` : ""}${e.status === "settled" ? `<p>Result: <strong>${esc(e.outcome)}</strong></p>${bet ? `<p>${bet.payout > 0 ? `Payout: ${money(bet.payout)} coins` : "Your wager did not win."}</p>` : ""}` : ""}</article>`;
-    }).join("");
+
+    if (!events.length) {
+      host.innerHTML = '<div class="empty">No events yet. Staff can host one from the Admin panel.</div>';
+    } else {
+      host.innerHTML = events.map(e => {
+        const bet = betMap.get(e.id);
+        return `<article class="eventcard"><strong>${esc(e.title)}</strong><p>${esc(e.description || "Choose heads or tails. Winning bets receive 2× their wager.")}</p><span class="tag ${e.status === "open" ? "admin" : ""}">${esc(e.status)}</span>${bet ? `<p>Your bet: <strong>${esc(bet.choice)}</strong> · ${money(bet.amount)} coins</p>` : ""}${e.status === "open" && !bet ? `<form class="betform" data-bet-form="${esc(e.id)}"><div class="field"><label>Wager (coins)</label><input name="amount" type="number" min="1" max="1000000" value="25" required></div><div class="inlineform"><button class="btn" name="choice" value="heads" type="submit">Heads</button><button class="btn secondary" name="choice" value="tails" type="submit">Tails</button></div></form>` : ""}${e.status === "open" && isStaff() ? `<button class="btn secondary" data-settle-event="${esc(e.id)}">Settle event (random)</button>` : ""}${e.status === "settled" ? `<p>Result: <strong>${esc(e.outcome)}</strong></p>${bet ? `<p>${bet.payout > 0 ? `Payout: ${money(bet.payout)} coins` : "Your wager did not win."}</p>` : ""}` : ""}</article>`;
+      }).join("");
+    }
     const settled = events.filter(e => e.status === "settled");
-    history.innerHTML = settled.length ? settled.slice(0,20).map(e => `<div class="rowcard"><div class="grow"><strong>${esc(e.title)}</strong><span class="mutedline">${esc(timeText(e.settled_at || e.created_at))}</span></div><span class="tag">${esc(e.outcome || "settled")}</span></div>`).join("") : '<div class="empty">No settled events yet.</div>';
+    history.innerHTML = settled.length
+      ? settled.slice(0, 20).map(e => `<div class="rowcard"><div class="grow"><strong>${esc(e.title)}</strong><span class="mutedline">${esc(timeText(e.settled_at || e.created_at))}</span></div><span class="tag">${esc(e.outcome || "settled")}</span></div>`).join("")
+      : '<div class="empty">No settled events yet.</div>';
   } catch (error) {
     host.innerHTML = `<div class="empty">Events failed to load: ${esc(error.message)}</div>`;
     history.innerHTML = '<div class="empty">Check that the SQL setup has been run.</div>';
   }
 }
 $("reloadEvents").addEventListener("click", loadEvents);
-$("eventsList").addEventListener("submit", async (event) => {
+$("eventsList").addEventListener("submit", async event => {
   const form = event.target.closest("[data-bet-form]");
   if (!form) return;
   event.preventDefault();
-  const submitter = event.submitter;
-  const choice = submitter?.value;
+  const choice = event.submitter?.value;
   const amount = Number(new FormData(form).get("amount"));
-  if (!['heads','tails'].includes(choice)) { toast("Choose heads or tails.", "error"); return; }
-  const buttons = form.querySelectorAll("button"); buttons.forEach(b => b.disabled = true);
+  if (!["heads","tails"].includes(choice)) { toast("Choose heads or tails.", "error"); return; }
+  const buttons = form.querySelectorAll("button");
+  buttons.forEach(b => b.disabled = true);
   try {
-    const { error } = await db.rpc("place_fake_bet", { p_event_id: form.dataset.betForm, p_choice: choice, p_amount: amount });
+    const { error } = await db.rpc("place_fake_bet", {
+      p_event_id: form.dataset.betForm, p_choice: choice, p_amount: amount
+    });
     if (error) throw error;
     await refreshMyProfile(); await loadEvents(); await loadLeaderboard();
     toast("Your virtual-coin bet has been placed.", "success");
   } catch (error) { toast("Bet failed: " + error.message, "error"); }
   finally { buttons.forEach(b => b.disabled = false); }
 });
-$("eventsList").addEventListener("click", async (event) => {
+$("eventsList").addEventListener("click", async event => {
   const button = event.target.closest("[data-settle-event]");
   if (!button) return;
-  if (!confirm("Settle this event with a server-generated random coin-flip result?")) return;
+  if (!confirm("Settle this event with a server-generated virtual coin-flip result?")) return;
   button.disabled = true;
   try {
     const { data, error } = await db.rpc("settle_fake_event", { p_event_id: button.dataset.settleEvent });
@@ -840,131 +1137,278 @@ $("eventsList").addEventListener("click", async (event) => {
   finally { button.disabled = false; }
 });
 
-$("createItemForm").addEventListener("submit", async (event) => {
+$("createItemForm").addEventListener("submit", async event => {
   event.preventDefault();
-  const name = $("itemName").value.trim();
-  const description = $("itemDescription").value.trim();
-  const price = Number($("itemPrice").value);
   const button = event.submitter;
   setBusy(button, true, "Publishing...", "Publish item");
   try {
-    const imageUrl = $("itemImageUrl").value.trim();
-    const { error } = await db.rpc("create_shop_item", { p_name: name, p_description: description, p_price: price, p_image_url: imageUrl });
+    const { error } = await db.rpc("create_shop_item", {
+      p_name: $("itemName").value.trim(),
+      p_description: $("itemDescription").value.trim(),
+      p_price: Number($("itemPrice").value),
+      p_image_url: $("itemImageUrl").value.trim()
+    });
     if (error) throw error;
-    event.target.reset(); await loadShop(); toast("Shop item published.", "success");
-  } catch (error) { toast("Couldn't publish item: " + error.message, "error"); }
-  finally { setBusy(button, false, "Publishing...", "Publish item"); }
+    event.target.reset();
+    await loadShop();
+    toast("Shop item published.", "success");
+  } catch (error) {
+    toast("Couldn't publish item: " + error.message, "error");
+  } finally { setBusy(button, false, "Publishing...", "Publish item"); }
 });
-$("createEventForm").addEventListener("submit", async (event) => {
+$("createEventForm").addEventListener("submit", async event => {
   event.preventDefault();
-  const title = $("eventTitle").value.trim();
-  const description = $("eventDescription").value.trim();
   const button = event.submitter;
   setBusy(button, true, "Opening event...", "Open event");
   try {
-    const { error } = await db.rpc("create_fake_event", { p_title: title, p_description: description });
+    const { error } = await db.rpc("create_fake_event", {
+      p_title: $("eventTitle").value.trim(),
+      p_description: $("eventDescription").value.trim()
+    });
     if (error) throw error;
-    event.target.reset(); await loadEvents(); toast("Your fake-coin event is open.", "success");
-  } catch (error) { toast("Couldn't create event: " + error.message, "error"); }
-  finally { setBusy(button, false, "Opening event...", "Open event"); }
+    event.target.reset();
+    await loadEvents();
+    toast("Your fake-coin event is open.", "success");
+  } catch (error) {
+    toast("Couldn't create event: " + error.message, "error");
+  } finally { setBusy(button, false, "Opening event...", "Open event"); }
 });
 
-// MINES: mine positions stay server-side until a round ends.
-function renderMinesBoard() {
-  const board = $("minesBoard");
-  const game = activeMinesGame;
-  const active = Boolean(game && game.status === "active");
-  const revealed = new Set((game?.revealed_cells || []).map(Number));
-  const mines = new Set((game?.mines || []).map(Number));
-  board.innerHTML = Array.from({length:25}, (_, i) => {
-    const cell = i + 1;
-    const safe = revealed.has(cell) && !mines.has(cell);
-    const mine = mines.has(cell);
-    const cls = mine ? "mine-tile mine" : safe ? "mine-tile safe" : "mine-tile";
-    const label = mine ? "💣" : safe ? "💎" : "◆";
-    return `<button class="${cls}" type="button" data-mines-cell="${cell}" aria-label="Tile ${cell}" ${!active || revealed.has(cell) || mines.has(cell) || minesBusy ? "disabled" : ""}>${label}</button>`;
-  }).join("");
-  $("minesCashoutButton").disabled = !active || Number(game.safe_revealed || 0) < 1 || minesBusy;
-  $("minesStartButton").disabled = active || minesBusy;
-  $("minesCount").disabled = active || minesBusy;
-  $("minesBet").disabled = active || minesBusy;
-  $("minesSafeCount").textContent = String(game?.safe_revealed || 0);
-  $("minesMultiplier").textContent = game?.multiplier ? Number(game.multiplier).toFixed(2) + "×" : "—";
-  $("minesPotentialPayout").textContent = game?.multiplier && game?.bet ? money(Math.floor(Number(game.bet) * Number(game.multiplier))) : "—";
-}
+
+/* Mines queue: one shared live turn. Supabase controls turn order and coins. */
 function updateMinesStatus(message, type = "") {
   const el = $("minesStatus");
   el.textContent = message;
   el.className = "notice" + (type ? " " + type : "");
 }
-async function loadActiveMinesGame() {
+function updateMinesQueueStatus(message, type = "") {
+  const el = $("minesQueueStatus");
+  el.textContent = message;
+  el.className = "notice" + (type ? " " + type : "");
+}
+function renderMinesBoard() {
+  const board = $("minesBoard");
+  const game = activeMinesGame;
+  const isActive = Boolean(game && game.status === "active");
+  const isFinished = Boolean(game && ["lost","cashed_out"].includes(game.status));
+  board.hidden = !(isActive || isFinished);
+
+  if (!isActive && !isFinished) {
+    board.innerHTML = "";
+  } else {
+    const revealed = new Set((game.revealed_cells || []).map(Number));
+    const mines = new Set((game.mines || []).map(Number));
+    board.innerHTML = Array.from({length:25}, (_, i) => {
+      const cell = i + 1;
+      const safe = revealed.has(cell) && !mines.has(cell);
+      const mine = mines.has(cell);
+      const cls = mine ? "mine-tile mine" : safe ? "mine-tile safe" : "mine-tile";
+      const label = mine ? "💣" : safe ? "💎" : "◆";
+      const disabled = !isActive || revealed.has(cell) || mine || minesBusy;
+      return `<button class="${cls}" type="button" data-mines-cell="${cell}" aria-label="Tile ${cell}" ${disabled ? "disabled" : ""}>${label}</button>`;
+    }).join("");
+  }
+
+  const myTurn = Number(minesQueueState?.my_position) === 1;
+  $("minesCashoutButton").disabled = !isActive || !myTurn || Number(game?.safe_revealed || 0) < 1 || minesBusy;
+  $("minesStartButton").disabled = !myTurn || minesQueueState?.active_round || minesBusy;
+  $("minesCount").disabled = !myTurn || minesQueueState?.active_round || minesBusy;
+  $("minesBet").disabled = !myTurn || minesQueueState?.active_round || minesBusy;
+  $("minesSafeCount").textContent = String(game?.safe_revealed || 0);
+  $("minesMultiplier").textContent = game?.multiplier ? Number(game.multiplier).toFixed(2) + "×" : "—";
+  $("minesPotentialPayout").textContent = game?.multiplier && game?.bet ? money(Math.floor(Number(game.bet) * Number(game.multiplier))) : "—";
+}
+function renderMinesQueue() {
+  const state = minesQueueState;
+  const host = $("minesQueueList");
+  if (!state) {
+    host.innerHTML = '<div class="empty">Queue has not loaded yet.</div>';
+    return;
+  }
+
+  const queue = Array.isArray(state.queue) ? state.queue : [];
+  $("minesQueueCount").textContent = String(queue.length);
+  const position = state.my_position == null ? null : Number(state.my_position);
+  const isQueued = position !== null;
+  const myActive = Boolean(state.my_active_game);
+  const myTurn = position === 1;
+  $("joinMinesQueueButton").hidden = isQueued || myActive;
+  $("joinMinesQueueButton").disabled = minesBusy;
+  $("leaveMinesQueueButton").hidden = !isQueued || myActive;
+  $("leaveMinesQueueButton").disabled = minesBusy;
+
+  if (!queue.length) {
+    host.innerHTML = '<div class="empty">Nobody is in the queue. Be the first to join.</div>';
+  } else {
+    host.innerHTML = queue.map(player => {
+      const isMe = player.user_id === currentUser?.id;
+      const playing = Boolean(player.playing);
+      const playerPosition = Number(player.position);
+      const badge = playing ? '<span class="queue-badge">Playing</span>' : playerPosition === 1 ? '<span class="queue-badge">Next up</span>' : "";
+      const classes = "queue-player" + (playerPosition === 1 ? " current" : "") + (playing ? " playing" : "");
+      return `<div class="${classes}"><div class="queue-rank">${playerPosition}</div><div class="queue-player-info"><strong>${esc(player.display_name || "Player")}${isMe ? " (you)" : ""}</strong><span>${playing ? "Currently playing" : "Joined " + esc(timeText(player.joined_at))}</span></div>${badge}</div>`;
+    }).join("");
+  }
+
+  $("minesStartForm").hidden = !(myTurn && !state.active_round && !myActive);
+
+  if (myTurn && !state.active_round && !myActive) {
+    $("minesPlayTitle").textContent = "It's your turn!";
+    $("minesPlayDescription").textContent = "Choose the mines count and wager. Your balance must be at least 100 coins, and your wager cannot exceed your available balance.";
+    if (!activeMinesGame || !["lost","cashed_out"].includes(activeMinesGame.status)) {
+      updateMinesStatus("You're first in line. Choose your wager and start your round.", "success");
+    }
+  } else if (myActive && myTurn) {
+    $("minesPlayTitle").textContent = "Your round is active";
+    $("minesPlayDescription").textContent = "Reveal tiles, then cash out before hitting a mine.";
+  } else if (isQueued) {
+    $("minesPlayTitle").textContent = `Queue position ${position}`;
+    $("minesPlayDescription").textContent = "Wait for the player ahead of you to finish. The queue advances automatically.";
+    if (!activeMinesGame || !["lost","cashed_out"].includes(activeMinesGame.status)) {
+      updateMinesStatus(myTurn && state.active_round ? `It's ${state.current_player || "the current player"}'s turn. Please wait for the active round to finish.` : `You're number ${position} in the queue. Please wait for your turn.`);
+    }
+  } else {
+    $("minesPlayTitle").textContent = "Join when you're ready";
+    $("minesPlayDescription").textContent = "You must join the queue for each round. After cashing out or busting, you must join again and choose a new wager.";
+    if (!activeMinesGame || !["lost","cashed_out"].includes(activeMinesGame.status)) {
+      updateMinesStatus("Join the queue to play. Your wallet must have at least 100 coins.");
+    }
+  }
+
+  renderMinesBoard();
+}
+async function refreshMinesQueue(silent = false) {
   if (!currentUser || !db) return;
   try {
-    const { data, error } = await db.rpc("get_active_mines_game");
+    const { data, error } = await db.rpc("get_mines_queue");
     if (error) throw error;
-    activeMinesGame = data || null;
-    if (activeMinesGame) {
-      updateMinesStatus(`Active round: ${money(activeMinesGame.bet)} coins, ${activeMinesGame.mines_count} mines. Pick a tile or cash out.`, "success");
-    } else {
-      updateMinesStatus("Choose how many mines and your wager, then start a round.");
+    minesQueueState = data;
+
+    const myActive = Boolean(data?.my_active_game);
+    const myTurn = Number(data?.my_position) === 1;
+    if (myActive && myTurn && (!activeMinesGame || activeMinesGame.status !== "active")) {
+      const { data: gameData, error: gameError } = await db.rpc("get_active_mines_game");
+      if (gameError) throw gameError;
+      activeMinesGame = gameData || null;
+      if (activeMinesGame) updateMinesStatus(`Your active round: ${money(activeMinesGame.bet)} coins, ${activeMinesGame.mines_count} mines.`, "success");
+    } else if (!myActive && activeMinesGame?.status === "active") {
+      activeMinesGame = null;
     }
-    renderMinesBoard();
+    renderMinesQueue();
   } catch (error) {
-    updateMinesStatus("Mines setup is missing or failed: " + error.message, "error");
+    if (!silent) updateMinesQueueStatus("Queue failed to load: " + error.message, "error");
+    console.error("Mines queue error:", error);
   }
 }
+async function loadActiveMinesGame() { await refreshMinesQueue(); }
+
+$("joinMinesQueueButton").addEventListener("click", async () => {
+  const button = $("joinMinesQueueButton");
+  setBusy(button, true, "Joining queue...", "Join Mines queue");
+  try {
+    const { data, error } = await db.rpc("join_mines_queue");
+    if (error) throw error;
+    if (activeMinesGame && activeMinesGame.status !== "active") activeMinesGame = null;
+    minesQueueState = data;
+    updateMinesQueueStatus("You joined the queue. Wait for your turn.", "success");
+    renderMinesQueue();
+  } catch (error) {
+    updateMinesQueueStatus("Could not join: " + error.message, "error");
+  } finally {
+    setBusy(button, false, "Joining queue...", "Join Mines queue");
+    renderMinesQueue();
+  }
+});
+
+$("leaveMinesQueueButton").addEventListener("click", async () => {
+  const button = $("leaveMinesQueueButton");
+  setBusy(button, true, "Leaving...", "Leave queue");
+  try {
+    const { data, error } = await db.rpc("leave_mines_queue");
+    if (error) throw error;
+    minesQueueState = data;
+    updateMinesQueueStatus("You left the Mines queue.", "success");
+    renderMinesQueue();
+  } catch (error) {
+    updateMinesQueueStatus("Could not leave queue: " + error.message, "error");
+  } finally {
+    setBusy(button, false, "Leaving...", "Leave queue");
+    renderMinesQueue();
+  }
+});
+
+$("refreshMinesQueue").addEventListener("click", () => refreshMinesQueue());
+
 $("minesStartForm").addEventListener("submit", async event => {
   event.preventDefault();
-  if (activeMinesGame?.status === "active") return toast("Finish or cash out the current round first.", "error");
+  if (Number(minesQueueState?.my_position) !== 1) return updateMinesStatus("Only the first player in the queue can start.", "error");
+  if (minesQueueState?.active_round) return updateMinesStatus("A round is already active. Wait for it to finish.", "error");
+  if (activeMinesGame?.status === "active") return updateMinesStatus("Finish the current round first.", "error");
+
   const minesCount = Number($("minesCount").value);
   const bet = Number($("minesBet").value);
+  const balance = Number(myProfile?.coins || 0);
   if (!Number.isInteger(minesCount) || minesCount < 1 || minesCount > 24) return updateMinesStatus("Choose between 1 and 24 mines.", "error");
-  if (!Number.isSafeInteger(bet) || bet < 1 || bet > 1000000) return updateMinesStatus("Wager must be 1–1,000,000 coins.", "error");
+  if (!Number.isSafeInteger(bet) || bet < 1 || bet > 1000000) return updateMinesStatus("Wager must be 1–1,000,000 virtual coins.", "error");
+  if (balance < 100) return updateMinesStatus("You need at least 100 virtual coins in your wallet to play.", "error");
+  if (bet > balance) return updateMinesStatus("Your wager cannot exceed your available coin balance.", "error");
+
   minesBusy = true;
   const button = $("minesStartButton");
-  setBusy(button, true, "Starting round...", "Start a new round");
+  setBusy(button, true, "Starting round...", "Start your turn");
   renderMinesBoard();
+
   try {
     const { data, error } = await db.rpc("start_mines_game", { p_mines_count: minesCount, p_bet: bet });
     if (error) throw error;
     activeMinesGame = data;
     await refreshMyProfile();
-    updateMinesStatus(`Round started! ${minesCount} mines are hidden. Reveal a tile or cash out after a safe tile.`, "success");
-    renderMinesBoard();
+    updateMinesStatus(`Your round started with ${money(bet)} coins and ${minesCount} mines. Reveal a tile or cash out after a safe tile.`, "success");
+    await refreshMinesQueue(true);
   } catch (error) {
     updateMinesStatus("Couldn't start round: " + error.message, "error");
   } finally {
     minesBusy = false;
-    setBusy(button, false, "Starting round...", "Start a new round");
-    renderMinesBoard();
+    setBusy(button, false, "Starting round...", "Start your turn");
+    renderMinesQueue();
   }
 });
+
 $("minesBoard").addEventListener("click", async event => {
   const button = event.target.closest("[data-mines-cell]");
   if (!button || !activeMinesGame || activeMinesGame.status !== "active" || minesBusy) return;
   minesBusy = true;
   renderMinesBoard();
+
   try {
-    const { data, error } = await db.rpc("reveal_mines_tile", { p_game_id: activeMinesGame.game_id, p_cell: Number(button.dataset.minesCell) });
+    const { data, error } = await db.rpc("reveal_mines_tile", {
+      p_game_id: activeMinesGame.game_id,
+      p_cell: Number(button.dataset.minesCell)
+    });
     if (error) throw error;
     activeMinesGame = { ...activeMinesGame, ...data };
+
     if (data.status === "lost") {
-      updateMinesStatus("💥 You hit a mine and lost this round's wager. Start a new round when you're ready.", "error");
+      updateMinesStatus("💥 Bust! You lost this round's wager. You have been removed from the queue; join again when you're ready.", "error");
       await refreshMyProfile();
+      await refreshMinesQueue(true);
+      toast("Mines bust. Your turn is over.", "error");
     } else if (data.status === "cashed_out") {
-      updateMinesStatus(`All safe tiles revealed! Auto cash-out paid ${money(data.payout)} coins.`, "success");
+      updateMinesStatus(`You hit every safe tile! Auto cash-out paid ${money(data.payout)} coins. You have been removed from the queue; join again for another round.`, "success");
       await refreshMyProfile();
+      await refreshMinesQueue(true);
     } else {
       updateMinesStatus(`Safe tile! Current multiplier ${Number(data.multiplier).toFixed(2)}×. Keep going or cash out.`, "success");
     }
-    renderMinesBoard();
+    renderMinesQueue();
   } catch (error) {
     updateMinesStatus("Tile couldn't be revealed: " + error.message, "error");
   } finally {
     minesBusy = false;
-    renderMinesBoard();
+    renderMinesQueue();
   }
 });
+
 $("minesCashoutButton").addEventListener("click", async () => {
   if (!activeMinesGame || activeMinesGame.status !== "active" || minesBusy) return;
   minesBusy = true;
@@ -973,15 +1417,23 @@ $("minesCashoutButton").addEventListener("click", async () => {
     const { data, error } = await db.rpc("cashout_mines", { p_game_id: activeMinesGame.game_id });
     if (error) throw error;
     activeMinesGame = { ...activeMinesGame, ...data };
-    updateMinesStatus(`Cashed out! ${money(data.payout)} virtual coins have been returned to your balance.`, "success");
+    updateMinesStatus(`Cashed out! You received ${money(data.payout)} virtual coins. Your turn is over; join the queue again to play another round.`, "success");
     await refreshMyProfile();
+    await refreshMinesQueue(true);
   } catch (error) {
     updateMinesStatus("Cash-out failed: " + error.message, "error");
   } finally {
     minesBusy = false;
-    renderMinesBoard();
+    renderMinesQueue();
   }
 });
+
+// Refresh the queue for players looking at Mines.
+if (!minesQueueTimer) {
+  minesQueueTimer = window.setInterval(() => {
+    if (currentUser && activePage === "mines" && !minesBusy) refreshMinesQueue(true);
+  }, 4000);
+}
 
 async function loadMembers() {
   if (!isStaff()) return;
@@ -992,38 +1444,52 @@ async function loadMembers() {
       .select("user_id,display_name,role,coins,created_at")
       .order("created_at", { ascending: false }).limit(100);
     if (error) throw error;
+
     host.innerHTML = (data || []).map(p => {
       const roleClass = p.role === "owner" ? "owner" : p.role === "admin" ? "admin" : "";
-      const roleControls = isOwner() && p.role !== "owner" ? `<div class="field"><label>Role</label><select data-role-select="${esc(p.user_id)}"><option value="member" ${p.role === "member" ? "selected" : ""}>Member</option><option value="admin" ${p.role === "admin" ? "selected" : ""}>Admin</option></select><button class="smallbtn" data-change-role="${esc(p.user_id)}" style="margin-top:6px">Save role</button></div>` : "";
+      const roleControls = isOwner() && p.role !== "owner"
+        ? `<div class="field"><label>Role</label><select data-role-select="${esc(p.user_id)}"><option value="member" ${p.role === "member" ? "selected" : ""}>Member</option><option value="admin" ${p.role === "admin" ? "selected" : ""}>Admin</option></select><button class="smallbtn" data-change-role="${esc(p.user_id)}" style="margin-top:6px">Save role</button></div>`
+        : "";
       return `<div class="rowcard"><div class="grow"><strong>${esc(p.display_name)}</strong><span class="tag ${roleClass}">${esc(p.role)}</span><p class="mutedline">${money(p.coins)} coins</p><div class="inlineform"><input type="number" min="1" max="1000000000" value="100" data-grant-amount="${esc(p.user_id)}" aria-label="Coins to grant"><button class="smallbtn" data-grant-coins="${esc(p.user_id)}">Grant coins</button></div>${roleControls}</div></div>`;
     }).join("") || '<div class="empty">No members found.</div>';
-  } catch (error) { host.innerHTML = `<div class="empty">Member list failed: ${esc(error.message)}</div>`; }
+  } catch (error) {
+    host.innerHTML = `<div class="empty">Member list failed: ${esc(error.message)}</div>`;
+  }
 }
 $("reloadMembers").addEventListener("click", loadMembers);
-$("membersList").addEventListener("click", async (event) => {
+$("membersList").addEventListener("click", async event => {
   const grant = event.target.closest("[data-grant-coins]");
   const changeRole = event.target.closest("[data-change-role]");
+
   if (grant) {
-    const input = document.querySelector(`[data-grant-amount="${CSS.escape(grant.dataset.grantCoins)}"]`);
+    const uid = grant.dataset.grantCoins;
+    const input = document.querySelector(`[data-grant-amount="${CSS.escape(uid)}"]`);
     const amount = Number(input?.value);
     grant.disabled = true;
     try {
-      const { error } = await db.rpc("grant_fake_coins", { p_user_id: grant.dataset.grantCoins, p_amount: amount });
+      const { error } = await db.rpc("grant_fake_coins", { p_user_id: uid, p_amount: amount });
       if (error) throw error;
-      await loadMembers(); await refreshMyProfile(); await loadLeaderboard(); toast("Virtual coins granted.", "success");
-    } catch (error) { toast("Grant failed: " + error.message, "error"); }
-    finally { grant.disabled = false; }
+      await loadMembers();
+      await refreshMyProfile();
+      await loadLeaderboard();
+      toast("Virtual coins granted.", "success");
+    } catch (error) {
+      toast("Grant failed: " + error.message, "error");
+    } finally { grant.disabled = false; }
   }
+
   if (changeRole) {
-    const id = changeRole.dataset.changeRole;
-    const select = document.querySelector(`[data-role-select="${CSS.escape(id)}"]`);
+    const uid = changeRole.dataset.changeRole;
+    const select = document.querySelector(`[data-role-select="${CSS.escape(uid)}"]`);
     changeRole.disabled = true;
     try {
-      const { error } = await db.rpc("set_member_role", { p_user_id: id, p_role: select.value });
+      const { error } = await db.rpc("set_member_role", { p_user_id: uid, p_role: select.value });
       if (error) throw error;
-      await loadMembers(); toast("Member role updated.", "success");
-    } catch (error) { toast("Role change failed: " + error.message, "error"); }
-    finally { changeRole.disabled = false; }
+      await loadMembers();
+      toast("Member role updated.", "success");
+    } catch (error) {
+      toast("Role change failed: " + error.message, "error");
+    } finally { changeRole.disabled = false; }
   }
 });
 
@@ -1049,7 +1515,7 @@ function closeOwnerHud() {
   $("ownerHud").hidden = true;
   $("ownerUnlockCode").value = "";
 }
-window.addEventListener("keydown", (event) => {
+window.addEventListener("keydown", event => {
   if (event.altKey && event.key === "F1") {
     event.preventDefault();
     openOwnerHud();
@@ -1059,14 +1525,13 @@ window.addEventListener("keydown", (event) => {
 });
 $("closeOwnerHud").addEventListener("click", closeOwnerHud);
 
-$("ownerUnlockForm").addEventListener("submit", async (event) => {
+$("ownerUnlockForm").addEventListener("submit", async event => {
   event.preventDefault();
   if (!db || !currentUser) return showOwnerHudNotice("Log in before claiming owner access.", "error");
-  const code = $("ownerUnlockCode").value;
   const button = $("ownerUnlockButton");
   setBusy(button, true, "Checking claim code...", "Claim owner access");
   try {
-    const { data, error } = await db.rpc("claim_piltae_owner", { p_code: code });
+    const { error } = await db.rpc("claim_piltae_owner", { p_code: $("ownerUnlockCode").value });
     if (error) throw error;
     await refreshMyProfile();
     closeOwnerHud();
@@ -1087,21 +1552,32 @@ $("ownerUnlockForm").addEventListener("submit", async (event) => {
 
 async function initialize() {
   try {
-    if (!window.supabase?.createClient) throw new Error("Supabase's library did not load. Check your internet connection.");
-    if (!/^https:\/\/[a-z0-9-]+\.supabase\.co\/?$/.test(SUPABASE_URL) || !SUPABASE_PUBLISHABLE_KEY.startsWith("sb_publishable_")) throw new Error("Supabase project URL or publishable key is incorrect.");
+    if (!window.supabase?.createClient) {
+      throw new Error("Supabase's library did not load. Check your internet connection.");
+    }
+
+    if (!/^https:\/\/[a-z0-9-]+\.supabase\.co\/?$/.test(SUPABASE_URL) ||
+        !SUPABASE_PUBLISHABLE_KEY.startsWith("sb_publishable_")) {
+      throw new Error("Supabase project URL or publishable key is incorrect.");
+    }
+
     db = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
       auth: { autoRefreshToken: true, persistSession: true, detectSessionInUrl: true }
     });
+
     db.auth.onAuthStateChange((eventName, session) => {
       window.setTimeout(() => {
         if (session?.user) handleSession(session);
         else if (eventName === "SIGNED_OUT" || eventName === "INITIAL_SESSION") handleSession(null);
       }, 0);
     });
+
     const { data, error } = await db.auth.getSession();
     if (error) throw error;
-    if (data.session?.user) await handleSession(data.session);
-    else {
+
+    if (data.session?.user) {
+      await handleSession(data.session);
+    } else {
       $("authView").hidden = false;
       $("appView").hidden = true;
       $("topRight").hidden = true;
@@ -1117,6 +1593,7 @@ async function initialize() {
     toast("Could not start PILTAE: " + error.message, "error");
   }
 }
+
 initialize();
 </script>
 </body>
