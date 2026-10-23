@@ -1,726 +1,1151 @@
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#090b12">
-  <title>PILTAE CHATTER</title>
-
-  <style>
-    :root {
-      color-scheme: dark;
-      --bg: #090b12;
-      --panel: #111521;
-      --border: #293146;
-      --text: #f1f4ff;
-      --muted: #929bb3;
-      --accent: #8b5cf6;
-      --mint: #5eead4;
-      --danger: #fb7185;
-    }
-
-    * { box-sizing: border-box; }
-
-    body {
-      margin: 0;
-      min-height: 100vh;
-      padding: 26px 14px;
-      color: var(--text);
-      background:
-        radial-gradient(ellipse at 10% 0%, #31205b66, transparent 42%),
-        radial-gradient(ellipse at 100% 90%, #115e5940, transparent 38%),
-        var(--bg);
-      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
-    }
-
-    button, input, textarea { font: inherit; }
-    button { cursor: pointer; }
-    button:disabled { opacity: .6; cursor: wait; }
-    [hidden] { display: none !important; }
-
-    .shell { width: min(100%, 760px); margin: 0 auto; }
-
-    header {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 48px;
-    }
-
-    .logo {
-      display: grid;
-      place-items: center;
-      width: 44px;
-      height: 44px;
-      border-radius: 14px;
-      background: linear-gradient(135deg, #a78bfa, #4338ca);
-      box-shadow: 0 8px 30px #8b5cf633;
-      font-size: 20px;
-      font-weight: 900;
-    }
-
-    .brand {
-      font-size: 17px;
-      font-weight: 900;
-      letter-spacing: 1.5px;
-    }
-
-    .hero { margin-bottom: 25px; }
-
-    .eyebrow {
-      color: var(--mint);
-      font-size: 11px;
-      font-weight: 800;
-      letter-spacing: 2.5px;
-    }
-
-    h1 {
-      margin: 10px 0;
-      font-size: clamp(35px, 7vw, 58px);
-      letter-spacing: -2px;
-      line-height: 1.05;
-    }
-
-    .gradient {
-      color: #a78bfa;
-      background: linear-gradient(90deg, #a78bfa, #5eead4);
-      background-clip: text;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .muted {
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.7;
-    }
-
-    .card {
-      padding: 25px;
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      background: linear-gradient(160deg, #151a28f5, #0e121cf5);
-      box-shadow: 0 20px 70px #00000025;
-    }
-
-    h2 { margin: 0 0 8px; font-size: 22px; }
-
-    .tabs {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 6px;
-      margin: 22px 0;
-      padding: 5px;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      background: #090c14;
-    }
-
-    .tab {
-      padding: 12px 8px;
-      border: 0;
-      border-radius: 8px;
-      color: var(--muted);
-      background: transparent;
-      font-weight: 750;
-    }
-
-    .tab.active { color: white; background: #292344; }
-
-    .field { margin: 16px 0; }
-
-    label {
-      display: block;
-      margin-bottom: 8px;
-      color: #d5d9e8;
-      font-size: 12px;
-      font-weight: 750;
-    }
-
-    input, textarea {
-      display: block;
-      width: 100%;
-      min-width: 0;
-      padding: 13px 14px;
-      border: 1px solid #30384c;
-      border-radius: 11px;
-      outline: none;
-      color: var(--text);
-      background: #090d16;
-    }
-
-    input:focus, textarea:focus {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px #8b5cf622;
-    }
-
-    textarea { min-height: 100px; resize: vertical; }
-
-    .btn {
-      width: 100%;
-      margin-top: 10px;
-      padding: 13px 16px;
-      border: 0;
-      border-radius: 11px;
-      color: white;
-      background: linear-gradient(100deg, #7c3aed, #5b55dd);
-      font-weight: 850;
-    }
-
-    .btn.secondary {
-      border: 1px solid #353e54;
-      background: #202637;
-    }
-
-    .btn.danger {
-      border: 1px solid #703044;
-      background: #431b2a;
-    }
-
-    .notice {
-      margin-top: 16px;
-      padding: 12px 14px;
-      border: 1px solid #3d4560;
-      border-radius: 11px;
-      color: #e5e7eb;
-      background: #171d2b;
-      font-size: 13px;
-      line-height: 1.6;
-      overflow-wrap: anywhere;
-    }
-
-    .notice.success {
-      border-color: #246b5e;
-      background: #102b29;
-    }
-
-    .notice.error {
-      border-color: #703044;
-      background: #321722;
-    }
-
-    .account-line {
-      margin: 18px 0;
-      padding: 13px;
-      border: 1px solid var(--border);
-      border-radius: 11px;
-      background: #0b0f18;
-    }
-
-    .account-line small {
-      display: block;
-      margin-bottom: 5px;
-      color: var(--muted);
-    }
-
-    .account-line strong {
-      display: block;
-      overflow-wrap: anywhere;
-      font-size: 13px;
-    }
-
-    footer {
-      margin-top: 26px;
-      text-align: center;
-      color: #727c94;
-      font-size: 11px;
-    }
-
-    @media (max-width: 560px) {
-      body { padding: 20px 12px; }
-      .card { padding: 19px; }
-      header { margin-bottom: 35px; }
-    }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#090b12">
+<title>PILTAE CHATTER</title>
+<style>
+:root{color-scheme:dark;--bg:#090b12;--panel:#111521;--border:#293146;--text:#f1f4ff;--muted:#929bb3;--accent:#8b5cf6;--mint:#5eead4;--danger:#fb7185}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;padding:20px 14px;background:radial-gradient(ellipse at 10% 0%,#31205b66,transparent 42%),radial-gradient(ellipse at 100% 90%,#115e5940,transparent 38%),var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+button,input,textarea,select{font:inherit}button{cursor:pointer}button:disabled{opacity:.55;cursor:wait}[hidden]{display:none!important}
+.shell{width:min(1180px,100%);margin:auto}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:24px}
+.brand{display:flex;align-items:center;gap:11px;font-size:16px;font-weight:900;letter-spacing:1.4px}
+.logo{display:grid;place-items:center;width:42px;height:42px;border-radius:13px;background:linear-gradient(135deg,#a78bfa,#4338ca);box-shadow:0 8px 30px #8b5cf633;font-size:20px}
+.topright{display:flex;align-items:center;gap:10px}.wallet{padding:9px 12px;border:1px solid #3e365e;border-radius:999px;background:#1b1730;color:#ddd6fe;font-weight:800;font-size:13px}
+.smallbtn,.navbtn,.btn{border:1px solid var(--border);border-radius:11px;padding:10px 13px;background:#202637;color:var(--text);font-weight:750}
+.smallbtn:hover,.navbtn:hover,.btn:hover{filter:brightness(1.15)}
+.hero{margin:24px 0}.eyebrow{color:var(--mint);font-size:11px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase}
+h1{margin:10px 0;font-size:clamp(34px,6vw,56px);letter-spacing:-2px;line-height:1.06}
+.gradient{color:#a78bfa;background:linear-gradient(90deg,#a78bfa,#5eead4);background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.muted{color:var(--muted);font-size:13px;line-height:1.6}
+.card{padding:21px;border:1px solid var(--border);border-radius:18px;background:linear-gradient(160deg,#151a28f5,#0e121cf5);box-shadow:0 16px 55px #00000020;min-width:0}
+.card h2{margin:0 0 7px;font-size:20px}.card h3{margin:0 0 5px;font-size:15px}
+.auth-wrap{width:min(560px,100%);margin:42px auto}
+.tabs{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:20px 0;padding:5px;border:1px solid var(--border);border-radius:12px;background:#090c14}
+.tab{padding:11px 8px;border:0;border-radius:8px;background:transparent;color:var(--muted);font-weight:800}.tab.active{background:#292344;color:white}
+.field{margin:14px 0}label{display:block;margin-bottom:7px;color:#d5d9e8;font-size:12px;font-weight:800}
+input,textarea,select{width:100%;min-width:0;padding:12px 13px;border:1px solid #30384c;border-radius:10px;outline:none;background:#090d16;color:var(--text)}
+input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 0 0 3px #8b5cf622}
+textarea{min-height:90px;resize:vertical}
+.btn{width:100%;margin-top:8px;padding:12px 14px;border:0;background:linear-gradient(100deg,#7c3aed,#5b55dd)}
+.btn.secondary{border:1px solid #353e54;background:#202637}.btn.danger{background:#431b2a;border:1px solid #703044}
+.notice{margin:14px 0;padding:11px 13px;border:1px solid #3d4560;border-radius:10px;background:#171d2b;color:#e5e7eb;font-size:13px;line-height:1.55;overflow-wrap:anywhere}
+.notice.success{border-color:#246b5e;background:#102b29}.notice.error{border-color:#703044;background:#321722}
+.appgrid{display:grid;grid-template-columns:210px minmax(0,1fr);gap:16px;align-items:start}
+.sidebar{position:sticky;top:12px;display:grid;gap:7px}
+.navbtn{text-align:left;width:100%;background:#111521;color:#bdc5d9}
+.navbtn.active{background:#292344;border-color:#57438c;color:white}
+.navbtn .navicon{display:inline-block;width:24px}
+.maincol{min-width:0}
+.pagehead{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:17px}
+.pagehead h2{margin:0;font-size:24px}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:17px 0}
+.stat{padding:16px;border:1px solid var(--border);border-radius:14px;background:#101521}
+.stat small{display:block;color:var(--muted);margin-bottom:8px}.stat strong{font-size:22px}
+.quickgrid,.itemsgrid,.eventgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.quickcard,.itemcard,.eventcard,.rowcard{padding:14px;border:1px solid #293146;border-radius:13px;background:#101521;min-width:0}
+.rowcard{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:9px 0}
+.rowcard .grow{min-width:0;flex:1}.rowcard strong,.itemcard strong,.eventcard strong{display:block;overflow-wrap:anywhere}
+.itemcard p,.eventcard p{margin:7px 0;color:var(--muted);font-size:12px;line-height:1.5;overflow-wrap:anywhere}
+.inlineform{display:flex;gap:8px;align-items:center}.inlineform input{flex:1;min-width:0}
+.inlineform .btn,.inlineform .smallbtn{width:auto;flex:0 0 auto;margin:0}.inlineform .btn{flex:1}
+.chatbox{height:420px;overflow:auto;display:flex;flex-direction:column;gap:10px;padding:13px;border:1px solid #293146;border-radius:13px;background:#0a0e17;margin-bottom:12px}
+.message{padding:10px 12px;border:1px solid #252c3d;border-radius:12px;background:#121827;max-width:100%;overflow-wrap:anywhere}
+.messagehead{display:flex;gap:8px;align-items:center;justify-content:space-between;margin-bottom:5px}
+.messagehead strong{font-size:12px}.messagehead time{font-size:10px;color:var(--muted)}
+.message p{margin:0;font-size:13px;white-space:pre-wrap}
+.chatinput{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px}.chatinput textarea{min-height:44px;height:44px}.chatinput .btn{width:auto;margin:0}
+.tag{display:inline-block;padding:4px 7px;border-radius:99px;background:#25203b;color:#c4b5fd;font-size:10px;font-weight:900;text-transform:uppercase}
+.tag.owner{background:#4b3410;color:#fde68a}.tag.admin{background:#193b3a;color:#99f6e4}
+.mutedline{color:var(--muted);font-size:12px}
+.twoform{display:grid;grid-template-columns:1fr 1fr;gap:10px}.twoform .wide{grid-column:1/-1}
+.empty{padding:20px;text-align:center;color:var(--muted);font-size:13px}
+.sectiongap{margin-top:16px}.footer{margin:30px 0 8px;text-align:center;font-size:11px;color:#727c94}
+.staffonly{border-color:#51417a}.coin{color:#fde68a;font-weight:850}
+.owner-hud{position:fixed;inset:0;z-index:9999;display:grid;place-items:center;padding:18px;background:#03050ddd;backdrop-filter:blur(12px)}
+.owner-hud-card{width:min(520px,100%);padding:23px;border:1px solid #65519a;border-radius:19px;background:linear-gradient(155deg,#19162a,#0b101a);box-shadow:0 25px 100px #0009}
+.owner-hud-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.owner-hud-hint{color:var(--muted);font-size:13px;line-height:1.6}
+@media(max-width:800px){.appgrid{grid-template-columns:1fr}.sidebar{position:static;display:flex;overflow:auto;padding-bottom:4px}.navbtn{white-space:nowrap;width:auto;flex:0 0 auto}.stats{grid-template-columns:1fr 1fr}.quickgrid,.itemsgrid,.eventgrid{grid-template-columns:1fr 1fr}}
+@media(max-width:520px){body{padding:15px 10px}.card{padding:16px}.topbar{align-items:flex-start}.brand{font-size:13px}.topright{flex-direction:column;align-items:flex-end}.stats,.quickgrid,.itemsgrid,.eventgrid,.twoform{grid-template-columns:1fr}.twoform .wide{grid-column:auto}.rowcard{align-items:flex-start}.inlineform{flex-wrap:wrap}}
+</style>
 </head>
-
 <body>
-  <main class="shell">
-    <header>
-      <div class="logo">P</div>
-      <div class="brand">PILTAE CHATTER</div>
-    </header>
+<main class="shell">
+  <header class="topbar">
+    <div class="brand"><div class="logo">P</div><span>PILTAE CHATTER</span></div>
+    <div class="topright" id="topRight" hidden>
+      <div class="wallet">🪙 <span id="topCoins">0</span> coins</div>
+      <button class="smallbtn" id="topLogout" type="button">Log out</button>
+    </div>
+  </header>
 
-    <section class="hero">
+  <section id="authView" class="auth-wrap">
+    <div class="hero">
       <div class="eyebrow">YOUR COMMUNITY STARTS HERE</div>
       <h1>Welcome to <span class="gradient">PILTAE.</span></h1>
-      <p class="muted">
-        Create an account and jump straight into your community.
-      </p>
-    </section>
-
-    <section class="card" id="authPanel">
+      <p class="muted">Chat with people, make friends, shop, join virtual-coin events, and build your profile.</p>
+    </div>
+    <div class="card">
       <h2 id="authTitle">Create your account</h2>
-      <p class="muted" id="authDescription">
-        Choose a display name, email address, and password.
-      </p>
-
+      <p class="muted" id="authDescription">Create an account, then confirm your email to join.</p>
       <div class="tabs">
-        <button class="tab active" id="signupTab" type="button">
-          Create account
-        </button>
-        <button class="tab" id="loginTab" type="button">
-          Log in
-        </button>
+        <button class="tab active" id="signupTab" type="button">Create account</button>
+        <button class="tab" id="loginTab" type="button">Log in</button>
       </div>
-
       <form id="signupForm">
-        <div class="field">
-          <label for="signupName">DISPLAY NAME</label>
-          <input id="signupName" type="text" minlength="1" maxlength="24"
-            autocomplete="nickname" placeholder="Choose a username" required>
-        </div>
-
-        <div class="field">
-          <label for="signupEmail">EMAIL ADDRESS</label>
-          <input id="signupEmail" type="email" autocomplete="email"
-            placeholder="you@example.com" required>
-        </div>
-
-        <div class="field">
-          <label for="signupPassword">PASSWORD</label>
-          <input id="signupPassword" type="password" minlength="6"
-            autocomplete="new-password" placeholder="At least 6 characters" required>
-        </div>
-
-        <button class="btn" id="signupButton" type="submit">
-          Create account and join →
-        </button>
+        <div class="field"><label for="signupName">DISPLAY NAME</label><input id="signupName" maxlength="24" minlength="1" autocomplete="nickname" required placeholder="Choose a username"></div>
+        <div class="field"><label for="signupEmail">EMAIL</label><input id="signupEmail" type="email" autocomplete="email" required placeholder="you@example.com"></div>
+        <div class="field"><label for="signupPassword">PASSWORD</label><input id="signupPassword" type="password" minlength="6" autocomplete="new-password" required placeholder="At least 6 characters"></div>
+        <button class="btn" id="signupButton" type="submit">Create account →</button>
       </form>
-
       <form id="loginForm" hidden>
-        <div class="field">
-          <label for="loginEmail">EMAIL ADDRESS</label>
-          <input id="loginEmail" type="email" autocomplete="email"
-            placeholder="you@example.com" required>
-        </div>
-
-        <div class="field">
-          <label for="loginPassword">PASSWORD</label>
-          <input id="loginPassword" type="password"
-            autocomplete="current-password" placeholder="Your password" required>
-        </div>
-
+        <div class="field"><label for="loginEmail">EMAIL</label><input id="loginEmail" type="email" autocomplete="email" required placeholder="you@example.com"></div>
+        <div class="field"><label for="loginPassword">PASSWORD</label><input id="loginPassword" type="password" autocomplete="current-password" required placeholder="Your password"></div>
         <button class="btn" id="loginButton" type="submit">Log in →</button>
+        <button class="btn secondary" id="resendButton" type="button">Resend confirmation email</button>
       </form>
+      <div id="authNotice" class="notice" role="status" aria-live="polite" hidden></div>
+    </div>
+  </section>
 
-      <div id="notice" class="notice" role="status" aria-live="polite" hidden></div>
-    </section>
+  <section id="appView" hidden>
+    <div class="appgrid">
+      <nav class="sidebar" aria-label="Main navigation">
+        <button class="navbtn active" data-page="dashboard"><span class="navicon">⌂</span> Dashboard</button>
+        <button class="navbtn" data-page="profile"><span class="navicon">◉</span> Profile</button>
+        <button class="navbtn" data-page="chat"><span class="navicon">☷</span> Community chat</button>
+        <button class="navbtn" data-page="friends"><span class="navicon">♧</span> Friends</button>
+        <button class="navbtn" data-page="dm"><span class="navicon">✉</span> Private messages</button>
+        <button class="navbtn" data-page="shop"><span class="navicon">▣</span> Shop</button>
+        <button class="navbtn" data-page="events"><span class="navicon">🎲</span> Fake-coin events</button>
+        <button class="navbtn" data-page="admin" id="adminNav" hidden><span class="navicon">⚙</span> Admin panel</button>
+      </nav>
 
-    <section class="card" id="accountPanel" hidden>
-      <h2>Welcome to PILTAE.</h2>
-      <p class="muted">Your account is signed in. Set up your profile below.</p>
+      <div class="maincol">
+        <div id="appNotice" class="notice" role="status" aria-live="polite" hidden></div>
 
-      <div class="account-line">
-        <small class="muted">Logged in as</small>
-        <strong id="accountEmail"></strong>
+        <section class="page" id="page-dashboard">
+          <div class="pagehead"><div><div class="eyebrow">PILTAE NETWORK</div><h2>Dashboard</h2><p class="muted">Welcome back, <strong id="welcomeName">Player</strong>.</p></div><span id="roleBadge" class="tag">Member</span></div>
+          <div class="stats">
+            <div class="stat"><small>Your coins</small><strong id="dashCoins">0</strong></div>
+            <div class="stat"><small>Your role</small><strong id="dashRole">Member</strong></div>
+            <div class="stat"><small>Friends</small><strong id="dashFriends">0</strong></div>
+          </div>
+          <div class="card"><h2>Choose your next move</h2><p class="muted">Saving your profile returns you here.</p><div class="quickgrid sectiongap">
+            <button class="quickcard navbtn" data-page="chat">💬 <strong>Open community chat</strong><span class="muted">Talk with everyone online.</span></button>
+            <button class="quickcard navbtn" data-page="friends">♧ <strong>Add friends</strong><span class="muted">Search names and send requests.</span></button>
+            <button class="quickcard navbtn" data-page="shop">🛍️ <strong>Visit the shop</strong><span class="muted">Spend virtual coins.</span></button>
+            <button class="quickcard navbtn" data-page="events">🎲 <strong>Fake-coin events</strong><span class="muted">Join events using virtual currency.</span></button>
+          </div></div>
+          <div class="card sectiongap"><div class="pagehead"><div><h2>Leaderboard</h2><p class="muted">Top members by virtual coin balance.</p></div><button class="smallbtn" id="reloadLeaderboard" type="button">Refresh</button></div><div id="leaderboard"><div class="empty">Loading leaderboard...</div></div></div>
+        </section>
+
+        <section class="page" id="page-profile" hidden>
+          <div class="pagehead"><div><h2>Your profile</h2><p class="muted">Edit your name and bio.</p></div></div>
+          <div class="card"><form id="profileForm">
+            <div class="field"><label for="profileName">DISPLAY NAME</label><input id="profileName" maxlength="24" minlength="1" required></div>
+            <div class="field"><label for="profileBio">BIO</label><textarea id="profileBio" maxlength="160" placeholder="Say something about yourself..."></textarea><p class="muted"><span id="bioCount">0</span>/160 characters</p></div>
+            <button class="btn" id="saveProfileButton" type="submit">Save profile and return to dashboard</button>
+          </form></div>
+        </section>
+
+        <section class="page" id="page-chat" hidden>
+          <div class="pagehead"><div><h2>Community chat</h2><p class="muted">Messages are visible to signed-in members.</p></div><button class="smallbtn" id="reloadChat" type="button">Refresh</button></div>
+          <div class="card"><div id="chatMessages" class="chatbox"><div class="empty">Loading messages...</div></div>
+            <form id="chatForm" class="chatinput"><textarea id="chatText" maxlength="500" required placeholder="Write a message..."></textarea><button class="btn" id="sendChatButton" type="submit">Send</button></form>
+          </div>
+        </section>
+
+        <section class="page" id="page-friends" hidden>
+          <div class="pagehead"><div><h2>Friends</h2><p class="muted">Find members by display name and send requests.</p></div><button class="smallbtn" id="reloadFriends" type="button">Refresh</button></div>
+          <div class="card"><form id="friendSearchForm" class="inlineform"><input id="friendSearchName" maxlength="24" required placeholder="Search display name"><button class="btn" type="submit">Search</button></form><div id="friendSearchResults" class="sectiongap"></div></div>
+          <div class="card sectiongap"><h3>Incoming requests</h3><div id="incomingRequests"><div class="empty">Loading requests...</div></div></div>
+          <div class="card sectiongap"><h3>Your friends</h3><div id="friendsList"><div class="empty">Loading friends...</div></div></div>
+        </section>
+
+        <section class="page" id="page-dm" hidden>
+          <div class="pagehead"><div><h2>Private messages</h2><p class="muted">Only you and an accepted friend can read the conversation.</p></div></div>
+          <div class="card"><div id="dmFriendChoices" class="sectiongap"></div><div id="dmSelected" class="notice" hidden></div><div id="dmMessages" class="chatbox"><div class="empty">Choose a friend to open a conversation.</div></div>
+            <form id="dmForm" class="chatinput"><textarea id="dmText" maxlength="1000" required placeholder="Private message..." disabled></textarea><button class="btn" id="sendDmButton" type="submit" disabled>Send</button></form>
+          </div>
+        </section>
+
+        <section class="page" id="page-shop" hidden>
+          <div class="pagehead"><div><h2>PILTAE Shop</h2><p class="muted">Virtual coins have no cash value.</p></div><button class="smallbtn" id="reloadShop" type="button">Refresh</button></div>
+          <div id="shopItems" class="itemsgrid"><div class="empty">Loading shop...</div></div>
+          <div class="card sectiongap"><h3>Your purchases</h3><div id="purchasesList"><div class="empty">Loading purchases...</div></div></div>
+        </section>
+
+        <section class="page" id="page-events" hidden>
+          <div class="pagehead"><div><h2>Fake-coin events</h2><p class="muted">Virtual coin flips only—no real-money deposits, prizes, or cash-outs.</p></div><button class="smallbtn" id="reloadEvents" type="button">Refresh</button></div>
+          <div id="eventsList" class="eventgrid"><div class="empty">Loading events...</div></div>
+          <div class="card sectiongap"><h3>Recent results</h3><div id="eventHistory"><div class="empty">Loading event history...</div></div></div>
+        </section>
+
+        <section class="page" id="page-admin" hidden>
+          <div class="pagehead"><div><h2>Admin panel</h2><p class="muted">Manage shop items, events, members, and virtual coins.</p></div><span id="adminRoleBadge" class="tag admin">Staff</span></div>
+          <div id="adminForbidden" class="notice error" hidden>Only staff can use these controls.</div>
+          <div id="adminTools">
+            <div class="card staffonly"><h3>Create shop item</h3><form id="createItemForm" class="twoform">
+              <div class="field"><label for="itemName">Item name</label><input id="itemName" maxlength="60" required></div>
+              <div class="field"><label for="itemPrice">Price in coins</label><input id="itemPrice" type="number" min="1" max="1000000000" required></div>
+              <div class="field wide"><label for="itemDescription">Description</label><textarea id="itemDescription" maxlength="300"></textarea></div>
+              <button class="btn wide" type="submit">Publish item</button>
+            </form></div>
+            <div class="card staffonly sectiongap"><h3>Host a fake-coin event</h3><form id="createEventForm">
+              <div class="field"><label for="eventTitle">Event title</label><input id="eventTitle" maxlength="80" required placeholder="Friday Night Coin Flip"></div>
+              <div class="field"><label for="eventDescription">Rules / description</label><textarea id="eventDescription" maxlength="300" placeholder="Pick heads or tails. Winners receive 2× their wager."></textarea></div>
+              <button class="btn" type="submit">Open event</button>
+            </form></div>
+            <div class="card staffonly sectiongap"><h3>Member management</h3><p class="muted">Admins can grant virtual coins. Only the owner can promote or demote admins.</p><button class="smallbtn" id="reloadMembers" type="button">Refresh members</button><div id="membersList" class="sectiongap"><div class="empty">Loading members...</div></div></div>
+          </div>
+        </section>
       </div>
+    </div>
+  </section>
 
-      <form id="profileForm">
-        <div class="field">
-          <label for="profileName">DISPLAY NAME</label>
-          <input id="profileName" type="text" minlength="1" maxlength="24" required>
-        </div>
+  <section id="ownerHud" class="owner-hud" role="dialog" aria-modal="true" aria-labelledby="ownerHudTitle" hidden>
+    <div class="owner-hud-card">
+      <div class="owner-hud-head"><div><div class="eyebrow">RESTRICTED CONTROL HUD</div><h2 id="ownerHudTitle">Owner access</h2></div><button id="closeOwnerHud" class="smallbtn" type="button">Close</button></div>
+      <p class="owner-hud-hint">Enter the one-time owner claim code. Supabase validates it; the code is not stored in this HTML file.</p>
+      <form id="ownerUnlockForm"><div class="field"><label for="ownerUnlockCode">OWNER CLAIM CODE</label><input id="ownerUnlockCode" type="password" maxlength="200" autocomplete="off" required placeholder="Enter owner code"></div><button id="ownerUnlockButton" class="btn" type="submit">Claim owner access</button></form>
+      <div id="ownerHudNotice" class="notice" role="status" aria-live="polite" hidden></div>
+      <p class="muted">Shortcut: Alt + F1 · Escape closes this window.</p>
+    </div>
+  </section>
 
-        <div class="field">
-          <label for="profileBio">BIO</label>
-          <textarea id="profileBio" maxlength="160"
-            placeholder="Tell the community about yourself..."></textarea>
-          <p class="muted"><span id="bioCount">0</span>/160 characters</p>
-        </div>
+  <footer class="footer">PILTAE CHATTER · Virtual coins have no real-world value.</footer>
+</main>
 
-        <button class="btn" id="saveProfileButton" type="submit">
-          Save profile
-        </button>
-      </form>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+"use strict";
 
-      <button class="btn secondary" id="refreshProfileButton" type="button">
-        Reload profile
-      </button>
+// Your actual Supabase project settings.
+const SUPABASE_URL = "https://mfawkedwvjzxqqmflutu.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_n-iBWfw_2hmDhjV9Iyk1Rw_QhqT-e0Q";
+const SITE_URL = "https://noahlangedu.github.io/888222888222/";
 
-      <button class="btn danger" id="logoutButton" type="button">
-        Log out
-      </button>
+const $ = (id) => document.getElementById(id);
+let db = null, currentUser = null, myProfile = null;
+let activePage = "dashboard", selectedDmId = null, selectedDmName = "";
+let realtimeChannels = [], userLoadId = 0, toastTimer = null;
 
-      <div id="profileNotice" class="notice" role="status" aria-live="polite" hidden></div>
-    </section>
+function esc(value) {
+  return String(value ?? "").replace(/[&<>"']/g, c => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  })[c]);
+}
+function money(v) { return Number(v || 0).toLocaleString(); }
+function timeText(v) {
+  try { return new Date(v).toLocaleString([], {month:"short",day:"numeric",hour:"numeric",minute:"2-digit"}); }
+  catch { return ""; }
+}
+function roleTitle(role) { return role === "owner" ? "Owner" : role === "admin" ? "Admin" : "Member"; }
+function isStaff() { return myProfile?.role === "owner" || myProfile?.role === "admin"; }
+function isOwner() { return myProfile?.role === "owner"; }
 
-    <footer>PILTAE CHATTER</footer>
-  </main>
+function toast(message, type = "") {
+  const el = $(currentUser ? "appNotice" : "authNotice");
+  if (!el) return;
+  el.textContent = message;
+  el.className = "notice" + (type ? " " + type : "");
+  el.hidden = false;
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => { el.hidden = true; }, 8000);
+}
+function setBusy(button, busy, busyText, normalText) {
+  button.disabled = busy;
+  button.textContent = busy ? busyText : normalText;
+}
+function showAuthMode(mode) {
+  const signup = mode === "signup";
+  $("signupForm").hidden = !signup;
+  $("loginForm").hidden = signup;
+  $("signupTab").classList.toggle("active", signup);
+  $("loginTab").classList.toggle("active", !signup);
+  $("authTitle").textContent = signup ? "Create your account" : "Welcome back";
+  $("authDescription").textContent = signup
+    ? "Create your account, then confirm your email to join."
+    : "Log in to return to your community.";
+  $("authNotice").hidden = true;
+}
+$("signupTab").addEventListener("click", () => showAuthMode("signup"));
+$("loginTab").addEventListener("click", () => showAuthMode("login"));
+$("profileBio").addEventListener("input", () => { $("bioCount").textContent = $("profileBio").value.length; });
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+function showOwnerHudNotice(message, type = "") {
+  $("ownerHudNotice").textContent = message;
+  $("ownerHudNotice").className = "notice" + (type ? " " + type : "");
+  $("ownerHudNotice").hidden = false;
+}
+function openOwnerHud() {
+  if (!db) return toast("Supabase is still connecting. Try again.", "error");
+  if (!currentUser) {
+    showAuthMode("login");
+    return toast("Log in first, then press Alt + F1.", "error");
+  }
+  $("ownerHud").hidden = false;
+  $("ownerUnlockCode").value = "";
+  $("ownerHudNotice").hidden = true;
+  $("ownerUnlockCode").focus();
+}
+function closeOwnerHud() {
+  $("ownerHud").hidden = true;
+  $("ownerUnlockCode").value = "";
+}
+window.addEventListener("keydown", event => {
+  if (event.altKey && event.key === "F1") {
+    event.preventDefault();
+    openOwnerHud();
+  } else if (event.key === "Escape" && !$("ownerHud").hidden) {
+    closeOwnerHud();
+  }
+});
+$("closeOwnerHud").addEventListener("click", closeOwnerHud);
 
-  <script>
-    "use strict";
+$("ownerUnlockForm").addEventListener("submit", async event => {
+  event.preventDefault();
+  if (!db || !currentUser) return showOwnerHudNotice("Log in before claiming owner access.", "error");
 
-    // Existing Supabase project settings
-    const SUPABASE_URL =
-      "https://mfawkedwvjzxqqmflutu.supabase.co";
+  const button = $("ownerUnlockButton");
+  setBusy(button, true, "Checking code...", "Claim owner access");
+  try {
+    const { error } = await db.rpc("claim_piltae_owner", { p_code: $("ownerUnlockCode").value });
+    if (error) throw error;
 
-    const SUPABASE_PUBLISHABLE_KEY =
-      "sb_publishable_n-iBWfw_2hmDhjV9Iyk1Rw_QhqT-e0Q";
+    await refreshMyProfile();
+    closeOwnerHud();
 
-    const $ = (id) => document.getElementById(id);
-
-    let supabaseClient = null;
-    let currentUser = null;
-    let loadedProfileUserId = null;
-    let profileRequestId = 0;
-
-    function showNotice(message, type = "") {
-      const element = $("notice");
-      element.textContent = message;
-      element.className = "notice" + (type ? " " + type : "");
-      element.hidden = false;
+    if (isOwner()) {
+      await loadLeaderboard();
+      navigate("admin");
+      toast("Owner access activated.", "success");
+    } else {
+      toast("The account did not receive the owner role.", "error");
     }
+  } catch (error) {
+    console.error("Owner claim failed:", error);
+    showOwnerHudNotice("Access was not granted: " + error.message, "error");
+  } finally {
+    setBusy(button, false, "Checking code...", "Claim owner access");
+  }
+});
 
-    function showProfileNotice(message, type = "") {
-      const element = $("profileNotice");
-      element.textContent = message;
-      element.className = "notice" + (type ? " " + type : "");
-      element.hidden = false;
-    }
+function navigate(page) {
+  const pages = ["dashboard","profile","chat","friends","dm","shop","events","admin"];
+  if (!pages.includes(page)) page = "dashboard";
+  if (page === "admin" && !isStaff()) {
+    toast("The admin panel is for staff only.", "error");
+    return;
+  }
 
-    function hideNotice() {
-      $("notice").hidden = true;
-    }
+  activePage = page;
+  document.querySelectorAll(".page").forEach(el => { el.hidden = el.id !== "page-" + page; });
+  document.querySelectorAll(".sidebar [data-page]").forEach(el => {
+    el.classList.toggle("active", el.dataset.page === page);
+  });
 
-    function errorText(error) {
-      return error?.message || "Something went wrong. Try again.";
-    }
+  if (page === "chat") loadChat();
+  if (page === "friends") loadFriends();
+  if (page === "dm") loadDmFriendChoices();
+  if (page === "shop") { loadShop(); loadPurchases(); }
+  if (page === "events") loadEvents();
+  if (page === "admin" && isStaff()) { loadMembers(); loadShop(); loadEvents(); }
+}
+document.querySelectorAll("[data-page]").forEach(el => {
+  el.addEventListener("click", () => navigate(el.dataset.page));
+});
 
-    function setBusy(button, busy, busyText, normalText) {
-      button.disabled = busy;
-      button.textContent = busy ? busyText : normalText;
-    }
+async function refreshMyProfile() {
+  if (!currentUser) throw new Error("Log in first.");
+  const { data, error } = await db.from("profiles")
+    .select("user_id,display_name,bio,role,coins,created_at")
+    .eq("user_id", currentUser.id)
+    .maybeSingle();
 
-    function switchMode(mode) {
-      const signup = mode === "signup";
+  if (error) throw error;
+  if (!data) throw new Error("Your profile is missing. Run the main Supabase SQL setup.");
 
-      $("signupForm").hidden = !signup;
-      $("loginForm").hidden = signup;
-      $("signupTab").classList.toggle("active", signup);
-      $("loginTab").classList.toggle("active", !signup);
-      $("authTitle").textContent = signup ? "Create your account" : "Welcome back";
-      $("authDescription").textContent = signup
-        ? "Choose a display name, email address, and password."
-        : "Log in to return to your account.";
+  myProfile = data;
+  $("topCoins").textContent = money(data.coins);
+  $("dashCoins").textContent = money(data.coins);
+  $("dashRole").textContent = roleTitle(data.role);
+  $("welcomeName").textContent = data.display_name;
+  $("roleBadge").textContent = roleTitle(data.role);
+  $("roleBadge").className = "tag" + (data.role === "owner" ? " owner" : data.role === "admin" ? " admin" : "");
+  $("adminNav").hidden = !isStaff();
+  $("adminRoleBadge").textContent = roleTitle(data.role);
+  $("adminTools").hidden = !isStaff();
+  $("adminForbidden").hidden = isStaff();
+  $("profileName").value = data.display_name || "";
+  $("profileBio").value = data.bio || "";
+  $("bioCount").textContent = $("profileBio").value.length;
+}
 
-      hideNotice();
-    }
+async function handleSession(session) {
+  if (!session?.user) {
+    const hadUser = Boolean(currentUser);
+    currentUser = null;
+    myProfile = null;
+    userLoadId++;
+    selectedDmId = null;
+    $("authView").hidden = false;
+    $("appView").hidden = true;
+    $("topRight").hidden = true;
+    realtimeChannels.forEach(channel => db?.removeChannel(channel));
+    realtimeChannels = [];
+    if (hadUser) showAuthMode("login");
+    return;
+  }
 
-    $("signupTab").addEventListener("click", () => switchMode("signup"));
-    $("loginTab").addEventListener("click", () => switchMode("login"));
+  const user = session.user;
+  if (currentUser?.id === user.id && myProfile) return;
 
-    $("profileBio").addEventListener("input", () => {
-      $("bioCount").textContent = $("profileBio").value.length;
-    });
+  const loadId = ++userLoadId;
+  currentUser = user;
+  $("authView").hidden = true;
+  $("appView").hidden = false;
+  $("topRight").hidden = false;
 
-    async function loadProfile(user, requestId) {
-      try {
-        const { data, error } = await supabaseClient
-          .from("profiles")
-          .select("user_id, display_name, bio")
-          .eq("user_id", user.id)
-          .maybeSingle();
+  try {
+    await refreshMyProfile();
+    if (loadId !== userLoadId || currentUser?.id !== user.id) return;
+    await loadDashboardFriendsCount();
+    await loadLeaderboard();
+    setupRealtime();
+    navigate("dashboard");
+  } catch (error) {
+    console.error(error);
+    toast("Signed in, but setup failed: " + error.message, "error");
+  }
+}
 
-        if (error) throw error;
+$("signupForm").addEventListener("submit", async event => {
+  event.preventDefault();
+  const displayName = $("signupName").value.trim();
+  const email = $("signupEmail").value.trim();
+  const password = $("signupPassword").value;
 
-        if (
-          requestId !== profileRequestId ||
-          currentUser?.id !== user.id
-        ) return;
+  if (!displayName || displayName.length > 24) return toast("Display name must be 1–24 characters.", "error");
 
-        let profile = data;
-
-        // The database trigger should normally create this profile.
-        if (!profile) {
-          const fallbackName = String(
-            user.user_metadata?.display_name ||
-            (user.email || "Player").split("@")[0] ||
-            "Player"
-          ).trim().slice(0, 24) || "Player";
-
-          const result = await supabaseClient
-            .from("profiles")
-            .upsert({
-              user_id: user.id,
-              display_name: fallbackName,
-              bio: "",
-              updated_at: new Date().toISOString()
-            }, { onConflict: "user_id" })
-            .select("user_id, display_name, bio")
-            .single();
-
-          if (result.error) throw result.error;
-          profile = result.data;
-        }
-
-        if (
-          requestId !== profileRequestId ||
-          currentUser?.id !== user.id
-        ) return;
-
-        $("profileName").value = profile.display_name || "";
-        $("profileBio").value = profile.bio || "";
-        $("bioCount").textContent = $("profileBio").value.length;
-
-        loadedProfileUserId = user.id;
-        $("profileNotice").hidden = true;
-      } catch (error) {
-        console.error("Profile loading error:", error);
-
-        if (requestId === profileRequestId) {
-          showProfileNotice(
-            "You're signed in, but the profile could not load. Make sure the SQL setup below has been run. Details: " +
-            errorText(error),
-            "error"
-          );
-        }
-      }
-    }
-
-    function showLoggedIn(user) {
-      if (!user) return;
-
-      const isNewUser = currentUser?.id !== user.id;
-      currentUser = user;
-
-      $("authPanel").hidden = true;
-      $("accountPanel").hidden = false;
-      $("accountEmail").textContent = user.email || "Account";
-
-      if (isNewUser || loadedProfileUserId !== user.id) {
-        const requestId = ++profileRequestId;
-        showProfileNotice("Opening your profile...");
-        loadProfile(user, requestId);
-      }
-    }
-
-    function showLoggedOut() {
-      currentUser = null;
-      loadedProfileUserId = null;
-      profileRequestId++;
-
-      $("authPanel").hidden = false;
-      $("accountPanel").hidden = true;
-    }
-
-    $("signupForm").addEventListener("submit", async (event) => {
-      event.preventDefault();
-
-      if (!supabaseClient) {
-        showNotice("The website has not connected to Supabase yet. Refresh the page.", "error");
-        return;
-      }
-
-      const displayName = $("signupName").value.trim();
-      const email = $("signupEmail").value.trim();
-      const password = $("signupPassword").value;
-
-      if (!displayName || displayName.length > 24) {
-        showNotice("Display name must be between 1 and 24 characters.", "error");
-        return;
-      }
-
-      const button = $("signupButton");
-      setBusy(button, true, "Creating account...", "Create account and join →");
-
-      try {
-        const { data, error } = await supabaseClient.auth.signUp({
-          email,
-          password,
-          options: {
-            data: { display_name: displayName }
-          }
-        });
-
-        if (error) throw error;
-
-        $("signupPassword").value = "";
-
-        if (data.session && data.user) {
-          showLoggedIn(data.user);
-          return;
-        }
-
-        showNotice(
-          "Supabase created the signup request but did not log you in. Open Supabase → Authentication → Providers → Email and turn OFF Confirm email, then save and try again.",
-          "error"
-        );
-      } catch (error) {
-        console.error("Signup error:", error);
-        showNotice("Signup failed: " + errorText(error), "error");
-      } finally {
-        setBusy(button, false, "Creating account...", "Create account and join →");
-      }
-    });
-
-    $("loginForm").addEventListener("submit", async (event) => {
-      event.preventDefault();
-
-      if (!supabaseClient) {
-        showNotice("The website has not connected to Supabase yet. Refresh the page.", "error");
-        return;
-      }
-
-      const button = $("loginButton");
-      setBusy(button, true, "Logging in...", "Log in →");
-
-      try {
-        const { data, error } = await supabaseClient.auth.signInWithPassword({
-          email: $("loginEmail").value.trim(),
-          password: $("loginPassword").value
-        });
-
-        if (error) throw error;
-
-        $("loginPassword").value = "";
-        showLoggedIn(data.user);
-      } catch (error) {
-        console.error("Login error:", error);
-        showNotice("Login failed: " + errorText(error), "error");
-      } finally {
-        setBusy(button, false, "Logging in...", "Log in →");
+  const button = $("signupButton");
+  setBusy(button, true, "Creating account...", "Create account →");
+  try {
+    const { data, error } = await db.auth.signUp({
+      email,
+      password,
+      options: {
+        data: { display_name: displayName },
+        emailRedirectTo: SITE_URL
       }
     });
+    if (error) throw error;
+    $("signupPassword").value = "";
 
-    $("profileForm").addEventListener("submit", async (event) => {
-      event.preventDefault();
+    if (data.session?.user) {
+      await handleSession(data.session);
+      toast("Account created. Welcome to PILTAE!", "success");
+    } else {
+      showAuthMode("login");
+      $("loginEmail").value = email;
+      toast("Account created. Check your email and confirm using the newest link. You'll return to PILTAE CHATTER.", "success");
+    }
+  } catch (error) {
+    console.error(error);
+    toast("Signup failed: " + error.message, "error");
+  } finally {
+    setBusy(button, false, "Creating account...", "Create account →");
+  }
+});
 
-      if (!supabaseClient || !currentUser) {
-        showProfileNotice("Please log in again.", "error");
-        return;
-      }
-
-      const displayName = $("profileName").value.trim();
-      const bio = $("profileBio").value.trim();
-
-      if (!displayName || displayName.length > 24) {
-        showProfileNotice("Display name must be between 1 and 24 characters.", "error");
-        return;
-      }
-
-      if (bio.length > 160) {
-        showProfileNotice("Bio must be 160 characters or fewer.", "error");
-        return;
-      }
-
-      const button = $("saveProfileButton");
-      setBusy(button, true, "Saving...", "Save profile");
-
-      try {
-        const { error } = await supabaseClient
-          .from("profiles")
-          .upsert({
-            user_id: currentUser.id,
-            display_name: displayName,
-            bio,
-            updated_at: new Date().toISOString()
-          }, { onConflict: "user_id" });
-
-        if (error) throw error;
-
-        // Keep the display name in Supabase Auth metadata in sync too.
-        const { error: metadataError } = await supabaseClient.auth.updateUser({
-          data: { display_name: displayName }
-        });
-
-        if (metadataError) {
-          console.warn("Metadata update failed:", metadataError);
-        }
-
-        showProfileNotice(
-          metadataError
-            ? "Profile saved, but the account display-name metadata did not update."
-            : "Profile saved successfully.",
-          metadataError ? "error" : "success"
-        );
-      } catch (error) {
-        console.error("Profile save error:", error);
-        showProfileNotice("Could not save profile: " + errorText(error), "error");
-      } finally {
-        setBusy(button, false, "Saving...", "Save profile");
-      }
+$("loginForm").addEventListener("submit", async event => {
+  event.preventDefault();
+  const button = $("loginButton");
+  setBusy(button, true, "Logging in...", "Log in →");
+  try {
+    const { data, error } = await db.auth.signInWithPassword({
+      email: $("loginEmail").value.trim(),
+      password: $("loginPassword").value
     });
+    if (error) throw error;
+    $("loginPassword").value = "";
+    await handleSession(data.session);
+    toast("Welcome back!", "success");
+  } catch (error) {
+    toast("Login failed: " + error.message, "error");
+  } finally {
+    setBusy(button, false, "Logging in...", "Log in →");
+  }
+});
 
-    $("refreshProfileButton").addEventListener("click", () => {
-      if (!currentUser) return;
+$("resendButton").addEventListener("click", async () => {
+  const email = $("loginEmail").value.trim();
+  if (!email) return toast("Enter your email address first.", "error");
 
-      const requestId = ++profileRequestId;
-      showProfileNotice("Reloading your profile...");
-      loadProfile(currentUser, requestId);
+  const button = $("resendButton");
+  setBusy(button, true, "Sending...", "Resend confirmation email");
+  try {
+    const { error } = await db.auth.resend({
+      type: "signup",
+      email,
+      options: { emailRedirectTo: SITE_URL }
     });
+    if (error) throw error;
+    toast("If a new confirmation email is available, it should arrive shortly. Check spam too.", "success");
+  } catch (error) {
+    toast("Could not resend email: " + error.message, "error");
+  } finally {
+    setBusy(button, false, "Sending...", "Resend confirmation email");
+  }
+});
 
-    $("logoutButton").addEventListener("click", async () => {
-      const button = $("logoutButton");
-      setBusy(button, true, "Logging out...", "Log out");
+$("profileForm").addEventListener("submit", async event => {
+  event.preventDefault();
+  if (!currentUser) return toast("Log in again before saving.", "error");
 
-      try {
-        const { error } = await supabaseClient.auth.signOut();
+  const name = $("profileName").value.trim();
+  const bio = $("profileBio").value.trim();
+  if (!name || name.length > 24 || bio.length > 160) {
+    return toast("Check your display name and bio length.", "error");
+  }
 
-        if (error) throw error;
+  const button = $("saveProfileButton");
+  setBusy(button, true, "Saving...", "Save profile and return to dashboard");
+  try {
+    const { error } = await db.from("profiles")
+      .update({ display_name: name, bio, updated_at: new Date().toISOString() })
+      .eq("user_id", currentUser.id);
+    if (error) throw error;
 
-        showLoggedOut();
-        switchMode("login");
-        showNotice("You have logged out.", "success");
-      } catch (error) {
-        showProfileNotice("Logout failed: " + errorText(error), "error");
-      } finally {
-        setBusy(button, false, "Logging out...", "Log out");
-      }
-    });
+    const { error: metaError } = await db.auth.updateUser({ data: { display_name: name } });
+    if (metaError) console.warn("Auth metadata update failed:", metaError.message);
 
-    async function initialize() {
-      try {
-        if (!window.supabase?.createClient) {
-          throw new Error("Supabase's JavaScript library failed to load. Check your internet connection.");
-        }
+    await refreshMyProfile();
+    navigate("dashboard");
+    toast("Profile saved. Welcome to your dashboard!", "success");
+  } catch (error) {
+    toast("Profile save failed: " + error.message, "error");
+  } finally {
+    setBusy(button, false, "Saving...", "Save profile and return to dashboard");
+  }
+});
 
-        if (
-          !/^https:\/\/[a-z0-9-]+\.supabase\.co\/?$/.test(SUPABASE_URL) ||
-          !SUPABASE_PUBLISHABLE_KEY.startsWith("sb_publishable_")
-        ) {
-          throw new Error("The Supabase project URL or publishable key is missing or incorrect.");
-        }
+async function logout() {
+  const { error } = await db.auth.signOut();
+  if (error) toast("Logout failed: " + error.message, "error");
+}
+$("topLogout").addEventListener("click", logout);
 
-        supabaseClient = window.supabase.createClient(
-          SUPABASE_URL,
-          SUPABASE_PUBLISHABLE_KEY,
-          {
-            auth: {
-              autoRefreshToken: true,
-              persistSession: true,
-              detectSessionInUrl: true
-            }
-          }
-        );
+async function loadLeaderboard() {
+  if (!currentUser) return;
+  const host = $("leaderboard");
+  try {
+    const { data, error } = await db.from("profiles")
+      .select("user_id,display_name,role,coins,created_at")
+      .order("coins", { ascending: false })
+      .order("created_at", { ascending: true })
+      .limit(10);
+    if (error) throw error;
+    if (!data?.length) {
+      host.innerHTML = '<div class="empty">No leaderboard entries yet.</div>';
+      return;
+    }
+    host.innerHTML = data.map((p, i) =>
+      `<div class="rowcard"><div class="grow"><strong>${i + 1}. ${esc(p.display_name)} ${p.user_id === currentUser.id ? '<span class="tag">You</span>' : ""}</strong><span class="mutedline">${esc(roleTitle(p.role))}</span></div><span class="coin">${money(p.coins)} 🪙</span></div>`
+    ).join("");
+  } catch (error) {
+    host.innerHTML = `<div class="empty">Leaderboard failed: ${esc(error.message)}</div>`;
+  }
+}
+$("reloadLeaderboard").addEventListener("click", loadLeaderboard);
 
-        supabaseClient.auth.onAuthStateChange((eventName, session) => {
-          window.setTimeout(() => {
-            if (session?.user) {
-              showLoggedIn(session.user);
-            } else if (eventName === "SIGNED_OUT" || eventName === "INITIAL_SESSION") {
-              showLoggedOut();
-            }
-          }, 0);
-        });
+async function loadDashboardFriendsCount() {
+  if (!currentUser) return;
+  const { data, error } = await db.from("friend_requests")
+    .select("id")
+    .eq("status", "accepted")
+    .or(`sender_id.eq.${currentUser.id},receiver_id.eq.${currentUser.id}`);
+  if (!error) $("dashFriends").textContent = String((data || []).length);
+}
 
-        const { data, error } = await supabaseClient.auth.getSession();
+function setupRealtime() {
+  realtimeChannels.forEach(channel => db.removeChannel(channel));
+  realtimeChannels = [];
 
-        if (error) throw error;
+  realtimeChannels.push(
+    db.channel("piltae-public-chat")
+      .on("postgres_changes", { event: "*", schema: "public", table: "chat_messages" }, () => {
+        if (activePage === "chat") loadChat();
+      }).subscribe(),
+    db.channel("piltae-private-messages")
+      .on("postgres_changes", { event: "*", schema: "public", table: "direct_messages" }, () => {
+        if (activePage === "dm" && selectedDmId) loadDmMessages();
+      }).subscribe()
+  );
+}
 
-        if (data.session?.user) {
-          showLoggedIn(data.session.user);
-        }
-      } catch (error) {
-        console.error("Initialization error:", error);
-        showNotice("Could not connect to Supabase: " + errorText(error), "error");
-      }
+async function loadChat() {
+  if (!currentUser) return;
+  const box = $("chatMessages");
+  try {
+    const { data, error } = await db.from("chat_messages")
+      .select("id,user_id,body,created_at,profiles(display_name,role)")
+      .order("created_at", { ascending: false })
+      .limit(100);
+    if (error) throw error;
+    if (!data?.length) {
+      box.innerHTML = '<div class="empty">No messages yet. Start the conversation!</div>';
+      return;
+    }
+    box.innerHTML = data.reverse().map(m => {
+      const name = m.profiles?.display_name || "Member";
+      const role = m.profiles?.role || "member";
+      const canDelete = isStaff() || m.user_id === currentUser.id;
+      return `<div class="message"><div class="messagehead"><strong>${esc(name)} ${role !== "member" ? `<span class="tag ${esc(role)}">${esc(role)}</span>` : ""}</strong><time>${esc(timeText(m.created_at))}</time></div><p>${esc(m.body)}</p>${canDelete ? `<button class="smallbtn" data-delete-chat="${esc(m.id)}" type="button">Delete</button>` : ""}</div>`;
+    }).join("");
+    box.scrollTop = box.scrollHeight;
+  } catch (error) {
+    box.innerHTML = `<div class="empty">Chat failed to load: ${esc(error.message)}</div>`;
+  }
+}
+$("reloadChat").addEventListener("click", loadChat);
+$("chatForm").addEventListener("submit", async event => {
+  event.preventDefault();
+  const body = $("chatText").value.trim();
+  if (!body || !currentUser) return;
+  const button = $("sendChatButton");
+  setBusy(button, true, "Sending...", "Send");
+  try {
+    const { error } = await db.from("chat_messages").insert({ user_id: currentUser.id, body });
+    if (error) throw error;
+    $("chatText").value = "";
+    await loadChat();
+  } catch (error) {
+    toast("Message failed: " + error.message, "error");
+  } finally {
+    setBusy(button, false, "Sending...", "Send");
+  }
+});
+$("chatMessages").addEventListener("click", async event => {
+  const button = event.target.closest("[data-delete-chat]");
+  if (!button || !confirm("Delete this public chat message?")) return;
+  try {
+    const { error } = await db.from("chat_messages").delete().eq("id", button.dataset.deleteChat);
+    if (error) throw error;
+    toast("Message deleted.", "success");
+    loadChat();
+  } catch (error) {
+    toast("Could not delete: " + error.message, "error");
+  }
+});
+
+async function fetchProfiles(ids) {
+  const map = new Map();
+  if (!ids.length) return map;
+  const { data, error } = await db.from("profiles")
+    .select("user_id,display_name,role,coins")
+    .in("user_id", ids);
+  if (error) throw error;
+  (data || []).forEach(p => map.set(p.user_id, p));
+  return map;
+}
+
+async function loadFriends() {
+  if (!currentUser) return;
+  $("incomingRequests").innerHTML = '<div class="empty">Loading...</div>';
+  $("friendsList").innerHTML = '<div class="empty">Loading...</div>';
+
+  try {
+    const { data, error } = await db.from("friend_requests")
+      .select("id,sender_id,receiver_id,status,created_at")
+      .or(`sender_id.eq.${currentUser.id},receiver_id.eq.${currentUser.id}`)
+      .order("created_at", { ascending: false })
+      .limit(200);
+    if (error) throw error;
+
+    const rows = data || [];
+    const incoming = rows.filter(r => r.receiver_id === currentUser.id && r.status === "pending");
+
+    if (!incoming.length) {
+      $("incomingRequests").innerHTML = '<div class="empty">No pending requests.</div>';
+    } else {
+      const profiles = await fetchProfiles([...new Set(incoming.map(r => r.sender_id))]);
+      $("incomingRequests").innerHTML = incoming.map(r => {
+        const p = profiles.get(r.sender_id);
+        return `<div class="rowcard"><div class="grow"><strong>${esc(p?.display_name || "Member")}</strong><span class="mutedline">Wants to connect</span></div><button class="smallbtn" data-request="${esc(r.id)}" data-accept="true">Accept</button><button class="smallbtn" data-request="${esc(r.id)}" data-accept="false">Decline</button></div>`;
+      }).join("");
     }
 
-    initialize();
-  </script>
+    const accepted = rows.filter(r => r.status === "accepted");
+    const friendIds = [...new Set(accepted.map(r => r.sender_id === currentUser.id ? r.receiver_id : r.sender_id))];
+    const friendProfiles = await fetchProfiles(friendIds);
+
+    $("friendsList").innerHTML = friendIds.length ? friendIds.map(id => {
+      const p = friendProfiles.get(id);
+      return `<div class="rowcard"><div class="grow"><strong>${esc(p?.display_name || "Member")}</strong><span class="mutedline">${esc(roleTitle(p?.role || "member"))}</span></div><button class="smallbtn" data-open-dm="${esc(id)}" data-friend-name="${esc(p?.display_name || "Member")}">Message</button></div>`;
+    }).join("") : '<div class="empty">No friends yet. Search a name above.</div>';
+
+    $("dashFriends").textContent = String(friendIds.length);
+  } catch (error) {
+    $("incomingRequests").innerHTML = `<div class="empty">Could not load requests: ${esc(error.message)}</div>`;
+    $("friendsList").innerHTML = '<div class="empty">Check the friend-request SQL setup.</div>';
+  }
+}
+$("reloadFriends").addEventListener("click", loadFriends);
+
+$("friendSearchForm").addEventListener("submit", async event => {
+  event.preventDefault();
+  const term = $("friendSearchName").value.trim().replace(/[%_]/g, "");
+  const host = $("friendSearchResults");
+  if (!term) return;
+  host.innerHTML = '<div class="empty">Searching...</div>';
+
+  try {
+    const { data, error } = await db.from("profiles")
+      .select("user_id,display_name,role")
+      .ilike("display_name", `%${term}%`)
+      .neq("user_id", currentUser.id)
+      .limit(20);
+    if (error) throw error;
+    if (!data?.length) {
+      host.innerHTML = '<div class="empty">No matching member found.</div>';
+      return;
+    }
+    host.innerHTML = data.map(p =>
+      `<div class="rowcard"><div class="grow"><strong>${esc(p.display_name)}</strong><span class="mutedline">${esc(roleTitle(p.role))}</span></div><button class="smallbtn" data-add-friend="${esc(p.display_name)}">Add friend</button></div>`
+    ).join("");
+  } catch (error) {
+    host.innerHTML = `<div class="empty">Search failed: ${esc(error.message)}</div>`;
+  }
+});
+
+$("friendSearchResults").addEventListener("click", async event => {
+  const button = event.target.closest("[data-add-friend]");
+  if (!button) return;
+  button.disabled = true;
+  try {
+    const { data, error } = await db.rpc("send_friend_request", { p_target_display_name: button.dataset.addFriend });
+    if (error) throw error;
+    toast(typeof data === "string" ? data : "Friend request sent.", "success");
+    loadFriends();
+  } catch (error) {
+    toast("Friend request failed: " + error.message, "error");
+  } finally {
+    button.disabled = false;
+  }
+});
+
+$("incomingRequests").addEventListener("click", async event => {
+  const button = event.target.closest("[data-request]");
+  if (!button) return;
+  try {
+    const { data, error } = await db.rpc("respond_friend_request", {
+      p_request_id: button.dataset.request,
+      p_accept: button.dataset.accept === "true"
+    });
+    if (error) throw error;
+    toast(typeof data === "string" ? data : "Request updated.", "success");
+    await loadFriends();
+    await loadDashboardFriendsCount();
+  } catch (error) {
+    toast("Could not update request: " + error.message, "error");
+  }
+});
+
+async function loadDmFriendChoices() {
+  if (!currentUser) return;
+  const host = $("dmFriendChoices");
+
+  try {
+    const { data, error } = await db.from("friend_requests")
+      .select("sender_id,receiver_id")
+      .eq("status", "accepted")
+      .or(`sender_id.eq.${currentUser.id},receiver_id.eq.${currentUser.id}`)
+      .limit(200);
+    if (error) throw error;
+    const ids = [...new Set((data || []).map(r => r.sender_id === currentUser.id ? r.receiver_id : r.sender_id))];
+    const profiles = await fetchProfiles(ids);
+
+    if (!ids.length) {
+      host.innerHTML = '<div class="empty">Add friends before starting private messages.</div>';
+      return;
+    }
+
+    host.innerHTML = '<p class="muted">Choose a friend:</p>' + ids.map(id => {
+      const p = profiles.get(id);
+      return `<button class="smallbtn" style="margin:4px" data-open-dm="${esc(id)}" data-friend-name="${esc(p?.display_name || "Member")}">${esc(p?.display_name || "Member")}</button>`;
+    }).join("");
+
+    if (selectedDmId) {
+      $("dmSelected").hidden = false;
+      $("dmSelected").textContent = "Private chat with " + selectedDmName;
+      $("dmText").disabled = false;
+      $("sendDmButton").disabled = false;
+      await loadDmMessages();
+    }
+  } catch (error) {
+    host.innerHTML = `<div class="empty">Friends couldn't load: ${esc(error.message)}</div>`;
+  }
+}
+async function openDm(id, name) {
+  selectedDmId = id;
+  selectedDmName = name || "Friend";
+  $("dmSelected").hidden = false;
+  $("dmSelected").textContent = "Private chat with " + selectedDmName;
+  $("dmText").disabled = false;
+  $("sendDmButton").disabled = false;
+  navigate("dm");
+  await loadDmFriendChoices();
+  await loadDmMessages();
+}
+$("dmFriendChoices").addEventListener("click", async event => {
+  const button = event.target.closest("[data-open-dm]");
+  if (button) await openDm(button.dataset.openDm, button.dataset.friendName);
+});
+$("friendsList").addEventListener("click", async event => {
+  const button = event.target.closest("[data-open-dm]");
+  if (button) await openDm(button.dataset.openDm, button.dataset.friendName);
+});
+
+async function loadDmMessages() {
+  if (!currentUser || !selectedDmId) return;
+  const box = $("dmMessages");
+  try {
+    const filter = `and(sender_id.eq.${currentUser.id},recipient_id.eq.${selectedDmId}),and(sender_id.eq.${selectedDmId},recipient_id.eq.${currentUser.id})`;
+    const { data, error } = await db.from("direct_messages")
+      .select("id,sender_id,recipient_id,body,created_at")
+      .or(filter)
+      .order("created_at", { ascending: true })
+      .limit(150);
+    if (error) throw error;
+    if (!data?.length) {
+      box.innerHTML = '<div class="empty">No private messages yet. Say hello!</div>';
+      return;
+    }
+    box.innerHTML = data.map(m =>
+      `<div class="message"><div class="messagehead"><strong>${m.sender_id === currentUser.id ? "You" : esc(selectedDmName)}</strong><time>${esc(timeText(m.created_at))}</time></div><p>${esc(m.body)}</p></div>`
+    ).join("");
+    box.scrollTop = box.scrollHeight;
+  } catch (error) {
+    box.innerHTML = `<div class="empty">Private messages couldn't load: ${esc(error.message)}</div>`;
+  }
+}
+$("dmForm").addEventListener("submit", async event => {
+  event.preventDefault();
+  const body = $("dmText").value.trim();
+  if (!body || !selectedDmId) return;
+
+  const button = $("sendDmButton");
+  setBusy(button, true, "Sending...", "Send");
+  try {
+    const { error } = await db.from("direct_messages").insert({
+      sender_id: currentUser.id, recipient_id: selectedDmId, body
+    });
+    if (error) throw error;
+    $("dmText").value = "";
+    await loadDmMessages();
+  } catch (error) {
+    toast("Private message failed: " + error.message, "error");
+  } finally {
+    setBusy(button, false, "Sending...", "Send");
+  }
+});
+
+async function loadShop() {
+  if (!currentUser) return;
+  const host = $("shopItems");
+  host.innerHTML = '<div class="empty">Loading shop...</div>';
+  try {
+    const { data, error } = await db.from("shop_items")
+      .select("id,name,description,price,active,created_at")
+      .order("created_at", { ascending: false }).limit(100);
+    if (error) throw error;
+    if (!data?.length) {
+      host.innerHTML = '<div class="empty">The shop is empty. Staff can publish items from the Admin panel.</div>';
+      return;
+    }
+    host.innerHTML = data.map(item =>
+      `<article class="itemcard"><strong>${esc(item.name)}</strong><p>${esc(item.description || "No description.")}</p><div class="coin">🪙 ${money(item.price)} coins</div>${item.active ? `<button class="btn" data-buy-item="${esc(item.id)}">Buy item</button>` : `<p>Unavailable</p>`}${isStaff() ? `<button class="smallbtn" style="margin-top:7px" data-toggle-item="${esc(item.id)}" data-active="${item.active ? "false" : "true"}">${item.active ? "Disable" : "Enable"}</button>` : ""}</article>`
+    ).join("");
+  } catch (error) {
+    host.innerHTML = `<div class="empty">Shop failed: ${esc(error.message)}</div>`;
+  }
+}
+async function loadPurchases() {
+  if (!currentUser) return;
+  const host = $("purchasesList");
+  try {
+    const { data, error } = await db.from("purchases")
+      .select("id,item_name,price,created_at")
+      .eq("user_id", currentUser.id)
+      .order("created_at", { ascending: false }).limit(50);
+    if (error) throw error;
+    host.innerHTML = data?.length ? data.map(p =>
+      `<div class="rowcard"><div class="grow"><strong>${esc(p.item_name)}</strong><span class="mutedline">${esc(timeText(p.created_at))}</span></div><span class="coin">−${money(p.price)} 🪙</span></div>`
+    ).join("") : '<div class="empty">You have not purchased anything yet.</div>';
+  } catch (error) {
+    host.innerHTML = `<div class="empty">Purchase history failed: ${esc(error.message)}</div>`;
+  }
+}
+$("reloadShop").addEventListener("click", () => { loadShop(); loadPurchases(); });
+$("shopItems").addEventListener("click", async event => {
+  const buy = event.target.closest("[data-buy-item]");
+  const toggle = event.target.closest("[data-toggle-item]");
+
+  if (buy) {
+    buy.disabled = true;
+    try {
+      const { error } = await db.rpc("buy_shop_item", { p_item_id: buy.dataset.buyItem });
+      if (error) throw error;
+      await refreshMyProfile();
+      await loadShop(); await loadPurchases(); await loadLeaderboard();
+      toast("Purchase successful!", "success");
+    } catch (error) {
+      toast("Purchase failed: " + error.message, "error");
+    } finally {
+      buy.disabled = false;
+    }
+  }
+  if (toggle) {
+    try {
+      const { error } = await db.rpc("set_shop_item_active", {
+        p_item_id: toggle.dataset.toggleItem, p_active: toggle.dataset.active === "true"
+      });
+      if (error) throw error;
+      await loadShop();
+      toast("Shop item updated.", "success");
+    } catch (error) {
+      toast("Couldn't update item: " + error.message, "error");
+    }
+  }
+});
+
+async function loadEvents() {
+  if (!currentUser) return;
+  const host = $("eventsList"), history = $("eventHistory");
+  try {
+    const { data, error } = await db.from("fake_events")
+      .select("id,title,description,status,outcome,created_at,settled_at")
+      .order("created_at", { ascending: false }).limit(100);
+    if (error) throw error;
+
+    const { data: bets, error: betError } = await db.from("fake_event_bets")
+      .select("event_id,choice,amount,payout")
+      .eq("user_id", currentUser.id).limit(200);
+    if (betError) throw betError;
+    const betMap = new Map((bets || []).map(b => [b.event_id, b]));
+    const events = data || [];
+
+    if (!events.length) {
+      host.innerHTML = '<div class="empty">No events yet. Staff can host one from the Admin panel.</div>';
+    } else {
+      host.innerHTML = events.map(e => {
+        const bet = betMap.get(e.id);
+        return `<article class="eventcard"><strong>${esc(e.title)}</strong><p>${esc(e.description || "Pick heads or tails. Winning wagers receive 2× their bet.")}</p><span class="tag ${e.status === "open" ? "admin" : ""}">${esc(e.status)}</span>${bet ? `<p>Your bet: <strong>${esc(bet.choice)}</strong> · ${money(bet.amount)} coins</p>` : ""}${e.status === "open" && !bet ? `<form class="betform" data-bet-form="${esc(e.id)}"><div class="field"><label>Wager (coins)</label><input name="amount" type="number" min="1" max="1000000" value="25" required></div><div class="inlineform"><button class="btn" name="choice" value="heads" type="submit">Heads</button><button class="btn secondary" name="choice" value="tails" type="submit">Tails</button></div></form>` : ""}${e.status === "open" && isStaff() ? `<button class="btn secondary" data-settle-event="${esc(e.id)}">Settle event (random)</button>` : ""}${e.status === "settled" ? `<p>Result: <strong>${esc(e.outcome)}</strong></p>${bet ? `<p>${bet.payout > 0 ? `Payout: ${money(bet.payout)} coins` : "Your wager did not win."}</p>` : ""}` : ""}</article>`;
+      }).join("");
+    }
+
+    const settled = events.filter(e => e.status === "settled");
+    history.innerHTML = settled.length ? settled.slice(0,20).map(e =>
+      `<div class="rowcard"><div class="grow"><strong>${esc(e.title)}</strong><span class="mutedline">${esc(timeText(e.settled_at || e.created_at))}</span></div><span class="tag">${esc(e.outcome || "settled")}</span></div>`
+    ).join("") : '<div class="empty">No settled events yet.</div>';
+  } catch (error) {
+    host.innerHTML = `<div class="empty">Events failed: ${esc(error.message)}</div>`;
+    history.innerHTML = '<div class="empty">Check the database setup.</div>';
+  }
+}
+$("reloadEvents").addEventListener("click", loadEvents);
+$("eventsList").addEventListener("submit", async event => {
+  const form = event.target.closest("[data-bet-form]");
+  if (!form) return;
+  event.preventDefault();
+  const choice = event.submitter?.value;
+  const amount = Number(new FormData(form).get("amount"));
+  if (!["heads","tails"].includes(choice)) return toast("Choose heads or tails.", "error");
+
+  const buttons = form.querySelectorAll("button");
+  buttons.forEach(b => b.disabled = true);
+  try {
+    const { error } = await db.rpc("place_fake_bet", {
+      p_event_id: form.dataset.betForm, p_choice: choice, p_amount: amount
+    });
+    if (error) throw error;
+    await refreshMyProfile(); await loadEvents(); await loadLeaderboard();
+    toast("Your virtual-coin bet was placed.", "success");
+  } catch (error) {
+    toast("Bet failed: " + error.message, "error");
+  } finally {
+    buttons.forEach(b => b.disabled = false);
+  }
+});
+$("eventsList").addEventListener("click", async event => {
+  const button = event.target.closest("[data-settle-event]");
+  if (!button || !confirm("Settle this event with a server-generated virtual coin-flip result?")) return;
+  button.disabled = true;
+  try {
+    const { data, error } = await db.rpc("settle_fake_event", { p_event_id: button.dataset.settleEvent });
+    if (error) throw error;
+    await refreshMyProfile(); await loadEvents(); await loadLeaderboard();
+    toast("Event settled. Result: " + data, "success");
+  } catch (error) {
+    toast("Couldn't settle event: " + error.message, "error");
+  } finally {
+    button.disabled = false;
+  }
+});
+
+$("createItemForm").addEventListener("submit", async event => {
+  event.preventDefault();
+  const form = event.target, button = event.submitter;
+  setBusy(button, true, "Publishing...", "Publish item");
+  try {
+    const { error } = await db.rpc("create_shop_item", {
+      p_name: $("itemName").value.trim(),
+      p_description: $("itemDescription").value.trim(),
+      p_price: Number($("itemPrice").value)
+    });
+    if (error) throw error;
+    form.reset(); await loadShop();
+    toast("Shop item published.", "success");
+  } catch (error) {
+    toast("Couldn't publish item: " + error.message, "error");
+  } finally {
+    setBusy(button, false, "Publishing...", "Publish item");
+  }
+});
+
+$("createEventForm").addEventListener("submit", async event => {
+  event.preventDefault();
+  const form = event.target, button = event.submitter;
+  setBusy(button, true, "Opening event...", "Open event");
+  try {
+    const { error } = await db.rpc("create_fake_event", {
+      p_title: $("eventTitle").value.trim(),
+      p_description: $("eventDescription").value.trim()
+    });
+    if (error) throw error;
+    form.reset(); await loadEvents();
+    toast("Fake-coin event created.", "success");
+  } catch (error) {
+    toast("Couldn't create event: " + error.message, "error");
+  } finally {
+    setBusy(button, false, "Opening event...", "Open event");
+  }
+});
+
+async function loadMembers() {
+  if (!isStaff()) return;
+  const host = $("membersList");
+  host.innerHTML = '<div class="empty">Loading members...</div>';
+  try {
+    const { data, error } = await db.from("profiles")
+      .select("user_id,display_name,role,coins,created_at")
+      .order("created_at", { ascending: false }).limit(100);
+    if (error) throw error;
+
+    host.innerHTML = (data || []).map(p => {
+      const roleClass = p.role === "owner" ? "owner" : p.role === "admin" ? "admin" : "";
+      const roleControls = isOwner() && p.role !== "owner"
+        ? `<div class="field"><label>Role</label><select data-role-select="${esc(p.user_id)}"><option value="member" ${p.role === "member" ? "selected" : ""}>Member</option><option value="admin" ${p.role === "admin" ? "selected" : ""}>Admin</option></select><button class="smallbtn" data-change-role="${esc(p.user_id)}" style="margin-top:6px">Save role</button></div>`
+        : "";
+      return `<div class="rowcard"><div class="grow"><strong>${esc(p.display_name)}</strong><span class="tag ${roleClass}">${esc(p.role)}</span><p class="mutedline">${money(p.coins)} coins</p><div class="inlineform"><input type="number" min="1" max="1000000000" value="100" data-grant-amount="${esc(p.user_id)}" aria-label="Coins to grant"><button class="smallbtn" data-grant-coins="${esc(p.user_id)}">Grant coins</button></div>${roleControls}</div></div>`;
+    }).join("") || '<div class="empty">No members found.</div>';
+  } catch (error) {
+    host.innerHTML = `<div class="empty">Member list failed: ${esc(error.message)}</div>`;
+  }
+}
+$("reloadMembers").addEventListener("click", loadMembers);
+$("membersList").addEventListener("click", async event => {
+  const grant = event.target.closest("[data-grant-coins]");
+  const changeRole = event.target.closest("[data-change-role]");
+
+  if (grant) {
+    const uid = grant.dataset.grantCoins;
+    const input = document.querySelector(`[data-grant-amount="${CSS.escape(uid)}"]`);
+    grant.disabled = true;
+    try {
+      const { error } = await db.rpc("grant_fake_coins", { p_user_id: uid, p_amount: Number(input?.value) });
+      if (error) throw error;
+      await loadMembers(); await refreshMyProfile(); await loadLeaderboard();
+      toast("Virtual coins granted.", "success");
+    } catch (error) {
+      toast("Grant failed: " + error.message, "error");
+    } finally {
+      grant.disabled = false;
+    }
+  }
+
+  if (changeRole) {
+    const uid = changeRole.dataset.changeRole;
+    const select = document.querySelector(`[data-role-select="${CSS.escape(uid)}"]`);
+    changeRole.disabled = true;
+    try {
+      const { error } = await db.rpc("set_member_role", { p_user_id: uid, p_role: select.value });
+      if (error) throw error;
+      await loadMembers();
+      toast("Member role updated.", "success");
+    } catch (error) {
+      toast("Role change failed: " + error.message, "error");
+    } finally {
+      changeRole.disabled = false;
+    }
+  }
+});
+
+async function initialize() {
+  try {
+    if (!window.supabase?.createClient) throw new Error("Supabase's JavaScript library did not load. Check your internet connection.");
+    if (!/^https:\/\/[a-z0-9-]+\.supabase\.co\/?$/.test(SUPABASE_URL) ||
+        !SUPABASE_PUBLISHABLE_KEY.startsWith("sb_publishable_")) {
+      throw new Error("The Supabase URL or publishable key is incorrect.");
+    }
+
+    db = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
+      auth: { autoRefreshToken: true, persistSession: true, detectSessionInUrl: true }
+    });
+
+    db.auth.onAuthStateChange((eventName, session) => {
+      window.setTimeout(() => {
+        if (session?.user) handleSession(session);
+        else if (eventName === "SIGNED_OUT" || eventName === "INITIAL_SESSION") handleSession(null);
+      }, 0);
+    });
+
+    const { data, error } = await db.auth.getSession();
+    if (error) throw error;
+
+    if (data.session?.user) {
+      await handleSession(data.session);
+    } else {
+      $("authView").hidden = false;
+      $("appView").hidden = true;
+      $("topRight").hidden = true;
+      showAuthMode("signup");
+
+      const hp = new URLSearchParams(window.location.hash.replace(/^#/,""));
+      const sp = new URLSearchParams(window.location.search);
+      const urlError = hp.get("error_description") || hp.get("error") ||
+                       sp.get("error_description") || sp.get("error");
+      if (urlError) toast("Email confirmation failed: " + urlError, "error");
+      else if (hp.get("type") === "signup" || sp.has("code")) {
+        showAuthMode("login");
+        toast("You've returned to PILTAE. If you're not signed in yet, log in with your confirmed account.", "success");
+      }
+    }
+  } catch (error) {
+    console.error("PILTAE startup error:", error);
+    showAuthMode("login");
+    toast("Could not start PILTAE: " + error.message, "error");
+  }
+}
+
+initialize();
+</script>
 </body>
 </html>
