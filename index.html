@@ -7,373 +7,253 @@
 <meta name="theme-color" content="#090b12">
 <title>PILTAE CHATTER</title>
 <style>
-:root{
-color-scheme:dark;
---bg:#090b12;
---panel:#111521;
---panel2:#171d2b;
---border:#293146;
---text:#f1f4ff;
---muted:#929bb3;
---accent:#8b5cf6;
---mint:#5eead4;
---danger:#fb7185;
---good:#34d399
-}
+:root{color-scheme:dark;--bg:#090b12;--panel:#111521;--border:#293146;--text:#f1f4ff;--muted:#929bb3;--accent:#8b5cf6;--mint:#5eead4}
 *{box-sizing:border-box}
-body{
-margin:0;
-min-height:100vh;
-padding:20px 14px;
-background:radial-gradient(ellipse at 10% 0%,#31205b66,transparent 42%),radial-gradient(ellipse at 100% 90%,#115e5940,transparent 38%),var(--bg);
-color:var(--text);
-font-family:system-ui,-apple-system,"Segoe UI",sans-serif
-}
-button,input,textarea,select{font:inherit}
-button{cursor:pointer}
-button:disabled{opacity:.55;cursor:wait}
-[hidden]{display:none!important}
-.shell{width:min(1180px,100%);margin:auto}
-.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:24px}
-.brand{display:flex;align-items:center;gap:11px;font-size:16px;font-weight:900;letter-spacing:1.4px}
-.logo{display:grid;place-items:center;width:42px;height:42px;border-radius:13px;background:linear-gradient(135deg,#a78bfa,#4338ca);box-shadow:0 8px 30px #8b5cf633;font-size:20px}
-.topright{display:flex;align-items:center;gap:10px}
-.wallet{padding:9px 12px;border:1px solid #3e365e;border-radius:999px;background:#1b1730;color:#ddd6fe;font-weight:800;font-size:13px}
-.smallbtn,.navbtn,.btn{border:1px solid var(--border);border-radius:11px;padding:10px 13px;background:#202637;color:var(--text);font-weight:750}
-.smallbtn:hover,.navbtn:hover,.btn:hover{filter:brightness(1.15)}
-.hero{margin:24px 0}
-.eyebrow{color:var(--mint);font-size:11px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase}
-h1{margin:10px 0;font-size:clamp(34px,6vw,56px);letter-spacing:-2px;line-height:1.06}
-.gradient{color:#a78bfa;background:linear-gradient(90deg,#a78bfa,#5eead4);background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.muted{color:var(--muted);font-size:13px;line-height:1.6}
-.card{padding:21px;border:1px solid var(--border);border-radius:18px;background:linear-gradient(160deg,#151a28f5,#0e121cf5);box-shadow:0 16px 55px #00000020;min-width:0}
-.card h2{margin:0 0 7px;font-size:20px}
-.card h3{margin:0 0 5px;font-size:15px}
-.auth-wrap{width:min(560px,100%);margin:42px auto}
-.tabs{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:20px 0;padding:5px;border:1px solid var(--border);border-radius:12px;background:#090c14}
-.tab{padding:11px 8px;border:0;border-radius:8px;background:transparent;color:var(--muted);font-weight:800}
-.tab.active{background:#292344;color:#fff}
-.field{margin:14px 0}
-label{display:block;margin-bottom:7px;color:#d5d9e8;font-size:12px;font-weight:800}
-input,textarea,select{width:100%;min-width:0;padding:12px 13px;border:1px solid #30384c;border-radius:10px;outline:none;background:#090d16;color:var(--text)}
-input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 0 0 3px #8b5cf622}
-textarea{min-height:90px;resize:vertical}
-.btn{width:100%;margin-top:8px;padding:12px 14px;border:0;background:linear-gradient(100deg,#7c3aed,#5b55dd)}
-.btn.secondary{border:1px solid #353e54;background:#202637}
-.btn.danger{background:#431b2a;border:1px solid #703044}
-.notice{margin:14px 0;padding:11px 13px;border:1px solid #3d4560;border-radius:10px;background:#171d2b;color:#e5e7eb;font-size:13px;line-height:1.55;overflow-wrap:anywhere}
-.notice.success{border-color:#246b5e;background:#102b29}
-.notice.error{border-color:#703044;background:#321722}
-.appgrid{display:grid;grid-template-columns:210px minmax(0,1fr);gap:16px;align-items:start}
-.sidebar{position:sticky;top:12px;display:grid;gap:7px}
-.navbtn{text-align:left;width:100%;background:#111521;color:#bdc5d9}
-.navbtn.active{background:#292344;border-color:#57438c;color:white}
-.navbtn .navicon{display:inline-block;width:24px}
-.maincol{min-width:0}
-.pagehead{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:17px}
-.pagehead h2{margin:0;font-size:24px}
-.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:17px 0}
-.stat{padding:16px;border:1px solid var(--border);border-radius:14px;background:#101521}
-.stat small{display:block;color:var(--muted);margin-bottom:8px}
-.stat strong{font-size:22px}
-.quickgrid,.itemsgrid,.eventgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-.quickcard,.itemcard,.eventcard,.rowcard{padding:14px;border:1px solid #293146;border-radius:13px;background:#101521;min-width:0}
-.rowcard{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:9px 0}
-.rowcard .grow{min-width:0;flex:1}
-.rowcard strong,.itemcard strong,.eventcard strong{display:block;overflow-wrap:anywhere}
-.itemcard p,.eventcard p{margin:7px 0;color:var(--muted);font-size:12px;line-height:1.5;overflow-wrap:anywhere}
-.inlineform{display:flex;gap:8px;align-items:center}
-.inlineform input{flex:1;min-width:0}
-.inlineform .btn,.inlineform .smallbtn{width:auto;flex:0 0 auto;flex-shrink:0;margin:0}
-.inlineform .btn{flex:1}
-.chatbox{height:420px;overflow:auto;display:flex;flex-direction:column;gap:10px;padding:13px;border:1px solid #293146;border-radius:13px;background:#0a0e17;margin-bottom:12px}
-.message{padding:10px 12px;border:1px solid #252c3d;border-radius:12px;background:#121827;max-width:100%;overflow-wrap:anywhere}
-.messagehead{display:flex;gap:8px;align-items:center;justify-content:space-between;margin-bottom:5px}
-.messagehead strong{font-size:12px}
-.messagehead time{font-size:10px;color:var(--muted)}
-.message p{margin:0;font-size:13px;white-space:pre-wrap}
-.chatinput{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px}
-.chatinput textarea{min-height:44px;height:44px}
-.chatinput .btn{width:auto;margin:0}
-.tag{display:inline-block;padding:4px 7px;border-radius:99px;background:#25203b;color:#c4b5fd;font-size:10px;font-weight:900;text-transform:uppercase}
-.tag.owner{background:#4b3410;color:#fde68a}
-.tag.admin{background:#193b3a;color:#99f6e4}
-.mutedline{color:var(--muted);font-size:12px}
-.twoform{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.twoform .wide{grid-column:1/-1}
-.empty{padding:20px;text-align:center;color:var(--muted);font-size:13px}
-.sectiongap{margin-top:16px}
-.footer{margin:30px 0 8px;text-align:center;font-size:11px;color:#727c94}
-.staffonly{border-color:#51417a}
-.coin{color:#fde68a;font-weight:850}
-.dangertext{color:#fda4af}
-.selectedfriend{margin-bottom:10px;padding:10px 12px;border-radius:10px;background:#171d2b;color:#ddd6fe;font-size:13px}
-.owner-hud{position:fixed;inset:0;z-index:9999;display:grid;place-items:center;padding:18px;background:#03050ddd;backdrop-filter:blur(12px)}
-.owner-hud-card{width:min(520px,100%);padding:23px;border:1px solid #65519a;border-radius:19px;background:linear-gradient(155deg,#19162a,#0b101a);box-shadow:0 25px 100px #0009}
-.owner-hud-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
-.owner-hud-head h2{margin:7px 0}
-.owner-hud-hint{margin:12px 0 18px;color:var(--muted);font-size:13px;line-height:1.6}
-.owner-hud-input{letter-spacing:1px}
+body{margin:0;padding:20px 14px;background:radial-gradient(ellipse at 10% 0%,#31205b66,transparent 42%),var(--bg);color:var(--text);font-family:system-ui,Segoe UI,sans-serif}
+button,input,textarea,select{font:inherit}button{cursor:pointer}button:disabled{opacity:.5;cursor:wait}[hidden]{display:none!important}
+.shell{width:min(1180px,100%);margin:auto}.topbar{display:flex;justify-content:space-between;align-items:center;gap:14px;margin-bottom:26px}
+.brand{display:flex;gap:11px;align-items:center;font-weight:900;letter-spacing:1.2px}.logo{display:grid;place-items:center;width:42px;height:42px;border-radius:13px;background:linear-gradient(135deg,#a78bfa,#4338ca);font-size:20px}
+.topright{display:flex;align-items:center;gap:10px}.wallet{padding:9px 12px;border:1px solid #3e365e;border-radius:99px;background:#1b1730;color:#ddd6fe;font-size:13px;font-weight:800}
+.hero{margin:24px 0}.eyebrow{color:var(--mint);font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase}
+h1{font-size:clamp(36px,6vw,55px);letter-spacing:-2px;line-height:1.08;margin:10px 0}.gradient{background:linear-gradient(90deg,#a78bfa,#5eead4);background-clip:text;color:transparent}
+.muted{color:var(--muted);font-size:13px;line-height:1.6}.mutedline{font-size:12px;color:var(--muted)}.card{padding:20px;border:1px solid var(--border);border-radius:17px;background:linear-gradient(155deg,#151a28,#0e121c);min-width:0;margin-bottom:14px}
+.card h2{font-size:20px;margin:0 0 8px}.card h3{font-size:15px;margin:0 0 8px}
+.auth-wrap{width:min(550px,100%);margin:40px auto}.tabs{display:grid;grid-template-columns:1fr 1fr;gap:5px;padding:5px;margin:20px 0;background:#090c14;border:1px solid var(--border);border-radius:12px}
+.tab{padding:11px;border:0;border-radius:8px;background:transparent;color:var(--muted);font-weight:800}.tab.active{background:#292344;color:white}
+.field{margin:13px 0}label{display:block;margin-bottom:7px;color:#d5d9e8;font-size:12px;font-weight:800}
+input,textarea,select{width:100%;min-width:0;padding:12px;border:1px solid #30384c;border-radius:10px;outline:none;background:#090d16;color:var(--text)}
+input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 0 0 3px #8b5cf622}textarea{min-height:85px;resize:vertical}
+.btn,.smallbtn,.navbtn{border:1px solid var(--border);border-radius:10px;padding:10px 13px;background:#202637;color:var(--text);font-weight:750}
+.btn{width:100%;margin-top:8px;background:linear-gradient(100deg,#7c3aed,#5b55dd);border:0;padding:12px}
+.btn.secondary{border:1px solid #353e54;background:#202637}.smallbtn{font-size:12px}.notice{padding:11px 13px;margin:12px 0;border:1px solid #3d4560;border-radius:10px;background:#171d2b;font-size:13px;line-height:1.55;overflow-wrap:anywhere}
+.notice.success{border-color:#246b5e;background:#102b29}.notice.error{border-color:#703044;background:#321722}
+.appgrid{display:grid;grid-template-columns:200px minmax(0,1fr);gap:15px;align-items:start}.sidebar{position:sticky;top:12px;display:grid;gap:7px}.navbtn{background:#111521;color:#bdc5d9;text-align:left;width:100%}.navbtn.active{background:#292344;border-color:#57438c;color:white}.navicon{display:inline-block;width:24px}
+.maincol{min-width:0}.pagehead{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:17px}.pagehead h2{font-size:24px;margin:0}.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:16px 0}
+.stat{padding:15px;border:1px solid var(--border);border-radius:13px;background:#101521}.stat small{display:block;color:var(--muted);margin-bottom:8px}.stat strong{font-size:22px}
+.quickgrid,.itemsgrid,.eventgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}.quickcard,.itemcard,.eventcard,.rowcard{padding:14px;border:1px solid #293146;border-radius:13px;background:#101521;min-width:0}
+.quickcard{text-align:left}.quickcard strong{display:block;margin:6px 0}.rowcard{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:8px 0}.grow{min-width:0;flex:1}.rowcard strong,.itemcard strong,.eventcard strong{display:block;overflow-wrap:anywhere}
+.itemcard p,.eventcard p{color:var(--muted);font-size:12px;line-height:1.5;overflow-wrap:anywhere}.inlineform{display:flex;align-items:center;gap:8px}.inlineform input{flex:1}.inlineform .btn{width:auto;margin:0}
+.chatbox{height:400px;overflow:auto;display:flex;flex-direction:column;gap:9px;padding:12px;border:1px solid #293146;border-radius:12px;background:#0a0e17;margin-bottom:12px}
+.message{padding:10px 12px;border:1px solid #252c3d;border-radius:12px;background:#121827;overflow-wrap:anywhere}.messagehead{display:flex;justify-content:space-between;gap:8px;margin-bottom:5px}.messagehead strong{font-size:12px}.messagehead time{font-size:10px;color:var(--muted)}.message p{margin:0;font-size:13px;white-space:pre-wrap}
+.chatinput{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px}.chatinput textarea{height:46px;min-height:46px}.chatinput .btn{width:auto;margin:0}
+.tag{display:inline-block;padding:4px 7px;border-radius:99px;background:#25203b;color:#c4b5fd;font-size:10px;font-weight:900;text-transform:uppercase}.tag.owner{background:#4b3410;color:#fde68a}.tag.admin{background:#193b3a;color:#99f6e4}
+.twoform{display:grid;grid-template-columns:1fr 1fr;gap:9px}.twoform .wide{grid-column:1/-1}.empty{padding:18px;text-align:center;color:var(--muted);font-size:13px}.sectiongap{margin-top:16px}.coin{color:#fde68a;font-weight:850}.footer{margin:28px 0 8px;text-align:center;font-size:11px;color:#727c94}
+.shop-image{display:block;width:100%;aspect-ratio:16/10;object-fit:contain;background:#090d16;border:1px solid #293146;border-radius:10px;margin-bottom:11px}
+.inventory-quantity{display:inline-block;padding:4px 8px;border-radius:99px;background:#1d3440;color:#99f6e4;font-size:11px;font-weight:800}
 .mines-queue-layout{display:grid;grid-template-columns:minmax(230px,.82fr) minmax(0,1.18fr);gap:14px;align-items:start}
-.mines-queue-card{min-width:0}
-.mines-queue-buttons{display:grid;gap:7px;margin-top:13px}
-.queue-count{display:flex;justify-content:space-between;align-items:center;padding:10px 12px;margin-top:14px;border:1px solid #293146;border-radius:10px;background:#0c111b;color:#bdc5d9;font-size:12px}
-.queue-count strong{font-size:16px;color:#ddd6fe}
-.mines-queue-list{display:grid;gap:8px;margin-top:10px}
+.mines-queue-buttons{display:grid;gap:7px;margin-top:12px}.queue-count{display:flex;justify-content:space-between;padding:10px;margin-top:12px;border:1px solid #293146;border-radius:10px;background:#0c111b;font-size:12px}
+.queue-count strong{font-size:16px;color:#ddd6fe}.mines-queue-list{display:grid;gap:8px;margin-top:10px}
 .queue-player{display:flex;align-items:center;gap:9px;padding:10px;border:1px solid #293146;border-radius:11px;background:#0c111b}
 .queue-rank{display:grid;place-items:center;flex:0 0 30px;height:30px;border-radius:9px;background:#25203b;color:#c4b5fd;font-weight:900}
-.queue-player.current{border-color:#7c5acc;background:#1b1730}
-.queue-player.playing{border-color:#278571;background:#10332d}
-.queue-player .queue-player-info{min-width:0;flex:1}
-.queue-player .queue-player-info strong{display:block;overflow-wrap:anywhere;font-size:12px}
-.queue-player .queue-player-info span{display:block;color:var(--muted);font-size:11px;margin-top:3px}
-.queue-badge{font-size:9px;font-weight:900;letter-spacing:.4px;text-transform:uppercase;color:#c4b5fd}
-.queue-player.playing .queue-badge{color:#99f6e4}
-.mines-play-card{min-width:0}
-@media(max-width:800px){
-.mines-queue-layout,.appgrid{grid-template-columns:1fr}
-.sidebar{position:static;display:flex;overflow:auto;padding-bottom:4px}
-.navbtn{white-space:nowrap;width:auto;flex:0 0 auto}
-.stats{grid-template-columns:1fr 1fr}
-.quickgrid,.itemsgrid,.eventgrid{grid-template-columns:1fr 1fr}
-}
-@media(max-width:520px){
-body{padding:15px 10px}
-.card{padding:16px}
-.topbar{align-items:flex-start}
-.brand{font-size:13px}
-.topright{flex-direction:column;align-items:flex-end}
-.stats,.quickgrid,.itemsgrid,.eventgrid,.twoform{grid-template-columns:1fr}
-.twoform .wide{grid-column:auto}
-.rowcard{align-items:flex-start}
-.inlineform{flex-wrap:wrap}
-.mines-controls{grid-template-columns:1fr}
-.mines-board{gap:5px}
-}
-.shop-image{display:block;width:100%;aspect-ratio:16/10;object-fit:contain;background:#090d16;border:1px solid #293146;border-radius:11px;margin-bottom:11px}
-.inventory-quantity{display:inline-block;padding:4px 8px;border-radius:999px;background:#1d3440;color:#99f6e4;font-size:11px;font-weight:800}
-.mines-controls{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.mines-board{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px;margin-top:15px}
+.queue-player.current{border-color:#7c5acc;background:#1b1730}.queue-player.playing{border-color:#278571;background:#10332d}.queue-player-info{flex:1;min-width:0}
+.queue-player-info strong{display:block;overflow-wrap:anywhere;font-size:12px}.queue-player-info span{display:block;color:var(--muted);font-size:11px;margin-top:3px}
+.queue-badge{font-size:9px;font-weight:900;letter-spacing:.4px;text-transform:uppercase;color:#c4b5fd}.queue-player.playing .queue-badge{color:#99f6e4}
+.mines-controls{display:grid;grid-template-columns:1fr 1fr;gap:12px}.mines-board{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px;margin-top:15px}
 .mine-tile{display:grid;place-items:center;aspect-ratio:1/1;min-width:0;padding:0;border:1px solid #39435d;border-radius:11px;background:linear-gradient(145deg,#1c2435,#101521);color:#e5e7eb;font-size:clamp(16px,3vw,24px);font-weight:900}
-.mine-tile:not(:disabled):hover{border-color:#a78bfa;transform:translateY(-1px)}
-.mine-tile.safe{background:#10332d;border-color:#278571;color:#99f6e4}
-.mine-tile.mine{background:#421a2a;border-color:#963f5b;color:#fecdd3}
-.mines-stat{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
-.mines-stat span{padding:7px 10px;border:1px solid #2b3448;border-radius:9px;background:#0c111b;color:#cbd5e1;font-size:12px}
+.mine-tile:not(:disabled):hover{border-color:#a78bfa}.mine-tile.safe{background:#10332d;border-color:#278571;color:#99f6e4}.mine-tile.mine{background:#421a2a;border-color:#963f5b;color:#fecdd3}
+.mines-stat{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.mines-stat span{padding:7px 10px;border:1px solid #2b3448;border-radius:9px;background:#0c111b;color:#cbd5e1;font-size:12px}
+@media(max-width:800px){.appgrid,.mines-queue-layout{grid-template-columns:1fr}.sidebar{position:static;display:flex;overflow:auto;padding-bottom:4px}.navbtn{white-space:nowrap;width:auto;flex:0 0 auto}.stats{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:520px){body{padding:14px 9px}.card{padding:15px}.topbar{align-items:flex-start}.brand{font-size:13px}.topright{flex-direction:column;align-items:flex-end}.stats,.quickgrid,.itemsgrid,.eventgrid,.twoform,.mines-controls{grid-template-columns:1fr}.twoform .wide{grid-column:auto}.rowcard{align-items:flex-start}.inlineform{flex-wrap:wrap}.mines-board{gap:5px}}
 </style>
 </head>
 <body>
 <main class="shell">
-  <header class="topbar">
-    <div class="brand"><div class="logo">P</div><span>PILTAE CHATTER</span></div>
-    <div class="topright" id="topRight" hidden>
-      <div class="wallet">🪙 <span id="topCoins">0</span> coins</div>
-      <button class="smallbtn" id="topLogout" type="button">Log out</button>
-    </div>
-  </header>
+<header class="topbar">
+  <div class="brand"><div class="logo">P</div><span>PILTAE CHATTER</span></div>
+  <div class="topright" id="topRight" hidden>
+    <div class="wallet">🪙 <span id="topCoins">0</span> coins</div>
+    <button class="smallbtn" id="topLogout" type="button">Log out</button>
+  </div>
+</header>
 
-  <section id="authView" class="auth-wrap">
-    <div class="hero">
-      <div class="eyebrow">YOUR COMMUNITY STARTS HERE</div>
-      <h1>Welcome to <span class="gradient">PILTAE.</span></h1>
-      <p class="muted">Chat with people, make friends, shop, join fake-coin events, and build your profile.</p>
+<section id="authView" class="auth-wrap">
+  <div class="hero">
+    <div class="eyebrow">YOUR COMMUNITY STARTS HERE</div>
+    <h1>Welcome to <span class="gradient">PILTAE.</span></h1>
+    <p class="muted">Chat, make friends, collect shop items, transfer virtual coins, and join the hosted Mines queue.</p>
+  </div>
+  <div class="card">
+    <h2 id="authTitle">Create your account</h2>
+    <p class="muted" id="authDescription">Create an account, then confirm your email to join.</p>
+    <div class="tabs">
+      <button class="tab active" id="signupTab" type="button">Create account</button>
+      <button class="tab" id="loginTab" type="button">Log in</button>
     </div>
+    <form id="signupForm">
+      <div class="field"><label for="signupName">DISPLAY NAME</label><input id="signupName" maxlength="24" minlength="1" autocomplete="nickname" required placeholder="Choose a username"></div>
+      <div class="field"><label for="signupEmail">EMAIL</label><input id="signupEmail" type="email" autocomplete="email" required placeholder="you@example.com"></div>
+      <div class="field"><label for="signupPassword">PASSWORD</label><input id="signupPassword" type="password" minlength="6" autocomplete="new-password" required placeholder="At least 6 characters"></div>
+      <button class="btn" id="signupButton" type="submit">Create account →</button>
+    </form>
+    <form id="loginForm" hidden>
+      <div class="field"><label for="loginEmail">EMAIL</label><input id="loginEmail" type="email" autocomplete="email" required placeholder="you@example.com"></div>
+      <div class="field"><label for="loginPassword">PASSWORD</label><input id="loginPassword" type="password" autocomplete="current-password" required placeholder="Your password"></div>
+      <button class="btn" id="loginButton" type="submit">Log in →</button>
+      <button class="btn secondary" id="resendButton" type="button">Resend confirmation email</button>
+    </form>
+    <div id="authNotice" class="notice" role="status" aria-live="polite" hidden></div>
+  </div>
+</section>
+
+<section id="appView" hidden>
+<div class="appgrid">
+<nav class="sidebar" aria-label="Main navigation">
+  <button class="navbtn active" data-page="dashboard"><span class="navicon">⌂</span> Dashboard</button>
+  <button class="navbtn" data-page="profile"><span class="navicon">◉</span> Profile</button>
+  <button class="navbtn" data-page="chat"><span class="navicon">☷</span> Community chat</button>
+  <button class="navbtn" data-page="friends"><span class="navicon">♧</span> Friends & coins</button>
+  <button class="navbtn" data-page="dm"><span class="navicon">✉</span> Private messages</button>
+  <button class="navbtn" data-page="shop"><span class="navicon">▣</span> Shop</button>
+  <button class="navbtn" data-page="mines"><span class="navicon">💎</span> Mines session</button>
+  <button class="navbtn" data-page="events"><span class="navicon">🎲</span> Fake-coin events</button>
+  <button class="navbtn" id="adminNav" data-page="admin" hidden><span class="navicon">⚙</span> Admin panel</button>
+</nav>
+
+<div class="maincol">
+<div id="appNotice" class="notice" role="status" aria-live="polite" hidden></div>
+
+<section class="page" id="page-dashboard">
+  <div class="pagehead"><div><div class="eyebrow">PILTAE NETWORK</div><h2>Dashboard</h2><p class="muted">Welcome back, <strong id="welcomeName">Player</strong>.</p></div><span id="roleBadge" class="tag">Member</span></div>
+  <div class="stats">
+    <div class="stat"><small>Your coins</small><strong id="dashCoins">0</strong></div>
+    <div class="stat"><small>Your role</small><strong id="dashRole">Member</strong></div>
+    <div class="stat"><small>Friends</small><strong id="dashFriends">0</strong></div>
+  </div>
+  <div class="card"><h2>Choose your next move</h2><p class="muted">Your community hub for messaging, collecting items, fake-coin games, and more.</p>
+    <div class="quickgrid">
+      <button class="quickcard navbtn" data-page="chat">💬 <strong>Community chat</strong><span class="muted">Talk with everyone.</span></button>
+      <button class="quickcard navbtn" data-page="friends">♧ <strong>Friends & coins</strong><span class="muted">Find members and send virtual coins.</span></button>
+      <button class="quickcard navbtn" data-page="shop">🛍️ <strong>Shop</strong><span class="muted">Spend fake coins on items.</span></button>
+      <button class="quickcard navbtn" data-page="mines">💎 <strong>Mines session</strong><span class="muted">Join the queue when the host opens it.</span></button>
+    </div>
+  </div>
+  <div class="card sectiongap"><div class="pagehead"><div><h2>Leaderboard</h2><p class="muted">Top balances in virtual coins.</p></div><button class="smallbtn" id="reloadLeaderboard" type="button">Refresh</button></div><div id="leaderboard"><div class="empty">Loading...</div></div></div>
+</section>
+
+<section class="page" id="page-profile" hidden>
+  <div class="pagehead"><div><h2>Your profile</h2><p class="muted">Edit your public display name and bio.</p></div></div>
+  <div class="card"><form id="profileForm">
+    <div class="field"><label for="profileName">DISPLAY NAME</label><input id="profileName" maxlength="24" minlength="1" required></div>
+    <div class="field"><label for="profileBio">BIO</label><textarea id="profileBio" maxlength="160"></textarea><p class="muted"><span id="bioCount">0</span>/160 characters</p></div>
+    <button class="btn" id="saveProfileButton" type="submit">Save profile and return to dashboard</button>
+  </form></div>
+</section>
+
+<section class="page" id="page-chat" hidden>
+  <div class="pagehead"><div><h2>Community chat</h2><p class="muted">Public messages for signed-in members.</p></div><button class="smallbtn" id="reloadChat" type="button">Refresh</button></div>
+  <div class="card"><div id="chatMessages" class="chatbox"><div class="empty">Loading messages...</div></div>
+    <form id="chatForm" class="chatinput"><textarea id="chatText" maxlength="500" required placeholder="Write a message..."></textarea><button class="btn" id="sendChatButton" type="submit">Send</button></form>
+  </div>
+</section>
+
+<section class="page" id="page-friends" hidden>
+  <div class="pagehead"><div><h2>Friends & virtual coins</h2><p class="muted">Find members, accept requests, and send fake coins.</p></div><button class="smallbtn" id="reloadFriends" type="button">Refresh</button></div>
+  <div class="card"><form id="friendSearchForm" class="inlineform"><input id="friendSearchName" maxlength="24" required placeholder="Search display name"><button class="btn" type="submit">Search</button></form><div id="friendSearchResults" class="sectiongap"></div></div>
+  <div class="card"><h3>Incoming requests</h3><div id="incomingRequests"><div class="empty">Loading...</div></div></div>
+  <div class="card"><h3>Your friends</h3><div id="friendsList"><div class="empty">Loading...</div></div></div>
+  <div class="card">
+    <h3>Send coins to any member</h3>
+    <p class="muted">Enter the recipient's exact display name. Transfers use simulated coins only and cannot be undone in the website.</p>
+    <form id="coinTransferForm" class="twoform">
+      <div class="field"><label for="coinTargetName">RECIPIENT DISPLAY NAME</label><input id="coinTargetName" maxlength="24" required></div>
+      <div class="field"><label for="coinTransferAmount">COIN AMOUNT</label><input id="coinTransferAmount" type="number" min="1" max="1000000" value="100" required></div>
+      <button class="btn wide" id="coinTransferButton" type="submit">Send virtual coins</button>
+    </form>
+  </div>
+</section>
+
+<section class="page" id="page-dm" hidden>
+  <div class="pagehead"><div><h2>Private messages</h2><p class="muted">You can message accepted friends.</p></div></div>
+  <div class="card"><div id="dmFriendChoices"></div><div id="dmSelected" class="notice" hidden></div>
+    <div id="dmMessages" class="chatbox"><div class="empty">Choose a friend.</div></div>
+    <form id="dmForm" class="chatinput"><textarea id="dmText" maxlength="1000" required placeholder="Private message..." disabled></textarea><button class="btn" id="sendDmButton" type="submit" disabled>Send</button></form>
+  </div>
+</section>
+
+<section class="page" id="page-shop" hidden>
+  <div class="pagehead"><div><h2>PILTAE Shop</h2><p class="muted">Items use virtual coins only.</p></div><button class="smallbtn" id="reloadShop" type="button">Refresh</button></div>
+  <div id="shopItems" class="itemsgrid"><div class="empty">Loading...</div></div>
+  <div class="card sectiongap"><h3>Your inventory</h3><p class="muted">Purchased image items are stored here.</p><div id="inventoryList" class="itemsgrid"><div class="empty">Loading...</div></div></div>
+  <div class="card"><h3>Your purchases</h3><div id="purchasesList"><div class="empty">Loading...</div></div></div>
+</section>
+
+<section class="page" id="page-mines" hidden>
+  <div class="pagehead"><div><h2>Mines session</h2><p class="muted">The owner starts the session and watches the queue. Members join only after the session opens.</p></div><button class="smallbtn" id="refreshMinesQueue" type="button">Refresh</button></div>
+  <div class="mines-queue-layout">
+    <aside class="card">
+      <div class="eyebrow">SESSION + LIVE QUEUE</div><h3 id="minesSessionTitle" class="sectiongap">Loading session...</h3>
+      <p class="muted" id="minesSessionDescription">Checking the host session.</p>
+      <div id="minesHostControls" class="mines-queue-buttons" hidden>
+        <button class="btn" id="startMinesSessionButton" type="button">▶ Start Mines Session</button>
+        <button class="btn secondary" id="endMinesSessionButton" type="button" hidden>End Mines Session</button>
+      </div>
+      <div id="minesPlayerQueueControls" class="mines-queue-buttons" hidden>
+        <button class="btn" id="joinMinesQueueButton" type="button">Join Queue</button>
+        <button class="btn secondary" id="leaveMinesQueueButton" type="button" hidden>Leave Queue</button>
+      </div>
+      <div id="minesQueueStatus" class="notice">Loading queue...</div>
+      <div class="queue-count"><span>Players in queue</span><strong id="minesQueueCount">0</strong></div>
+      <div id="minesQueueList" class="mines-queue-list"><div class="empty">Loading...</div></div>
+    </aside>
     <div class="card">
-      <h2 id="authTitle">Create your account</h2>
-      <p class="muted" id="authDescription">Create an account, then confirm your email to join.</p>
-      <div class="tabs">
-        <button class="tab active" id="signupTab" type="button">Create account</button>
-        <button class="tab" id="loginTab" type="button">Log in</button>
-      </div>
-      <form id="signupForm">
-        <div class="field"><label for="signupName">DISPLAY NAME</label><input id="signupName" maxlength="24" minlength="1" autocomplete="nickname" required placeholder="Choose a username"></div>
-        <div class="field"><label for="signupEmail">EMAIL</label><input id="signupEmail" type="email" autocomplete="email" required placeholder="you@example.com"></div>
-        <div class="field"><label for="signupPassword">PASSWORD</label><input id="signupPassword" type="password" minlength="6" autocomplete="new-password" required placeholder="At least 6 characters"></div>
-        <button class="btn" id="signupButton" type="submit">Create account →</button>
+      <div class="eyebrow">PLAYER TURN</div><h3 id="minesPlayTitle" class="sectiongap">Waiting for host</h3>
+      <p class="muted" id="minesPlayDescription">The owner must start a session before members can queue.</p>
+      <form id="minesStartForm" hidden>
+        <div class="mines-controls">
+          <div class="field"><label for="minesCount">NUMBER OF MINES (1–24)</label><input id="minesCount" type="number" min="1" max="24" value="3" required></div>
+          <div class="field"><label for="minesBet">YOUR WAGER (COINS)</label><input id="minesBet" type="number" min="1" max="1000000" value="100" required><p class="muted">Wallet minimum: 100 coins. Bet at least 1 coin, up to your current balance.</p></div>
+        </div>
+        <button class="btn" id="minesStartButton" type="submit">Start your turn</button>
       </form>
-      <form id="loginForm" hidden>
-        <div class="field"><label for="loginEmail">EMAIL</label><input id="loginEmail" type="email" autocomplete="email" required placeholder="you@example.com"></div>
-        <div class="field"><label for="loginPassword">PASSWORD</label><input id="loginPassword" type="password" autocomplete="current-password" required placeholder="Your password"></div>
-        <button class="btn" id="loginButton" type="submit">Log in →</button>
-        <button class="btn secondary" id="resendButton" type="button">Resend confirmation email</button>
-      </form>
-      <div id="authNotice" class="notice" role="status" aria-live="polite" hidden></div>
+      <div id="minesStatus" class="notice">The host has not started a session.</div>
+      <div class="mines-stat"><span>Safe: <strong id="minesSafeCount">0</strong></span><span>Multiplier: <strong id="minesMultiplier">—</strong></span><span>Potential payout: <strong id="minesPotentialPayout">—</strong></span></div>
+      <div id="minesBoard" class="mines-board" hidden></div>
+      <button class="btn secondary" id="minesCashoutButton" type="button" disabled>Cash out</button>
     </div>
-  </section>
+  </div>
+  <p class="muted">Only one player plays a round at a time. After cash-out or bust, that player leaves the queue and can join again while the session remains open.</p>
+</section>
 
-  <section id="appView" hidden>
-    <div class="appgrid">
-      <nav class="sidebar" aria-label="Main navigation">
-        <button class="navbtn active" data-page="dashboard"><span class="navicon">⌂</span> Dashboard</button>
-        <button class="navbtn" data-page="profile"><span class="navicon">◉</span> Profile</button>
-        <button class="navbtn" data-page="chat"><span class="navicon">☷</span> Community chat</button>
-        <button class="navbtn" data-page="friends"><span class="navicon">♧</span> Friends</button>
-        <button class="navbtn" data-page="dm"><span class="navicon">✉</span> Private messages</button>
-        <button class="navbtn" data-page="shop"><span class="navicon">▣</span> Shop</button>
-        <button class="navbtn" data-page="mines"><span class="navicon">💎</span> Mines</button>
-        <button class="navbtn" data-page="events"><span class="navicon">🎲</span> Fake-coin events</button>
-        <button class="navbtn" data-page="admin" id="adminNav" hidden><span class="navicon">⚙</span> Admin panel</button>
-      </nav>
+<section class="page" id="page-events" hidden>
+  <div class="pagehead"><div><h2>Fake-coin events</h2><p class="muted">Coin flips use virtual coins only. No deposits or cash-outs.</p></div><button class="smallbtn" id="reloadEvents" type="button">Refresh</button></div>
+  <div id="eventsList" class="eventgrid"><div class="empty">Loading...</div></div>
+  <div class="card"><h3>Recent results</h3><div id="eventHistory"><div class="empty">Loading...</div></div></div>
+</section>
 
-      <div class="maincol">
-        <div id="appNotice" class="notice" role="status" aria-live="polite" hidden></div>
+<section class="page" id="page-admin" hidden>
+  <div class="pagehead"><div><h2>Admin panel</h2><p class="muted">Staff controls for items, events, and virtual coin grants.</p></div><span id="adminRoleBadge" class="tag admin">Staff</span></div>
+  <div id="adminForbidden" class="notice error" hidden>This area is for admins and the owner.</div>
+  <div id="adminTools">
+    <div class="card"><h3>Create shop item</h3><form id="createItemForm" class="twoform">
+      <div class="field"><label for="itemName">ITEM NAME</label><input id="itemName" maxlength="60" required></div>
+      <div class="field"><label for="itemPrice">PRICE (COINS)</label><input id="itemPrice" type="number" min="1" max="1000000000" required></div>
+      <div class="field wide"><label for="itemDescription">DESCRIPTION</label><textarea id="itemDescription" maxlength="300"></textarea></div>
+      <div class="field wide"><label for="itemImageUrl">IMAGE URL (OPTIONAL, HTTPS)</label><input id="itemImageUrl" type="url" maxlength="2000" placeholder="https://example.com/image.png"></div>
+      <button class="btn wide" type="submit">Publish item</button>
+    </form></div>
+    <div class="card"><h3>Host a coin-flip event</h3><form id="createEventForm">
+      <div class="field"><label for="eventTitle">EVENT TITLE</label><input id="eventTitle" maxlength="80" required></div>
+      <div class="field"><label for="eventDescription">DESCRIPTION / RULES</label><textarea id="eventDescription" maxlength="300"></textarea></div>
+      <button class="btn" type="submit">Open event</button>
+    </form></div>
+    <div class="card"><h3>Member management</h3><p class="muted">Admins can grant virtual coins. Only the owner can change member/admin roles.</p><button class="smallbtn" id="reloadMembers" type="button">Refresh members</button><div id="membersList"></div></div>
+  </div>
+</section>
 
-        <section class="page" id="page-dashboard">
-          <div class="pagehead"><div><div class="eyebrow">PILTAE NETWORK</div><h2>Dashboard</h2><p class="muted">Welcome back, <strong id="welcomeName">Player</strong>.</p></div><span id="roleBadge" class="tag">Member</span></div>
-          <div class="stats">
-            <div class="stat"><small>Your coins</small><strong id="dashCoins">0</strong></div>
-            <div class="stat"><small>Your role</small><strong id="dashRole">Member</strong></div>
-            <div class="stat"><small>Friends</small><strong id="dashFriends">0</strong></div>
-          </div>
-          <div class="card"><h2>Choose your next move</h2><p class="muted">Everything is now in one place. Saving your profile returns you here.</p><div class="quickgrid sectiongap">
-            <button class="quickcard navbtn" data-page="chat">💬 <strong>Open community chat</strong><span class="muted">Talk with everyone online.</span></button>
-            <button class="quickcard navbtn" data-page="friends">♧ <strong>Add friends</strong><span class="muted">Search usernames and send requests.</span></button>
-            <button class="quickcard navbtn" data-page="shop">🛍️ <strong>Visit the shop</strong><span class="muted">Spend your fake coins on items.</span></button>
-            <button class="quickcard navbtn" data-page="events">🎲 <strong>Fake-coin events</strong><span class="muted">Join no-cash-value coin flip events.</span></button>
-          </div></div>
-          <div class="card sectiongap"><div class="pagehead"><div><h2>Leaderboard</h2><p class="muted">Top members ranked by virtual coin balance.</p></div><button class="smallbtn" id="reloadLeaderboard" type="button">Refresh</button></div><div id="leaderboard"><div class="empty">Loading leaderboard...</div></div></div>
-        </section>
-
-        <section class="page" id="page-profile" hidden>
-          <div class="pagehead"><div><h2>Your profile</h2><p class="muted">Edit your public name and bio.</p></div></div>
-          <div class="card"><form id="profileForm">
-            <div class="field"><label for="profileName">DISPLAY NAME</label><input id="profileName" maxlength="24" minlength="1" required></div>
-            <div class="field"><label for="profileBio">BIO</label><textarea id="profileBio" maxlength="160" placeholder="Say something about yourself..."></textarea><p class="muted"><span id="bioCount">0</span>/160 characters</p></div>
-            <button class="btn" id="saveProfileButton" type="submit">Save profile and return to dashboard</button>
-          </form></div>
-        </section>
-
-        <section class="page" id="page-chat" hidden>
-          <div class="pagehead"><div><h2>Community chat</h2><p class="muted">Messages are visible to signed-in members. Keep it respectful.</p></div><button class="smallbtn" id="reloadChat" type="button">Refresh</button></div>
-          <div class="card"><div id="chatMessages" class="chatbox"><div class="empty">Loading messages...</div></div>
-            <form id="chatForm" class="chatinput"><textarea id="chatText" maxlength="500" required placeholder="Write a message..."></textarea><button class="btn" id="sendChatButton" type="submit">Send</button></form>
-          </div>
-        </section>
-
-        <section class="page" id="page-friends" hidden>
-          <div class="pagehead"><div><h2>Friends</h2><p class="muted">Find members by display name and send requests.</p></div><button class="smallbtn" id="reloadFriends" type="button">Refresh</button></div>
-          <div class="card"><form id="friendSearchForm" class="inlineform"><input id="friendSearchName" maxlength="24" required placeholder="Search display name"><button class="btn" type="submit">Search</button></form><div id="friendSearchResults" class="sectiongap"></div></div>
-          <div class="card sectiongap"><h3>Incoming requests</h3><div id="incomingRequests"><div class="empty">Loading requests...</div></div></div>
-          <div class="card sectiongap"><h3>Your friends</h3><div id="friendsList"><div class="empty">Loading friends...</div></div></div>
-          <div class="card sectiongap"><h3>Send virtual coins to a member</h3><p class="muted">Send fake coins to any member by their exact display name. Check the name and amount carefully: transfers cannot be reversed from the website, and these coins have no real-money value.</p>
-            <form id="coinTransferForm" class="twoform">
-              <div class="field"><label for="coinTargetName">Recipient display name</label><input id="coinTargetName" maxlength="24" required placeholder="Exact display name"></div>
-              <div class="field"><label for="coinTransferAmount">Amount of coins</label><input id="coinTransferAmount" type="number" min="1" max="1000000" required value="100"></div>
-              <button class="btn wide" id="coinTransferButton" type="submit">Send coins</button>
-            </form>
-          </div>
-        </section>
-
-        <section class="page" id="page-dm" hidden>
-          <div class="pagehead"><div><h2>Private messages</h2><p class="muted">Select a friend first. Only you and that friend can read the thread.</p></div></div>
-          <div class="card"><div id="dmFriendChoices" class="sectiongap"></div><div id="dmSelected" class="selectedfriend" hidden></div><div id="dmMessages" class="chatbox"><div class="empty">Choose a friend to open a conversation.</div></div>
-            <form id="dmForm" class="chatinput"><textarea id="dmText" maxlength="1000" required placeholder="Private message..." disabled></textarea><button class="btn" id="sendDmButton" type="submit" disabled>Send</button></form>
-          </div>
-        </section>
-
-        <section class="page" id="page-shop" hidden>
-          <div class="pagehead"><div><h2>PILTAE Shop</h2><p class="muted">Items use virtual coins only and have no cash value.</p></div><button class="smallbtn" id="reloadShop" type="button">Refresh</button></div>
-          <div id="shopItems" class="itemsgrid"><div class="empty">Loading shop...</div></div>
-          <div class="card sectiongap"><h3>Your image inventory</h3><p class="muted">Images you buy are saved here on your account.</p><div id="inventoryList" class="itemsgrid"><div class="empty">Loading inventory...</div></div></div>
-          <div class="card sectiongap"><h3>Your purchases</h3><div id="purchasesList"><div class="empty">Loading purchases...</div></div></div>
-        </section>
-
-        <section class="page" id="page-events" hidden>
-          <div class="pagehead"><div><h2>Fake-coin events</h2><p class="muted">Coin-flip wagering uses virtual coins only: no deposits, cash-outs, or real-money value.</p></div><button class="smallbtn" id="reloadEvents" type="button">Refresh</button></div>
-          <div id="eventsList" class="eventgrid"><div class="empty">Loading events...</div></div>
-          <div class="card sectiongap"><h3>Recent results</h3><div id="eventHistory"><div class="empty">Loading event history...</div></div></div>
-        </section>
-
-        <section class="page" id="page-mines" hidden>
-          <div class="pagehead"><div><h2>Mines Session</h2><p class="muted">The owner opens and closes the session. Players can join the queue only while it is open; the owner can watch the live line without joining it.</p></div><button class="smallbtn" id="refreshMinesQueue" type="button">Refresh</button></div>
-          <div class="mines-queue-layout">
-            <aside class="card mines-queue-card">
-              <div class="eyebrow">LIVE SESSION + PLAYER QUEUE</div>
-              <h3 class="sectiongap" id="minesSessionTitle">Session status</h3>
-              <p class="muted" id="minesSessionDescription">The host controls when players can join.</p>
-              <div id="minesHostControls" class="mines-queue-buttons" hidden>
-                <button class="btn" id="startMinesSessionButton" type="button">▶ Start Mines Session</button>
-                <button class="btn secondary" id="endMinesSessionButton" type="button" hidden>End Mines Session</button>
-              </div>
-              <div class="mines-queue-buttons" id="minesPlayerQueueControls" hidden>
-                <button class="btn" id="joinMinesQueueButton" type="button">Join Queue</button>
-                <button class="btn secondary" id="leaveMinesQueueButton" type="button" hidden>Leave Queue</button>
-              </div>
-              <div id="minesQueueStatus" class="notice" role="status" aria-live="polite">Loading session...</div>
-              <div class="queue-count"><span>Players in queue</span><strong id="minesQueueCount">0</strong></div>
-              <div id="minesQueueList" class="mines-queue-list"><div class="empty">Loading players...</div></div>
-            </aside>
-
-            <div class="card mines-play-card">
-              <div class="eyebrow">PLAYER TURN</div>
-              <h3 class="sectiongap" id="minesPlayTitle">Waiting for session</h3>
-              <p class="muted" id="minesPlayDescription">The owner must start a session before players can queue.</p>
-              <form id="minesStartForm" hidden>
-                <div class="mines-controls">
-                  <div class="field"><label for="minesCount">NUMBER OF MINES (1–24)</label><input id="minesCount" type="number" min="1" max="24" value="3" required></div>
-                  <div class="field"><label for="minesBet">YOUR WAGER (COINS)</label><input id="minesBet" type="number" min="1" max="1000000" value="100" required><p class="muted">You need at least 100 coins in your wallet. Bet at least 1 coin and no more than your balance.</p></div>
-                </div>
-                <button class="btn" id="minesStartButton" type="submit">Start your turn</button>
-              </form>
-              <div id="minesStatus" class="notice" role="status" aria-live="polite">The host has not started a session.</div>
-              <div class="mines-stat"><span>Safe tiles: <strong id="minesSafeCount">0</strong></span><span>Current multiplier: <strong id="minesMultiplier">—</strong></span><span>Potential payout: <strong id="minesPotentialPayout">—</strong></span></div>
-              <div id="minesBoard" class="mines-board" aria-label="Mines game board" hidden></div>
-              <button class="btn secondary" id="minesCashoutButton" type="button" disabled>Cash out</button>
-            </div>
-          </div>
-          <p class="muted">These are simulated virtual coins only; they have no real-money value. The owner must open a session before the queue accepts players. A player is removed from the queue after cash-out or bust.</p>
-        </section>
-
-        <section class="page" id="page-admin" hidden>
-          <div class="pagehead"><div><h2>Admin panel</h2><p class="muted">Staff tools for shop items, fake-coin events, moderation, and member management.</p></div><span id="adminRoleBadge" class="tag admin">Staff</span></div>
-          <div id="adminForbidden" class="notice error" hidden>This area is only available to admins and the owner.</div>
-          <div id="adminTools" class="stack">
-            <div class="card staffonly"><h3>Create shop item</h3><form id="createItemForm" class="twoform">
-              <div class="field"><label for="itemName">Item name</label><input id="itemName" maxlength="60" required></div>
-              <div class="field"><label for="itemPrice">Price in coins</label><input id="itemPrice" type="number" min="1" max="1000000000" required></div>
-              <div class="field wide"><label for="itemDescription">Description</label><textarea id="itemDescription" maxlength="300"></textarea></div>
-              <div class="field wide"><label for="itemImageUrl">Image URL (optional)</label><input id="itemImageUrl" type="url" maxlength="2000" placeholder="https://example.com/image.png"><p class="muted">Paste a direct public HTTPS image link. The image appears in the shop and buyer inventory.</p></div>
-              <button class="btn wide" type="submit">Publish item</button>
-            </form></div>
-            <div class="card staffonly sectiongap"><h3>Host a coin-flip event</h3><form id="createEventForm">
-              <div class="field"><label for="eventTitle">Event title</label><input id="eventTitle" maxlength="80" required placeholder="Friday Night Coin Flip"></div>
-              <div class="field"><label for="eventDescription">Rules / description</label><textarea id="eventDescription" maxlength="300" placeholder="Pick heads or tails. Winners receive 2x their wager."></textarea></div>
-              <button class="btn" type="submit">Open event</button>
-            </form></div>
-            <div class="card staffonly sectiongap"><h3>Member management</h3><p class="muted">Admins can grant virtual coins. Only the owner can promote or demote admins.</p><button class="smallbtn" id="reloadMembers" type="button">Refresh members</button><div id="membersList" class="sectiongap"><div class="empty">Loading members...</div></div></div>
-            <div class="card staffonly sectiongap"><h3>Public chat moderation</h3><p class="muted">Delete a message from community chat when necessary.</p><p class="muted">Use the “Delete” button alongside public messages; no direct-message content is shown here.</p></div>
-          </div>
-        </section>
-      </div>
-    </div>
-  </section>
-  <section id="ownerHud" class="owner-hud" role="dialog" aria-modal="true" aria-labelledby="ownerHudTitle" hidden>
-    <div class="owner-hud-card">
-      <div class="owner-hud-head">
-        <div><div class="eyebrow">RESTRICTED CONTROL HUD</div><h2 id="ownerHudTitle">Owner access</h2></div>
-        <button class="smallbtn" id="closeOwnerHud" type="button" aria-label="Close owner access">Close</button>
-      </div>
-      <p class="owner-hud-hint">Enter the owner claim code. The code is checked by a protected Supabase function and is not stored in the webpage source. This is a one-time owner claim; once claimed, other accounts cannot use it.</p>
-      <form id="ownerUnlockForm">
-        <div class="field"><label for="ownerUnlockCode">OWNER CLAIM CODE</label><input id="ownerUnlockCode" class="owner-hud-input" type="password" autocomplete="off" maxlength="200" required placeholder="Enter claim code"></div>
-        <button class="btn" id="ownerUnlockButton" type="submit">Claim owner access</button>
-      </form>
-      <div id="ownerHudNotice" class="notice" role="status" aria-live="polite" hidden></div>
-      <p class="muted">Shortcut: Alt + F1 · Press Escape to close.</p>
-    </div>
-  </section>
-  <div class="footer">PILTAE CHATTER · Community coins are simulated and have no real-world value.</div>
+</div>
+</div>
+</section>
+<div class="footer">PILTAE CHATTER · Virtual coins have no real-world value.</div>
 </main>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 "use strict";
 
-// Supabase publishable key: safe for frontend use with correct database RLS.
 const SUPABASE_URL = "https://mfawkedwvjzxqqmflutu.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_n-iBWfw_2hmDhjV9Iyk1Rw_QhqT-e0Q";
 const SITE_URL = "https://noahlangedu.github.io/888222888222/";
-const $ = (id) => document.getElementById(id);
+const $ = id => document.getElementById(id);
 
 let db = null;
 let currentUser = null;
@@ -381,32 +261,23 @@ let myProfile = null;
 let activePage = "dashboard";
 let selectedDmId = null;
 let selectedDmName = "";
-let realtimeChannels = [];
+let activeMinesGame = null;
+let minesQueueState = null;
+let minesSessionState = null;
+let minesBusy = false;
+let minesQueueTimer = null;
 let toastTimer = null;
+let realtimeChannels = [];
 
 function esc(value) {
-  return String(value ?? "").replace(/[&<>"']/g, (ch) => ({
-    "&": "&amp;",
-    "<": "&lt;",
-    ">": "&gt;",
-    '"': "&quot;",
-    "'": "&#39;"
+  return String(value ?? "").replace(/[&<>"']/g, ch => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
   }[ch]));
 }
-function money(value) {
-  return Number(value || 0).toLocaleString();
-}
+function money(value) { return Number(value || 0).toLocaleString(); }
 function timeText(value) {
-  try {
-    return new Date(value).toLocaleString([], {
-      month: "short",
-      day: "numeric",
-      hour: "numeric",
-      minute: "2-digit"
-    });
-  } catch {
-    return "";
-  }
+  try { return new Date(value).toLocaleString([], {month:"short",day:"numeric",hour:"numeric",minute:"2-digit"}); }
+  catch { return ""; }
 }
 function toast(message, type = "") {
   const el = $(currentUser ? "appNotice" : "authNotice");
@@ -414,83 +285,63 @@ function toast(message, type = "") {
   el.className = "notice" + (type ? " " + type : "");
   el.hidden = false;
   clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => {
-    el.hidden = true;
-  }, 7500);
+  toastTimer = setTimeout(() => { el.hidden = true; }, 7000);
 }
 function setBusy(button, busy, busyText, normalText) {
   button.disabled = busy;
   button.textContent = busy ? busyText : normalText;
 }
-function roleTitle(role) {
-  return role === "owner" ? "Owner" : role === "admin" ? "Admin" : "Member";
+function isOwner() { return myProfile?.role === "owner"; }
+function isStaff() { return ["admin","owner"].includes(myProfile?.role); }
+function roleTitle(role) { return role === "owner" ? "Owner" : role === "admin" ? "Admin" : "Member"; }
+function setStatus(id, message, type = "") {
+  const el = $(id); el.textContent = message; el.className = "notice" + (type ? " " + type : "");
 }
-function isStaff() {
-  return myProfile?.role === "owner" || myProfile?.role === "admin";
-}
-function isOwner() {
-  return myProfile?.role === "owner";
-}
-
 function showAuthMode(mode) {
-  const isSignup = mode === "signup";
-  $("signupForm").hidden = !isSignup;
-  $("loginForm").hidden = isSignup;
-  $("signupTab").classList.toggle("active", isSignup);
-  $("loginTab").classList.toggle("active", !isSignup);
-  $("authTitle").textContent = isSignup ? "Create your account" : "Welcome back";
-  $("authDescription").textContent = isSignup
-    ? "Create an account, then confirm your email to join."
-    : "Log in to open your dashboard.";
+  const signup = mode === "signup";
+  $("signupForm").hidden = !signup;
+  $("loginForm").hidden = signup;
+  $("signupTab").classList.toggle("active", signup);
+  $("loginTab").classList.toggle("active", !signup);
+  $("authTitle").textContent = signup ? "Create your account" : "Welcome back";
+  $("authDescription").textContent = signup ? "Create an account, then confirm your email." : "Log in to your community.";
   $("authNotice").hidden = true;
 }
+
 $("signupTab").addEventListener("click", () => showAuthMode("signup"));
 $("loginTab").addEventListener("click", () => showAuthMode("login"));
-$("profileBio").addEventListener("input", () => {
-  $("bioCount").textContent = $("profileBio").value.length;
+$("profileBio").addEventListener("input", () => $("bioCount").textContent = $("profileBio").value.length);
+
+document.querySelectorAll("[data-page]").forEach(button => {
+  button.addEventListener("click", () => navigate(button.dataset.page));
 });
 
 function navigate(page) {
-  const allowed = ["dashboard", "profile", "chat", "friends", "dm", "shop", "mines", "events", "admin"];
+  const allowed = ["dashboard","profile","chat","friends","dm","shop","mines","events","admin"];
   if (!allowed.includes(page)) page = "dashboard";
   if (page === "admin" && !isStaff()) {
-    toast("The admin panel is restricted to staff.", "error");
+    toast("Only staff can open that panel.", "error");
     return;
   }
   activePage = page;
-  document.querySelectorAll(".page").forEach(el => {
-    el.hidden = el.id !== `page-${page}`;
-  });
-  document.querySelectorAll(".sidebar .navbtn").forEach(el => {
-    el.classList.toggle("active", el.dataset.page === page);
-  });
+  document.querySelectorAll(".page").forEach(el => el.hidden = el.id !== "page-" + page);
+  document.querySelectorAll(".sidebar [data-page]").forEach(el => el.classList.toggle("active", el.dataset.page === page));
   if (page === "chat") loadChat();
   if (page === "friends") loadFriends();
   if (page === "dm") loadDmFriendChoices();
-  if (page === "shop") {
-    loadShop();
-    loadInventory();
-    loadPurchases();
-  }
-  if (page === "mines") loadActiveMinesGame();
+  if (page === "shop") { loadShop(); loadInventory(); loadPurchases(); }
+  if (page === "mines") refreshMines();
   if (page === "events") loadEvents();
-  if (page === "admin" && isStaff()) {
-    loadMembers();
-    loadShop();
-    loadEvents();
-  }
+  if (page === "admin" && isStaff()) { loadMembers(); loadShop(); loadEvents(); }
 }
-document.querySelectorAll("[data-page]").forEach(el => {
-  el.addEventListener("click", () => navigate(el.dataset.page));
-});
 
 async function refreshMyProfile() {
   if (!currentUser) return;
-  const { data, error } = await db.from("profiles")
+  const {data,error} = await db.from("profiles")
     .select("user_id,display_name,bio,role,coins,created_at")
-    .eq("user_id", currentUser.id).maybeSingle();
+    .eq("user_id",currentUser.id).maybeSingle();
   if (error) throw error;
-  if (!data) throw new Error("Your profile row is missing. Run the Supabase SQL setup file.");
+  if (!data) throw new Error("Your profile was not created. Run Query 1 in Supabase.");
   myProfile = data;
   $("topCoins").textContent = money(data.coins);
   $("dashCoins").textContent = money(data.coins);
@@ -499,22 +350,31 @@ async function refreshMyProfile() {
   $("roleBadge").textContent = roleTitle(data.role);
   $("roleBadge").className = "tag" + (data.role === "owner" ? " owner" : data.role === "admin" ? " admin" : "");
   $("adminNav").hidden = !isStaff();
-  $("adminRoleBadge").textContent = roleTitle(data.role);
   $("adminTools").hidden = !isStaff();
   $("adminForbidden").hidden = isStaff();
+  $("adminRoleBadge").textContent = roleTitle(data.role);
   $("profileName").value = data.display_name || "";
   $("profileBio").value = data.bio || "";
   $("bioCount").textContent = $("profileBio").value.length;
 }
 
+async function loadDashboardFriendsCount() {
+  if (!currentUser) return;
+  const {count,error} = await db.from("friend_requests")
+    .select("id",{count:"exact",head:true})
+    .eq("status","accepted")
+    .or(`sender_id.eq.${currentUser.id},receiver_id.eq.${currentUser.id}`);
+  if (!error) $("dashFriends").textContent = String(count || 0);
+}
+
 async function handleSession(session) {
   if (session?.user) {
-    const isDifferentUser = currentUser?.id !== session.user.id;
+    const changed = currentUser?.id !== session.user.id;
     currentUser = session.user;
     $("authView").hidden = true;
     $("appView").hidden = false;
     $("topRight").hidden = false;
-    if (isDifferentUser || !myProfile) {
+    if (changed || !myProfile) {
       try {
         await refreshMyProfile();
         await loadDashboardFriendsCount();
@@ -522,7 +382,8 @@ async function handleSession(session) {
         setupRealtime();
         navigate("dashboard");
       } catch (error) {
-        toast("Signed in, but app setup failed: " + error.message, "error");
+        console.error(error);
+        toast("Signed in, but setup failed: " + error.message, "error");
       }
     }
   } else {
@@ -535,460 +396,332 @@ async function handleSession(session) {
     $("authView").hidden = false;
     $("appView").hidden = true;
     $("topRight").hidden = true;
-    realtimeChannels.forEach(ch => db?.removeChannel(ch));
+    realtimeChannels.forEach(channel => db?.removeChannel(channel));
     realtimeChannels = [];
     showAuthMode("signup");
   }
 }
 
-$("signupForm").addEventListener("submit", async (event) => {
+$("signupForm").addEventListener("submit", async event => {
   event.preventDefault();
-  const name = $("signupName").value.trim();
+  const displayName = $("signupName").value.trim();
   const email = $("signupEmail").value.trim();
   const password = $("signupPassword").value;
-  if (!name || name.length > 24) {
-    toast("Display name must be 1–24 characters.", "error");
-    return;
-  }
+  if (!displayName || displayName.length > 24) { toast("Display name must be 1–24 characters.", "error"); return; }
   const button = $("signupButton");
-  setBusy(button, true, "Creating account...", "Create account →");
+  setBusy(button,true,"Creating account...","Create account →");
   try {
-    const { data, error } = await db.auth.signUp({
-      email,
-      password,
-      options: {
-        data: { display_name: name },
-        emailRedirectTo: SITE_URL
-      }
+    const {data,error} = await db.auth.signUp({
+      email,password,
+      options:{data:{display_name:displayName},emailRedirectTo:SITE_URL}
     });
     if (error) throw error;
     $("signupPassword").value = "";
     if (data.session?.user) {
       await handleSession(data.session);
-      toast("Account created. Welcome to PILTAE!", "success");
+      toast("Account created. Welcome!", "success");
     } else {
       showAuthMode("login");
       $("loginEmail").value = email;
-      toast("Account created. Confirm your email using the new link we sent, then log in. Your link returns to PILTAE CHATTER.", "success");
+      toast("Account created. Confirm your email using the link we sent, then log in.", "success");
     }
-  } catch (error) {
-    console.error(error);
-    toast("Signup failed: " + error.message, "error");
-  } finally {
-    setBusy(button, false, "Creating account...", "Create account →");
-  }
+  } catch (error) { toast("Signup failed: " + error.message, "error"); }
+  finally { setBusy(button,false,"Creating account...","Create account →"); }
 });
 
-$("loginForm").addEventListener("submit", async (event) => {
+$("loginForm").addEventListener("submit", async event => {
   event.preventDefault();
   const button = $("loginButton");
-  setBusy(button, true, "Logging in...", "Log in →");
+  setBusy(button,true,"Logging in...","Log in →");
   try {
-    const { data, error } = await db.auth.signInWithPassword({
-      email: $("loginEmail").value.trim(),
-      password: $("loginPassword").value
+    const {data,error} = await db.auth.signInWithPassword({
+      email:$("loginEmail").value.trim(),
+      password:$("loginPassword").value
     });
     if (error) throw error;
     $("loginPassword").value = "";
     await handleSession(data.session);
     toast("Welcome back!", "success");
-  } catch (error) {
-    toast("Login failed: " + error.message, "error");
-  } finally {
-    setBusy(button, false, "Logging in...", "Log in →");
-  }
+  } catch (error) { toast("Login failed: " + error.message, "error"); }
+  finally { setBusy(button,false,"Logging in...","Log in →"); }
 });
 
 $("resendButton").addEventListener("click", async () => {
   const email = $("loginEmail").value.trim();
-  if (!email) {
-    toast("Enter your email address first.", "error");
-    return;
-  }
+  if (!email) { toast("Enter your email first.", "error"); return; }
   const button = $("resendButton");
-  setBusy(button, true, "Sending...", "Resend confirmation email");
+  setBusy(button,true,"Sending...","Resend confirmation email");
   try {
-    const { error } = await db.auth.resend({
-      type: "signup",
-      email,
-      options: { emailRedirectTo: SITE_URL }
+    const {error} = await db.auth.resend({
+      type:"signup",email,options:{emailRedirectTo:SITE_URL}
     });
     if (error) throw error;
-    toast("If a new confirmation email is available, it should arrive shortly. Check your spam folder too.", "success");
-  } catch (error) {
-    toast("Could not resend email: " + error.message, "error");
-  } finally {
-    setBusy(button, false, "Sending...", "Resend confirmation email");
-  }
+    toast("Check your inbox and spam folder for a new confirmation email.", "success");
+  } catch (error) { toast("Couldn't resend: " + error.message, "error"); }
+  finally { setBusy(button,false,"Sending...","Resend confirmation email"); }
 });
 
-$("profileForm").addEventListener("submit", async (event) => {
+$("profileForm").addEventListener("submit", async event => {
   event.preventDefault();
-  if (!currentUser) return;
-  const name = $("profileName").value.trim();
+  const displayName = $("profileName").value.trim();
   const bio = $("profileBio").value.trim();
-  if (!name || name.length > 24 || bio.length > 160) {
-    toast("Check your display name and bio length.", "error");
-    return;
+  if (!displayName || displayName.length > 24 || bio.length > 160) {
+    toast("Check your display name and bio length.", "error"); return;
   }
   const button = $("saveProfileButton");
-  setBusy(button, true, "Saving...", "Save profile and return to dashboard");
+  setBusy(button,true,"Saving...","Save profile and return to dashboard");
   try {
-    const { error } = await db.from("profiles").update({
-      display_name: name,
-      bio,
-      updated_at: new Date().toISOString()
-    }).eq("user_id", currentUser.id);
+    const {error} = await db.from("profiles")
+      .update({display_name:displayName,bio,updated_at:new Date().toISOString()})
+      .eq("user_id",currentUser.id);
     if (error) throw error;
-    const { error: metaError } = await db.auth.updateUser({
-      data: { display_name: name }
-    });
-    if (metaError) console.warn("Auth metadata wasn't updated:", metaError.message);
+    await db.auth.updateUser({data:{display_name:displayName}});
     await refreshMyProfile();
     navigate("dashboard");
-    toast("Profile saved. Welcome to your dashboard!", "success");
-  } catch (error) {
-    toast("Profile could not be saved: " + error.message, "error");
-  } finally {
-    setBusy(button, false, "Saving...", "Save profile and return to dashboard");
-  }
+    toast("Profile saved.", "success");
+  } catch (error) { toast("Profile save failed: " + error.message, "error"); }
+  finally { setBusy(button,false,"Saving...","Save profile and return to dashboard"); }
 });
 
 async function logout() {
-  const { error } = await db.auth.signOut();
-  if (error) toast("Log out failed: " + error.message, "error");
+  const {error} = await db.auth.signOut();
+  if (error) toast("Logout failed: " + error.message, "error");
 }
-$("topLogout").addEventListener("click", logout);
+$("topLogout").addEventListener("click",logout);
 
 async function loadLeaderboard() {
   if (!currentUser) return;
   const host = $("leaderboard");
-  if (!host) return;
   try {
-    const { data, error } = await db.from("profiles")
+    const {data,error} = await db.from("profiles")
       .select("user_id,display_name,role,coins,created_at")
-      .order("coins", { ascending: false })
-      .order("created_at", { ascending: true })
-      .limit(10);
+      .order("coins",{ascending:false}).order("created_at",{ascending:true}).limit(10);
     if (error) throw error;
-    if (!data?.length) {
-      host.innerHTML = '<div class="empty">No leaderboard entries yet.</div>';
-      return;
-    }
-    host.innerHTML = data.map((p, i) => `<div class="rowcard"><div class="grow"><strong>${i + 1}. ${esc(p.display_name)} ${p.user_id === currentUser.id ? '<span class="tag">You</span>' : ''}</strong><span class="mutedline">${esc(roleTitle(p.role))}</span></div><span class="coin">${money(p.coins)} 🪙</span></div>`).join("");
-  } catch (error) {
-    host.innerHTML = `<div class="empty">Leaderboard failed to load: ${esc(error.message)}</div>`;
-  }
+    host.innerHTML = data?.length ? data.map((p,i) =>
+      `<div class="rowcard"><div class="grow"><strong>${i+1}. ${esc(p.display_name)}${p.user_id===currentUser.id?" (you)":""}</strong><span class="mutedline">${esc(roleTitle(p.role))}</span></div><span class="coin">${money(p.coins)} 🪙</span></div>`
+    ).join("") : '<div class="empty">No leaderboard entries yet.</div>';
+  } catch (error) { host.innerHTML = `<div class="empty">Leaderboard failed: ${esc(error.message)}</div>`; }
 }
-$("reloadLeaderboard").addEventListener("click", loadLeaderboard);
-
-async function loadDashboardFriendsCount() {
-  if (!currentUser) return;
-  const { count, error } = await db.from("friend_requests").select("id", {
-    count: "exact",
-    head: true
-  }).eq("status", "accepted").or(`sender_id.eq.${currentUser.id},receiver_id.eq.${currentUser.id}`);
-  if (!error) $("dashFriends").textContent = String(count || 0);
-}
+$("reloadLeaderboard").addEventListener("click",loadLeaderboard);
 
 function setupRealtime() {
-  realtimeChannels.forEach(ch => db.removeChannel(ch));
+  realtimeChannels.forEach(channel => db.removeChannel(channel));
   realtimeChannels = [];
-
-  const publicChatChannel = db.channel("piltae-public-chat")
-    .on("postgres_changes", {
-      event: "*",
-      schema: "public",
-      table: "chat_messages"
-    }, () => {
-      if (activePage === "chat") loadChat();
-    }).subscribe();
-
-  const dmChannel = db.channel("piltae-private-messages")
-    .on("postgres_changes", {
-      event: "*",
-      schema: "public",
-      table: "direct_messages"
-    }, () => {
-      if (activePage === "dm" && selectedDmId) loadDmMessages();
-    }).subscribe();
-
-  const profileChannel = db.channel("piltae-profile-changes")
-    .on("postgres_changes", {
-      event: "UPDATE",
-      schema: "public",
-      table: "profiles",
-      filter: `user_id=eq.${currentUser.id}`
-    }, async () => {
-      try {
-        await refreshMyProfile();
-      } catch (e) {
-        console.warn(e);
-      }
-    }).subscribe();
-
-  realtimeChannels.push(publicChatChannel, dmChannel, profileChannel);
+  realtimeChannels.push(
+    db.channel("piltae-chat-live")
+      .on("postgres_changes",{event:"*",schema:"public",table:"chat_messages"},() => {if(activePage==="chat") loadChat();})
+      .subscribe(),
+    db.channel("piltae-dm-live")
+      .on("postgres_changes",{event:"*",schema:"public",table:"direct_messages"},() => {if(activePage==="dm" && selectedDmId) loadDmMessages();})
+      .subscribe()
+  );
 }
 
 async function loadChat() {
   if (!currentUser) return;
   const box = $("chatMessages");
   try {
-    const { data, error } = await db.from("chat_messages")
+    const {data,error} = await db.from("chat_messages")
       .select("id,user_id,body,created_at,profiles(display_name,role)")
-      .order("created_at", { ascending: false })
-      .limit(100);
+      .order("created_at",{ascending:false}).limit(100);
     if (error) throw error;
-    if (!data?.length) {
-      box.innerHTML = '<div class="empty">No messages yet. Start the conversation!</div>';
-      return;
-    }
+    if (!data?.length) { box.innerHTML = '<div class="empty">No messages yet. Start the conversation!</div>'; return; }
     box.innerHTML = data.reverse().map(m => {
       const name = m.profiles?.display_name || "Member";
       const role = m.profiles?.role || "member";
-      const staffCanDelete = isStaff() || m.user_id === currentUser.id;
-      return `<div class="message"><div class="messagehead"><strong>${esc(name)} ${role !== "member" ? `<span class="tag ${esc(role)}">${esc(role)}</span>` : ""}</strong><time>${esc(timeText(m.created_at))}</time></div><p>${esc(m.body)}</p>${staffCanDelete ? `<button class="smallbtn" data-delete-chat="${esc(m.id)}" type="button">Delete</button>` : ""}</div>`;
+      const canDelete = isStaff() || m.user_id === currentUser.id;
+      return `<div class="message"><div class="messagehead"><strong>${esc(name)} ${role!=="member"?`<span class="tag ${esc(role)}">${esc(role)}</span>`:""}</strong><time>${esc(timeText(m.created_at))}</time></div><p>${esc(m.body)}</p>${canDelete?`<button class="smallbtn" data-delete-chat="${esc(m.id)}" type="button">Delete</button>`:""}</div>`;
     }).join("");
     box.scrollTop = box.scrollHeight;
-  } catch (error) {
-    box.innerHTML = `<div class="empty">Chat didn't load: ${esc(error.message)}</div>`;
-  }
+  } catch (error) { box.innerHTML = `<div class="empty">Chat failed to load: ${esc(error.message)}</div>`; }
 }
-$("reloadChat").addEventListener("click", loadChat);
+$("reloadChat").addEventListener("click",loadChat);
 
-$("chatForm").addEventListener("submit", async (event) => {
+$("chatForm").addEventListener("submit",async event => {
   event.preventDefault();
   const body = $("chatText").value.trim();
   if (!body) return;
   const button = $("sendChatButton");
-  setBusy(button, true, "Sending...", "Send");
+  setBusy(button,true,"Sending...","Send");
   try {
-    const { error } = await db.from("chat_messages").insert({
-      user_id: currentUser.id,
-      body
-    });
+    const {error} = await db.from("chat_messages").insert({user_id:currentUser.id,body});
     if (error) throw error;
     $("chatText").value = "";
     await loadChat();
-  } catch (error) {
-    toast("Message wasn't sent: " + error.message, "error");
-  } finally {
-    setBusy(button, false, "Sending...", "Send");
-  }
+  } catch (error) { toast("Message failed: " + error.message,"error"); }
+  finally { setBusy(button,false,"Sending...","Send"); }
 });
-$("chatMessages").addEventListener("click", async (event) => {
+
+$("chatMessages").addEventListener("click",async event => {
   const button = event.target.closest("[data-delete-chat]");
-  if (!button) return;
-  if (!confirm("Delete this public chat message?")) return;
+  if (!button || !confirm("Delete this public chat message?")) return;
   try {
-    const { error } = await db.from("chat_messages").delete().eq("id", button.dataset.deleteChat);
+    const {error} = await db.from("chat_messages").delete().eq("id",button.dataset.deleteChat);
     if (error) throw error;
-    toast("Message deleted.", "success");
+    toast("Message deleted.","success");
     loadChat();
-  } catch (error) {
-    toast("Could not delete message: " + error.message, "error");
-  }
+  } catch (error) { toast("Delete failed: " + error.message,"error"); }
 });
+
+async function fetchProfiles(ids) {
+  const result = new Map();
+  if (!ids.length) return result;
+  const {data,error} = await db.from("profiles").select("user_id,display_name,role,coins").in("user_id",ids);
+  if (error) throw error;
+  (data||[]).forEach(p => result.set(p.user_id,p));
+  return result;
+}
 
 async function loadFriends() {
   if (!currentUser) return;
   $("incomingRequests").innerHTML = '<div class="empty">Loading...</div>';
   $("friendsList").innerHTML = '<div class="empty">Loading...</div>';
-
   try {
-    const { data, error } = await db.from("friend_requests")
+    const {data,error} = await db.from("friend_requests")
       .select("id,sender_id,receiver_id,status,created_at")
       .or(`sender_id.eq.${currentUser.id},receiver_id.eq.${currentUser.id}`)
-      .order("created_at", { ascending: false })
-      .limit(200);
+      .order("created_at",{ascending:false}).limit(200);
     if (error) throw error;
-
-    const rows = data || [];
-    const incoming = rows.filter(r => r.receiver_id === currentUser.id && r.status === "pending");
-    if (!incoming.length) {
-      $("incomingRequests").innerHTML = '<div class="empty">No pending requests.</div>';
-    } else {
-      const ids = [...new Set(incoming.map(r => r.sender_id))];
-      const profiles = await fetchProfiles(ids);
+    const requests = data || [];
+    const incoming = requests.filter(r => r.receiver_id===currentUser.id && r.status==="pending");
+    if (!incoming.length) $("incomingRequests").innerHTML = '<div class="empty">No incoming requests.</div>';
+    else {
+      const profiles = await fetchProfiles([...new Set(incoming.map(r=>r.sender_id))]);
       $("incomingRequests").innerHTML = incoming.map(r => {
         const p = profiles.get(r.sender_id);
-        return `<div class="rowcard"><div class="grow"><strong>${esc(p?.display_name || "Member")}</strong><span class="mutedline">Wants to connect</span></div><button class="smallbtn" data-request="${esc(r.id)}" data-accept="true">Accept</button><button class="smallbtn" data-request="${esc(r.id)}" data-accept="false">Decline</button></div>`;
+        return `<div class="rowcard"><div class="grow"><strong>${esc(p?.display_name||"Member")}</strong><span class="mutedline">Friend request</span></div><button class="smallbtn" data-request="${esc(r.id)}" data-accept="true">Accept</button><button class="smallbtn" data-request="${esc(r.id)}" data-accept="false">Decline</button></div>`;
       }).join("");
     }
 
-    const accepted = rows.filter(r => r.status === "accepted");
-    const friendIds = [...new Set(accepted.map(r => r.sender_id === currentUser.id ? r.receiver_id : r.sender_id))];
-    const friendProfiles = await fetchProfiles(friendIds);
-    if (!friendIds.length) {
-      $("friendsList").innerHTML = '<div class="empty">No friends yet. Search a display name above to add someone.</div>';
-    } else {
-      $("friendsList").innerHTML = friendIds.map(id => {
-        const p = friendProfiles.get(id);
-        const displayName = p?.display_name || "Member";
-        return `<div class="rowcard"><div class="grow"><strong>${esc(displayName)}</strong><span class="mutedline">${esc(roleTitle(p?.role || "member"))}</span></div><button class="smallbtn" data-send-coins-name="${esc(displayName)}" type="button">Send coins</button><button class="smallbtn" data-open-dm="${esc(id)}" data-friend-name="${esc(displayName)}" type="button">Message</button></div>`;
-      }).join("");
-    }
-    $("dashFriends").textContent = String(friendIds.length);
+    const accepted = requests.filter(r=>r.status==="accepted");
+    const ids = [...new Set(accepted.map(r=>r.sender_id===currentUser.id?r.receiver_id:r.sender_id))];
+    const profiles = await fetchProfiles(ids);
+    if (!ids.length) $("friendsList").innerHTML = '<div class="empty">No friends yet. Search for someone above.</div>';
+    else $("friendsList").innerHTML = ids.map(id => {
+      const p = profiles.get(id);
+      const name = p?.display_name || "Member";
+      return `<div class="rowcard"><div class="grow"><strong>${esc(name)}</strong><span class="mutedline">${esc(roleTitle(p?.role||"member"))}</span></div><button class="smallbtn" data-send-coins-name="${esc(name)}" type="button">Send coins</button><button class="smallbtn" data-open-dm="${esc(id)}" data-friend-name="${esc(name)}" type="button">Message</button></div>`;
+    }).join("");
+    $("dashFriends").textContent = String(ids.length);
   } catch (error) {
-    $("incomingRequests").innerHTML = `<div class="empty">Couldn't load requests: ${esc(error.message)}</div>`;
-    $("friendsList").innerHTML = '<div class="empty">Check the friend-request SQL setup.</div>';
+    $("incomingRequests").innerHTML = `<div class="empty">Requests failed: ${esc(error.message)}</div>`;
+    $("friendsList").innerHTML = '<div class="empty">Check Query 1 and the friend-request setup.</div>';
   }
 }
-async function fetchProfiles(ids) {
-  const result = new Map();
-  if (!ids.length) return result;
-  const { data, error } = await db.from("profiles").select("user_id,display_name,role,coins").in("user_id", ids);
-  if (error) throw error;
-  (data || []).forEach(p => result.set(p.user_id, p));
-  return result;
-}
-$("reloadFriends").addEventListener("click", loadFriends);
+$("reloadFriends").addEventListener("click",loadFriends);
 
-$("friendsList").addEventListener("click", (event) => {
-  const button = event.target.closest("[data-send-coins-name]");
-  if (!button) return;
-  $("coinTargetName").value = button.dataset.sendCoinsName || "";
-  if (!$("coinTransferAmount").value) $("coinTransferAmount").value = "100";
-  $("coinTransferForm").scrollIntoView({ behavior: "smooth", block: "center" });
-  $("coinTransferAmount").focus();
-});
-
-$("coinTransferForm").addEventListener("submit", async event => {
-  event.preventDefault();
-  const targetName = $("coinTargetName").value.trim();
-  const amount = Number($("coinTransferAmount").value);
-  const button = $("coinTransferButton");
-  if (!targetName || !Number.isSafeInteger(amount) || amount < 1 || amount > 1000000) {
-    toast("Enter the recipient's exact display name and an amount from 1 to 1,000,000 coins.", "error");
-    return;
-  }
-  setBusy(button, true, "Sending coins...", "Send coins");
-  try {
-    const { data, error } = await db.rpc("send_member_coins", {
-      p_target_display_name: targetName,
-      p_amount: amount
-    });
-    if (error) throw error;
-    event.target.reset();
-    $("coinTransferAmount").value = "100";
-    await refreshMyProfile();
-    await loadLeaderboard();
-    toast(`Sent ${money(amount)} virtual coins to ${targetName}.`, "success");
-  } catch (error) {
-    toast("Transfer failed: " + error.message, "error");
-  } finally {
-    setBusy(button, false, "Sending coins...", "Send coins");
-  }
-});
-
-$("friendSearchForm").addEventListener("submit", async (event) => {
+$("friendSearchForm").addEventListener("submit",async event => {
   event.preventDefault();
   const term = $("friendSearchName").value.trim();
   if (!term) return;
   const host = $("friendSearchResults");
   host.innerHTML = '<div class="empty">Searching...</div>';
   try {
-    const { data, error } = await db.from("profiles")
+    const {data,error} = await db.from("profiles")
       .select("user_id,display_name,role")
-      .ilike("display_name", `%${term.replace(/[%_]/g, "")}%`)
-      .neq("user_id", currentUser.id)
-      .limit(20);
+      .ilike("display_name",`%${term.replace(/[%_]/g,"")}%`)
+      .neq("user_id",currentUser.id).limit(20);
     if (error) throw error;
-    if (!data?.length) {
-      host.innerHTML = '<div class="empty">No matching members found.</div>';
-      return;
-    }
-    host.innerHTML = data.map(p => `<div class="rowcard"><div class="grow"><strong>${esc(p.display_name)}</strong><span class="mutedline">${esc(roleTitle(p.role))}</span></div><button class="smallbtn" data-add-friend="${esc(p.display_name)}">Add friend</button></div>`).join("");
-  } catch (error) {
-    host.innerHTML = `<div class="empty">Search failed: ${esc(error.message)}</div>`;
-  }
+    host.innerHTML = data?.length ? data.map(p =>
+      `<div class="rowcard"><div class="grow"><strong>${esc(p.display_name)}</strong><span class="mutedline">${esc(roleTitle(p.role))}</span></div><button class="smallbtn" data-add-friend="${esc(p.display_name)}">Add friend</button></div>`
+    ).join("") : '<div class="empty">No matching members.</div>';
+  } catch (error) { host.innerHTML = `<div class="empty">Search failed: ${esc(error.message)}</div>`; }
 });
-$("friendSearchResults").addEventListener("click", async (event) => {
+
+$("friendSearchResults").addEventListener("click",async event => {
   const button = event.target.closest("[data-add-friend]");
   if (!button) return;
   button.disabled = true;
   try {
-    const { data, error } = await db.rpc("send_friend_request", { p_target_display_name: button.dataset.addFriend });
+    const {data,error} = await db.rpc("send_friend_request",{p_target_display_name:button.dataset.addFriend});
     if (error) throw error;
-    toast(typeof data === "string" ? data : "Friend request sent.", "success");
+    toast(String(data||"Friend request sent."),"success");
     loadFriends();
-  } catch (error) {
-    toast("Couldn't add friend: " + error.message, "error");
-  } finally {
-    button.disabled = false;
-  }
+  } catch (error) { toast("Request failed: " + error.message,"error"); }
+  finally { button.disabled = false; }
 });
-$("incomingRequests").addEventListener("click", async (event) => {
+
+$("incomingRequests").addEventListener("click",async event => {
   const button = event.target.closest("[data-request]");
   if (!button) return;
   try {
-    const { error } = await db.rpc("respond_friend_request", {
-      p_request_id: button.dataset.request,
-      p_accept: button.dataset.accept === "true"
+    const {data,error} = await db.rpc("respond_friend_request",{
+      p_request_id:button.dataset.request,
+      p_accept:button.dataset.accept==="true"
     });
     if (error) throw error;
-    toast(button.dataset.accept === "true" ? "Friend request accepted." : "Request declined.", "success");
+    toast(String(data||"Request updated."),"success");
     await loadFriends();
     await loadDashboardFriendsCount();
-  } catch (error) {
-    toast("Couldn't update request: " + error.message, "error");
+  } catch (error) { toast("Request update failed: " + error.message,"error"); }
+});
+
+$("friendsList").addEventListener("click",event => {
+  const transfer = event.target.closest("[data-send-coins-name]");
+  if (transfer) {
+    $("coinTargetName").value = transfer.dataset.sendCoinsName || "";
+    $("coinTransferForm").scrollIntoView({behavior:"smooth",block:"center"});
+    $("coinTransferAmount").focus();
+    return;
   }
+  const msg = event.target.closest("[data-open-dm]");
+  if (msg) {
+    selectedDmId = msg.dataset.openDm;
+    selectedDmName = msg.dataset.friendName || "Friend";
+    navigate("dm");
+    loadDmFriendChoices();
+  }
+});
+
+$("coinTransferForm").addEventListener("submit",async event => {
+  event.preventDefault();
+  const targetName = $("coinTargetName").value.trim();
+  const amount = Number($("coinTransferAmount").value);
+  const button = $("coinTransferButton");
+  if (!targetName || !Number.isSafeInteger(amount) || amount<1 || amount>1000000) {
+    toast("Enter a display name and an amount from 1 to 1,000,000.","error"); return;
+  }
+  setBusy(button,true,"Sending coins...","Send virtual coins");
+  try {
+    const {data,error} = await db.rpc("send_member_coins",{
+      p_target_display_name:targetName,p_amount:amount
+    });
+    if (error) throw error;
+    $("coinTargetName").value = "";
+    $("coinTransferAmount").value = "100";
+    await refreshMyProfile();
+    await loadLeaderboard();
+    toast(`Sent ${money(amount)} virtual coins to ${targetName}.`,"success");
+  } catch (error) { toast("Transfer failed: " + error.message,"error"); }
+  finally { setBusy(button,false,"Sending coins...","Send virtual coins"); }
 });
 
 async function loadDmFriendChoices() {
   if (!currentUser) return;
   const host = $("dmFriendChoices");
   try {
-    const { data, error } = await db.from("friend_requests").select("sender_id,receiver_id")
-      .eq("status", "accepted")
-      .or(`sender_id.eq.${currentUser.id},receiver_id.eq.${currentUser.id}`)
-      .limit(200);
+    const {data,error} = await db.from("friend_requests")
+      .select("sender_id,receiver_id").eq("status","accepted")
+      .or(`sender_id.eq.${currentUser.id},receiver_id.eq.${currentUser.id}`).limit(200);
     if (error) throw error;
-    const ids = [...new Set((data || []).map(r => r.sender_id === currentUser.id ? r.receiver_id : r.sender_id))];
+    const ids = [...new Set((data||[]).map(r=>r.sender_id===currentUser.id?r.receiver_id:r.sender_id))];
     const profiles = await fetchProfiles(ids);
-    if (!ids.length) {
-      host.innerHTML = '<div class="empty">Add friends before starting private messages.</div>';
-      return;
-    }
-    host.innerHTML = '<p class="muted">Choose a friend:</p>' + ids.map(id => {
+    if (!ids.length) host.innerHTML = '<div class="empty">Add friends before sending private messages.</div>';
+    else host.innerHTML = '<p class="muted">Choose a friend:</p>' + ids.map(id => {
       const p = profiles.get(id);
-      return `<button class="smallbtn" style="margin:4px" data-open-dm="${esc(id)}" data-friend-name="${esc(p?.display_name || "Member")}">${esc(p?.display_name || "Member")}</button>`;
+      return `<button class="smallbtn" style="margin:4px" data-open-dm="${esc(id)}" data-friend-name="${esc(p?.display_name||"Friend")}">${esc(p?.display_name||"Friend")}</button>`;
     }).join("");
-
     if (selectedDmId) {
-      const p = profiles.get(selectedDmId);
-      selectedDmName = p?.display_name || selectedDmName;
       $("dmSelected").hidden = false;
       $("dmSelected").textContent = "Private chat with " + selectedDmName;
       $("dmText").disabled = false;
       $("sendDmButton").disabled = false;
-      loadDmMessages();
+      await loadDmMessages();
     }
-  } catch (error) {
-    host.innerHTML = `<div class="empty">Friends couldn't load: ${esc(error.message)}</div>`;
-  }
+  } catch (error) { host.innerHTML = `<div class="empty">Friends failed to load: ${esc(error.message)}</div>`; }
 }
-async function loadDmMessages() {
-  if (!currentUser || !selectedDmId) return;
-  const box = $("dmMessages");
-  try {
-    const filter = `and(sender_id.eq.${currentUser.id},recipient_id.eq.${selectedDmId}),and(sender_id.eq.${selectedDmId},recipient_id.eq.${currentUser.id})`;
-    const { data, error } = await db.from("direct_messages").select("id,sender_id,recipient_id,body,created_at")
-      .or(filter)
-      .order("created_at", { ascending: true })
-      .limit(150);
-    if (error) throw error;
-    if (!data?.length) {
-      box.innerHTML = '<div class="empty">No private messages yet. Say hello!</div>';
-      return;
-    }
-    box.innerHTML = data.map(m => `<div class="message"><div class="messagehead"><strong>${m.sender_id === currentUser.id ? "You" : esc(selectedDmName)}</strong><time>${esc(timeText(m.created_at))}</time></div><p>${esc(m.body)}</p></div>`).join("");
-    box.scrollTop = box.scrollHeight;
-  } catch (error) {
-    box.innerHTML = `<div class="empty">Private messages couldn't load: ${esc(error.message)}</div>`;
-  }
-}
-$("dmFriendChoices").addEventListener("click", async (event) => {
+
+$("dmFriendChoices").addEventListener("click",async event => {
   const button = event.target.closest("[data-open-dm]");
   if (!button) return;
   selectedDmId = button.dataset.openDm;
@@ -999,857 +732,566 @@ $("dmFriendChoices").addEventListener("click", async (event) => {
   $("sendDmButton").disabled = false;
   await loadDmMessages();
 });
-$("friendsList").addEventListener("click", async (event) => {
-  const button = event.target.closest("[data-open-dm]");
-  if (!button) return;
-  selectedDmId = button.dataset.openDm;
-  selectedDmName = button.dataset.friendName || "Friend";
-  navigate("dm");
-  await loadDmFriendChoices();
-});
-$("dmForm").addEventListener("submit", async (event) => {
+
+async function loadDmMessages() {
+  if (!currentUser || !selectedDmId) return;
+  const box = $("dmMessages");
+  try {
+    const filter = `and(sender_id.eq.${currentUser.id},recipient_id.eq.${selectedDmId}),and(sender_id.eq.${selectedDmId},recipient_id.eq.${currentUser.id})`;
+    const {data,error} = await db.from("direct_messages")
+      .select("id,sender_id,recipient_id,body,created_at")
+      .or(filter).order("created_at",{ascending:true}).limit(150);
+    if (error) throw error;
+    box.innerHTML = data?.length ? data.map(m =>
+      `<div class="message"><div class="messagehead"><strong>${m.sender_id===currentUser.id?"You":esc(selectedDmName)}</strong><time>${esc(timeText(m.created_at))}</time></div><p>${esc(m.body)}</p></div>`
+    ).join("") : '<div class="empty">No private messages yet.</div>';
+    box.scrollTop = box.scrollHeight;
+  } catch (error) { box.innerHTML = `<div class="empty">Private messages failed: ${esc(error.message)}</div>`; }
+}
+
+$("dmForm").addEventListener("submit",async event => {
   event.preventDefault();
   const body = $("dmText").value.trim();
   if (!body || !selectedDmId) return;
   const button = $("sendDmButton");
-  setBusy(button, true, "Sending...", "Send");
+  setBusy(button,true,"Sending...","Send");
   try {
-    const { error } = await db.from("direct_messages").insert({
-      sender_id: currentUser.id,
-      recipient_id: selectedDmId,
-      body
+    const {error} = await db.from("direct_messages").insert({
+      sender_id:currentUser.id,recipient_id:selectedDmId,body
     });
     if (error) throw error;
     $("dmText").value = "";
     await loadDmMessages();
-  } catch (error) {
-    toast("Private message failed: " + error.message, "error");
-  } finally {
-    setBusy(button, false, "Sending...", "Send");
-  }
+  } catch (error) { toast("Private message failed: " + error.message,"error"); }
+  finally { setBusy(button,false,"Sending...","Send"); }
 });
 
 async function loadShop() {
   if (!currentUser) return;
   const host = $("shopItems");
-  host.innerHTML = '<div class="empty">Loading shop...</div>';
   try {
-    const { data, error } = await db.from("shop_items")
+    const {data,error} = await db.from("shop_items")
       .select("id,name,description,price,active,image_url,created_at")
-      .order("created_at", { ascending: false })
-      .limit(100);
+      .order("created_at",{ascending:false}).limit(100);
     if (error) throw error;
-    if (!data?.length) {
-      host.innerHTML = '<div class="empty">The shop is empty. Staff can publish the first item from Admin.</div>';
-      return;
-    }
-    host.innerHTML = data.map(item => {
-      const image = item.image_url && /^https:\/\//i.test(item.image_url)
-        ? `<img class="shop-image" src="${esc(item.image_url)}" alt="${esc(item.name)}" loading="lazy" referrerpolicy="no-referrer">`
-        : "";
-      return `<article class="itemcard">${image}<strong>${esc(item.name)}</strong><p>${esc(item.description || "No description.")}</p><div class="coin">🪙 ${money(item.price)} coins</div>${item.active ? `<button class="btn" data-buy-item="${esc(item.id)}">Buy item</button>` : `<p class="muted">Currently unavailable</p>`}${isStaff() ? `<button class="smallbtn" style="margin-top:7px" data-toggle-item="${esc(item.id)}" data-active="${item.active ? "false" : "true"}">${item.active ? "Disable" : "Enable"}</button>` : ""}</article>`;
-    }).join("");
-  } catch (error) {
-    host.innerHTML = `<div class="empty">Shop failed to load: ${esc(error.message)}. Run the feature-upgrade SQL.</div>`;
-  }
+    host.innerHTML = data?.length ? data.map(item => {
+      const img = item.image_url && /^https:\/\//i.test(item.image_url)
+        ? `<img class="shop-image" src="${esc(item.image_url)}" alt="${esc(item.name)}" loading="lazy" referrerpolicy="no-referrer">` : "";
+      return `<article class="itemcard">${img}<strong>${esc(item.name)}</strong><p>${esc(item.description||"No description.")}</p><div class="coin">🪙 ${money(item.price)} coins</div>${item.active?`<button class="btn" data-buy-item="${esc(item.id)}">Buy item</button>`:'<p>Unavailable</p>'}${isStaff()?`<button class="smallbtn" style="margin-top:7px" data-toggle-item="${esc(item.id)}" data-active="${item.active?"false":"true"}">${item.active?"Disable":"Enable"}</button>`:""}</article>`;
+    }).join("") : '<div class="empty">The shop is empty. Staff can add an item from Admin.</div>';
+  } catch (error) { host.innerHTML = `<div class="empty">Shop failed: ${esc(error.message)}</div>`; }
 }
 
 async function loadInventory() {
   if (!currentUser) return;
   const host = $("inventoryList");
-  host.innerHTML = '<div class="empty">Loading inventory...</div>';
   try {
-    const { data, error } = await db.from("inventory")
+    const {data,error} = await db.from("inventory")
       .select("id,item_name,image_url,quantity,first_purchased_at,last_purchased_at")
-      .eq("user_id", currentUser.id)
-      .order("last_purchased_at", { ascending: false })
-      .limit(100);
+      .eq("user_id",currentUser.id).order("last_purchased_at",{ascending:false}).limit(100);
     if (error) throw error;
-    if (!data?.length) {
-      host.innerHTML = '<div class="empty">Your inventory is empty. Buy an image or item from the shop to collect it here.</div>';
-      return;
-    }
-    host.innerHTML = data.map(item => {
-      const image = item.image_url && /^https:\/\//i.test(item.image_url)
-        ? `<img class="shop-image" src="${esc(item.image_url)}" alt="${esc(item.item_name)}" loading="lazy" referrerpolicy="no-referrer">`
-        : "";
-      return `<article class="itemcard">${image}<strong>${esc(item.item_name)}</strong><p class="muted">Owned quantity: <span class="inventory-quantity">×${money(item.quantity)}</span></p><p class="mutedline">Added ${esc(timeText(item.first_purchased_at))}</p></article>`;
-    }).join("");
-  } catch (error) {
-    host.innerHTML = `<div class="empty">Inventory failed to load: ${esc(error.message)}. Run the feature-upgrade SQL.</div>`;
-  }
+    host.innerHTML = data?.length ? data.map(item => {
+      const img = item.image_url && /^https:\/\//i.test(item.image_url)
+        ? `<img class="shop-image" src="${esc(item.image_url)}" alt="${esc(item.item_name)}" loading="lazy" referrerpolicy="no-referrer">` : "";
+      return `<article class="itemcard">${img}<strong>${esc(item.item_name)}</strong><p>Quantity <span class="inventory-quantity">×${money(item.quantity)}</span></p><p class="mutedline">Added ${esc(timeText(item.first_purchased_at))}</p></article>`;
+    }).join("") : '<div class="empty">Your inventory is empty.</div>';
+  } catch (error) { host.innerHTML = `<div class="empty">Inventory failed: ${esc(error.message)}</div>`; }
 }
 
 async function loadPurchases() {
   if (!currentUser) return;
   const host = $("purchasesList");
   try {
-    const { data, error } = await db.from("purchases")
+    const {data,error} = await db.from("purchases")
       .select("id,item_name,price,created_at")
-      .eq("user_id", currentUser.id)
-      .order("created_at", { ascending: false })
-      .limit(50);
+      .eq("user_id",currentUser.id).order("created_at",{ascending:false}).limit(50);
     if (error) throw error;
-    if (!data?.length) {
-      host.innerHTML = '<div class="empty">You have not purchased anything yet.</div>';
-      return;
-    }
-    host.innerHTML = data.map(p => `<div class="rowcard"><div class="grow"><strong>${esc(p.item_name)}</strong><span class="mutedline">${esc(timeText(p.created_at))}</span></div><span class="coin">−${money(p.price)} 🪙</span></div>`).join("");
-  } catch (error) {
-    host.innerHTML = `<div class="empty">Purchase history failed: ${esc(error.message)}</div>`;
-  }
+    host.innerHTML = data?.length ? data.map(p =>
+      `<div class="rowcard"><div class="grow"><strong>${esc(p.item_name)}</strong><span class="mutedline">${esc(timeText(p.created_at))}</span></div><span class="coin">−${money(p.price)} 🪙</span></div>`
+    ).join("") : '<div class="empty">No purchases yet.</div>';
+  } catch (error) { host.innerHTML = `<div class="empty">Purchase history failed: ${esc(error.message)}</div>`; }
 }
-$("reloadShop").addEventListener("click", () => {
-  loadShop();
-  loadInventory();
-  loadPurchases();
-});
-$("shopItems").addEventListener("click", async (event) => {
+$("reloadShop").addEventListener("click",() => {loadShop();loadInventory();loadPurchases();});
+
+$("shopItems").addEventListener("click",async event => {
   const buy = event.target.closest("[data-buy-item]");
   const toggle = event.target.closest("[data-toggle-item]");
   if (buy) {
     buy.disabled = true;
     try {
-      const { error } = await db.rpc("buy_shop_item", { p_item_id: buy.dataset.buyItem });
+      const {error} = await db.rpc("buy_shop_item",{p_item_id:buy.dataset.buyItem});
       if (error) throw error;
-      await refreshMyProfile();
-      await loadShop();
-      await loadInventory();
-      await loadPurchases();
-      await loadLeaderboard();
-      toast("Purchase successful! Your item is in your inventory.", "success");
-    } catch (error) {
-      toast("Purchase failed: " + error.message, "error");
-    } finally {
-      buy.disabled = false;
-    }
+      await refreshMyProfile(); await loadShop(); await loadInventory(); await loadPurchases(); await loadLeaderboard();
+      toast("Purchase complete. Check your inventory.","success");
+    } catch (error) { toast("Purchase failed: " + error.message,"error"); }
+    finally { buy.disabled = false; }
   }
   if (toggle) {
     try {
-      const { error } = await db.rpc("set_shop_item_active", {
-        p_item_id: toggle.dataset.toggleItem,
-        p_active: toggle.dataset.active === "true"
+      const {error} = await db.rpc("set_shop_item_active",{
+        p_item_id:toggle.dataset.toggleItem,p_active:toggle.dataset.active==="true"
       });
       if (error) throw error;
       await loadShop();
-      toast("Shop item updated.", "success");
-    } catch (error) {
-      toast("Couldn't update item: " + error.message, "error");
-    }
+      toast("Shop item updated.","success");
+    } catch (error) { toast("Couldn't update item: " + error.message,"error"); }
   }
 });
 
 async function loadEvents() {
   if (!currentUser) return;
   const host = $("eventsList");
-  const history = $("eventHistory");
   try {
-    const { data, error } = await db.from("fake_events")
-      .select("id,title,description,status,outcome,created_at,created_by,settled_at")
-      .order("created_at", { ascending: false })
-      .limit(100);
+    const {data,error} = await db.from("fake_events")
+      .select("id,title,description,status,outcome,created_at,settled_at")
+      .order("created_at",{ascending:false}).limit(100);
     if (error) throw error;
-    const events = data || [];
-    const { data: myBets, error: betError } = await db.from("fake_event_bets")
-      .select("event_id,choice,amount,payout")
-      .eq("user_id", currentUser.id)
-      .limit(200);
+
+    const {data:bets,error:betError} = await db.from("fake_event_bets")
+      .select("event_id,choice,amount,payout").eq("user_id",currentUser.id).limit(200);
     if (betError) throw betError;
-    const betMap = new Map((myBets || []).map(b => [b.event_id, b]));
-    if (!events.length) {
-      host.innerHTML = '<div class="empty">No events yet. Staff can host one from the Admin panel.</div>';
-    } else {
-      host.innerHTML = events.map(e => {
-        const bet = betMap.get(e.id);
-        return `<article class="eventcard"><strong>${esc(e.title)}</strong><p>${esc(e.description || "Choose heads or tails. Winning bets receive 2× their wager.")}</p><span class="tag ${e.status === "open" ? "admin" : ""}">${esc(e.status)}</span>${bet ? `<p>Your bet: <strong>${esc(bet.choice)}</strong> · ${money(bet.amount)} coins</p>` : ""}${e.status === "open" && !bet ? `<form class="betform" data-bet-form="${esc(e.id)}"><div class="field"><label>Wager (coins)</label><input name="amount" type="number" min="1" max="1000000" value="25" required></div><div class="inlineform"><button class="btn" name="choice" value="heads" type="submit">Heads</button><button class="btn secondary" name="choice" value="tails" type="submit">Tails</button></div></form>` : ""}${e.status === "open" && isStaff() ? `<button class="btn secondary" data-settle-event="${esc(e.id)}">Settle event (random)</button>` : ""}${e.status === "settled" ? `<p>Result: <strong>${esc(e.outcome)}</strong></p>${bet ? `<p>${bet.payout > 0 ? `Payout: ${money(bet.payout)} coins` : "Your wager did not win."}</p>` : ""}` : ""}</article>`;
-      }).join("");
-    }
-    const settled = events.filter(e => e.status === "settled");
-    history.innerHTML = settled.length
-      ? settled.slice(0,20).map(e => `<div class="rowcard"><div class="grow"><strong>${esc(e.title)}</strong><span class="mutedline">${esc(timeText(e.settled_at || e.created_at))}</span></div><span class="tag">${esc(e.outcome || "settled")}</span></div>`).join("")
-      : '<div class="empty">No settled events yet.</div>';
+    const betMap = new Map((bets||[]).map(b=>[b.event_id,b]));
+
+    host.innerHTML = data?.length ? data.map(e => {
+      const bet = betMap.get(e.id);
+      return `<article class="eventcard"><strong>${esc(e.title)}</strong><p>${esc(e.description||"Pick heads or tails.")}</p><span class="tag ${e.status==="open"?"admin":""}">${esc(e.status)}</span>${bet?`<p>Your bet: <strong>${esc(bet.choice)}</strong> · ${money(bet.amount)} coins</p>`:""}${e.status==="open"&&!bet?`<form class="betform" data-bet-form="${esc(e.id)}"><div class="field"><label>WAGER (COINS)</label><input name="amount" type="number" min="1" max="1000000" value="25" required></div><div class="inlineform"><button class="btn" type="submit" name="choice" value="heads">Heads</button><button class="btn secondary" type="submit" name="choice" value="tails">Tails</button></div></form>`:""}${e.status==="open"&&isStaff()?`<button class="btn secondary" data-settle-event="${esc(e.id)}">Settle event (random)</button>`:""}${e.status==="settled"?`<p>Result: <strong>${esc(e.outcome||"")}</strong></p>${bet?`<p>${bet.payout>0?"Payout: "+money(bet.payout)+" coins":"This bet did not win."}</p>`:""}`:""}</article>`;
+    }).join("") : '<div class="empty">No events yet. Staff can create one in Admin.</div>';
+
+    const settled = (data||[]).filter(e=>e.status==="settled");
+    $("eventHistory").innerHTML = settled.length ? settled.slice(0,20).map(e =>
+      `<div class="rowcard"><div class="grow"><strong>${esc(e.title)}</strong><span class="mutedline">${esc(timeText(e.settled_at||e.created_at))}</span></div><span class="tag">${esc(e.outcome||"settled")}</span></div>`
+    ).join("") : '<div class="empty">No settled events yet.</div>';
   } catch (error) {
-    host.innerHTML = `<div class="empty">Events failed to load: ${esc(error.message)}</div>`;
-    history.innerHTML = '<div class="empty">Check that the SQL setup has been run.</div>';
+    host.innerHTML = `<div class="empty">Events failed: ${esc(error.message)}</div>`;
   }
 }
-$("reloadEvents").addEventListener("click", loadEvents);
+$("reloadEvents").addEventListener("click",loadEvents);
 
-$("eventsList").addEventListener("submit", async (event) => {
+$("eventsList").addEventListener("submit",async event => {
   const form = event.target.closest("[data-bet-form]");
   if (!form) return;
   event.preventDefault();
-  const submitter = event.submitter;
-  const choice = submitter?.value;
+  const choice = event.submitter?.value;
   const amount = Number(new FormData(form).get("amount"));
-  if (!["heads", "tails"].includes(choice)) {
-    toast("Choose heads or tails.", "error");
-    return;
-  }
-  const buttons = form.querySelectorAll("button");
-  buttons.forEach(b => b.disabled = true);
+  if (!["heads","tails"].includes(choice)) {toast("Choose heads or tails.","error");return;}
+  form.querySelectorAll("button").forEach(b=>b.disabled=true);
   try {
-    const { error } = await db.rpc("place_fake_bet", {
-      p_event_id: form.dataset.betForm,
-      p_choice: choice,
-      p_amount: amount
+    const {error} = await db.rpc("place_fake_bet",{
+      p_event_id:form.dataset.betForm,p_choice:choice,p_amount:amount
     });
     if (error) throw error;
-    await refreshMyProfile();
-    await loadEvents();
-    await loadLeaderboard();
-    toast("Your virtual-coin bet has been placed.", "success");
-  } catch (error) {
-    toast("Bet failed: " + error.message, "error");
-  } finally {
-    buttons.forEach(b => b.disabled = false);
-  }
-});
-$("eventsList").addEventListener("click", async (event) => {
-  const button = event.target.closest("[data-settle-event]");
-  if (!button) return;
-  if (!confirm("Settle this event with a server-generated random coin-flip result?")) return;
-  button.disabled = true;
-  try {
-    const { data, error } = await db.rpc("settle_fake_event", { p_event_id: button.dataset.settleEvent });
-    if (error) throw error;
-    await refreshMyProfile();
-    await loadEvents();
-    await loadLeaderboard();
-    toast("Event settled. Result: " + String(data), "success");
-  } catch (error) {
-    toast("Couldn't settle event: " + error.message, "error");
-  } finally {
-    button.disabled = false;
-  }
+    await refreshMyProfile(); await loadEvents(); await loadLeaderboard();
+    toast("Your virtual-coin bet has been placed.","success");
+  } catch (error) { toast("Bet failed: " + error.message,"error"); }
+  finally { form.querySelectorAll("button").forEach(b=>b.disabled=false); }
 });
 
-$("createItemForm").addEventListener("submit", async (event) => {
-  event.preventDefault();
-  const name = $("itemName").value.trim();
-  const description = $("itemDescription").value.trim();
-  const price = Number($("itemPrice").value);
-  const button = event.submitter;
-  setBusy(button, true, "Publishing...", "Publish item");
+$("eventsList").addEventListener("click",async event => {
+  const button = event.target.closest("[data-settle-event]");
+  if (!button || !confirm("Settle this virtual-coin event with a random coin flip?")) return;
+  button.disabled = true;
   try {
-    const imageUrl = $("itemImageUrl").value.trim();
-    const { error } = await db.rpc("create_shop_item", {
-      p_name: name,
-      p_description: description,
-      p_price: price,
-      p_image_url: imageUrl
+    const {data,error} = await db.rpc("settle_fake_event",{p_event_id:button.dataset.settleEvent});
+    if (error) throw error;
+    await refreshMyProfile(); await loadEvents(); await loadLeaderboard();
+    toast("Event settled. Result: " + String(data),"success");
+  } catch (error) { toast("Settlement failed: " + error.message,"error"); }
+  finally { button.disabled = false; }
+});
+
+$("createItemForm").addEventListener("submit",async event => {
+  event.preventDefault();
+  const button = event.submitter;
+  setBusy(button,true,"Publishing...","Publish item");
+  try {
+    const {error} = await db.rpc("create_shop_item",{
+      p_name:$("itemName").value.trim(),
+      p_description:$("itemDescription").value.trim(),
+      p_price:Number($("itemPrice").value),
+      p_image_url:$("itemImageUrl").value.trim()
     });
     if (error) throw error;
     event.target.reset();
     await loadShop();
-    toast("Shop item published.", "success");
-  } catch (error) {
-    toast("Couldn't publish item: " + error.message, "error");
-  } finally {
-    setBusy(button, false, "Publishing...", "Publish item");
-  }
+    toast("Shop item published.","success");
+  } catch (error) { toast("Publish failed: " + error.message,"error"); }
+  finally { setBusy(button,false,"Publishing...","Publish item"); }
 });
-$("createEventForm").addEventListener("submit", async (event) => {
+
+$("createEventForm").addEventListener("submit",async event => {
   event.preventDefault();
-  const title = $("eventTitle").value.trim();
-  const description = $("eventDescription").value.trim();
   const button = event.submitter;
-  setBusy(button, true, "Opening event...", "Open event");
+  setBusy(button,true,"Opening event...","Open event");
   try {
-    const { error } = await db.rpc("create_fake_event", {
-      p_title: title,
-      p_description: description
+    const {error} = await db.rpc("create_fake_event",{
+      p_title:$("eventTitle").value.trim(),
+      p_description:$("eventDescription").value.trim()
     });
     if (error) throw error;
     event.target.reset();
     await loadEvents();
-    toast("Your fake-coin event is open.", "success");
-  } catch (error) {
-    toast("Couldn't create event: " + error.message, "error");
-  } finally {
-    setBusy(button, false, "Opening event...", "Open event");
+    toast("Event opened.","success");
+  } catch (error) { toast("Event creation failed: " + error.message,"error"); }
+  finally { setBusy(button,false,"Opening event...","Open event"); }
+});
+
+async function loadMembers() {
+  if (!isStaff()) return;
+  const host = $("membersList");
+  host.innerHTML = '<div class="empty">Loading...</div>';
+  try {
+    const {data,error} = await db.from("profiles")
+      .select("user_id,display_name,role,coins,created_at")
+      .order("created_at",{ascending:false}).limit(100);
+    if (error) throw error;
+    host.innerHTML = data?.length ? data.map(p => {
+      const roleControls = isOwner() && p.role!=="owner"
+        ? `<div class="field"><label>ROLE</label><select data-role-select="${esc(p.user_id)}"><option value="member" ${p.role==="member"?"selected":""}>Member</option><option value="admin" ${p.role==="admin"?"selected":""}>Admin</option></select><button class="smallbtn" data-change-role="${esc(p.user_id)}" style="margin-top:6px">Save role</button></div>` : "";
+      return `<div class="rowcard"><div class="grow"><strong>${esc(p.display_name)}</strong><span class="tag ${p.role==="owner"?"owner":p.role==="admin"?"admin":""}">${esc(p.role)}</span><p class="mutedline">${money(p.coins)} coins</p><div class="inlineform"><input type="number" min="1" max="1000000000" value="100" data-grant-amount="${esc(p.user_id)}" aria-label="Coins to grant"><button class="smallbtn" data-grant-coins="${esc(p.user_id)}">Grant</button></div>${roleControls}</div></div>`;
+    }).join("") : '<div class="empty">No members found.</div>';
+  } catch (error) { host.innerHTML = `<div class="empty">Members failed to load: ${esc(error.message)}</div>`; }
+}
+$("reloadMembers").addEventListener("click",loadMembers);
+$("membersList").addEventListener("click",async event => {
+  const grant = event.target.closest("[data-grant-coins]");
+  const change = event.target.closest("[data-change-role]");
+  if (grant) {
+    const id = grant.dataset.grantCoins;
+    const input = document.querySelector(`[data-grant-amount="${CSS.escape(id)}"]`);
+    const amount = Number(input?.value);
+    grant.disabled = true;
+    try {
+      const {error} = await db.rpc("grant_fake_coins",{p_user_id:id,p_amount:amount});
+      if (error) throw error;
+      await loadMembers(); await refreshMyProfile(); await loadLeaderboard();
+      toast("Virtual coins granted.","success");
+    } catch (error) { toast("Grant failed: " + error.message,"error"); }
+    finally { grant.disabled = false; }
+  }
+  if (change) {
+    const id = change.dataset.changeRole;
+    const select = document.querySelector(`[data-role-select="${CSS.escape(id)}"]`);
+    change.disabled = true;
+    try {
+      const {error} = await db.rpc("set_member_role",{p_user_id:id,p_role:select.value});
+      if (error) throw error;
+      await loadMembers();
+      toast("Member role updated.","success");
+    } catch (error) { toast("Role update failed: " + error.message,"error"); }
+    finally { change.disabled = false; }
   }
 });
 
-// MINES: the host opens the session; players only join the queue.
-let activeMinesGame = null;
-let minesBusy = false;
-let minesQueueState = null;
-let minesSessionState = null;
-let minesQueueTimer = null;
-
-function updateMinesStatus(message, type = "") {
-  const el = $("minesStatus");
-  el.textContent = message;
-  el.className = "notice" + (type ? " " + type : "");
-}
-function updateMinesQueueStatus(message, type = "") {
-  const el = $("minesQueueStatus");
-  el.textContent = message;
-  el.className = "notice" + (type ? " " + type : "");
-}
+// MINES: owner-controlled session, shared queue, single player turn.
 function renderMinesBoard() {
   const board = $("minesBoard");
   const game = activeMinesGame;
-  const isActive = Boolean(game && game.status === "active");
-  const isFinished = Boolean(game && (game.status === "lost" || game.status === "cashed_out"));
-  const canSeeBoard = isActive || isFinished;
-  board.hidden = !canSeeBoard;
-  if (!canSeeBoard) {
-    board.innerHTML = "";
-  } else {
-    const revealed = new Set((game?.revealed_cells || []).map(Number));
-    const mines = new Set((game?.mines || []).map(Number));
-    board.innerHTML = Array.from({length:25}, (_, i) => {
-      const cell = i + 1;
-      const safe = revealed.has(cell) && !mines.has(cell);
-      const mine = mines.has(cell);
-      const cls = mine ? "mine-tile mine" : safe ? "mine-tile safe" : "mine-tile";
-      const label = mine ? "💣" : safe ? "💎" : "◆";
-      const disabled = !isActive || revealed.has(cell) || mine || minesBusy;
-      return `<button class="${cls}" type="button" data-mines-cell="${cell}" aria-label="Tile ${cell}" ${disabled ? "disabled" : ""}>${label}</button>`;
+  const active = Boolean(game && game.status==="active");
+  const finished = Boolean(game && ["lost","cashed_out"].includes(game.status));
+  board.hidden = !active && !finished;
+
+  if (board.hidden) board.innerHTML = "";
+  else {
+    const revealed = new Set((game.revealed_cells||[]).map(Number));
+    const mines = new Set((game.mines||[]).map(Number));
+    board.innerHTML = Array.from({length:25},(_,i)=>{
+      const n=i+1, isMine=mines.has(n), safe=revealed.has(n)&&!isMine;
+      const cls="mine-tile"+(isMine?" mine":safe?" safe":"");
+      return `<button type="button" class="${cls}" data-mines-cell="${n}" ${!active||revealed.has(n)||isMine||minesBusy?"disabled":""}>${isMine?"💣":safe?"💎":"◆"}</button>`;
     }).join("");
   }
-  const isUsersTurn = Boolean(!minesSessionState?.is_host && minesQueueState && Number(minesQueueState.my_position) === 1);
-  $("minesCashoutButton").disabled = !isActive || !isUsersTurn || Number(game?.safe_revealed || 0) < 1 || minesBusy;
-  $("minesStartButton").disabled = !isUsersTurn || minesQueueState?.active_round || minesBusy;
-  $("minesCount").disabled = !isUsersTurn || minesQueueState?.active_round || minesBusy;
-  $("minesBet").disabled = !isUsersTurn || minesQueueState?.active_round || minesBusy;
-  $("minesSafeCount").textContent = String(game?.safe_revealed || 0);
-  $("minesMultiplier").textContent = game?.multiplier ? Number(game.multiplier).toFixed(2) + "×" : "—";
-  $("minesPotentialPayout").textContent = game?.multiplier && game?.bet
-    ? money(Math.floor(Number(game.bet) * Number(game.multiplier)))
-    : "—";
+
+  const myTurn = Boolean(!minesSessionState?.is_host && Number(minesQueueState?.my_position)===1);
+  $("minesCashoutButton").disabled = !active || !myTurn || Number(game?.safe_revealed||0)<1 || minesBusy;
+  $("minesStartButton").disabled = !myTurn || minesQueueState?.active_round || minesBusy;
+  $("minesCount").disabled = !myTurn || minesQueueState?.active_round || minesBusy;
+  $("minesBet").disabled = !myTurn || minesQueueState?.active_round || minesBusy;
+  $("minesSafeCount").textContent = String(game?.safe_revealed||0);
+  $("minesMultiplier").textContent = game?.multiplier ? Number(game.multiplier).toFixed(2)+"×" : "—";
+  $("minesPotentialPayout").textContent = game?.multiplier && game?.bet ? money(Math.floor(Number(game.bet)*Number(game.multiplier))) : "—";
 }
 
 function renderMinesQueue() {
   const state = minesQueueState;
   const session = minesSessionState;
-  const host = $("minesQueueList");
-  if (!state) {
-    host.innerHTML = '<div class="empty">Queue has not loaded yet.</div>';
-    return;
-  }
+  if (!state || !session) return;
+
+  const host = Boolean(session.is_host || isOwner());
+  const open = Boolean(session.session_open);
   const queue = Array.isArray(state.queue) ? state.queue : [];
-  const isHost = Boolean(session?.is_host) || isOwner();
-  const sessionOpen = Boolean(session?.session_open);
-  $("minesQueueCount").textContent = String(queue.length);
-  $("minesHostControls").hidden = !isHost;
-  $("minesPlayerQueueControls").hidden = isHost;
-  $("startMinesSessionButton").hidden = sessionOpen;
-  $("endMinesSessionButton").hidden = !sessionOpen;
-  $("joinMinesQueueButton").hidden = isHost || !sessionOpen || state.my_position != null || Boolean(state.my_active_game);
+  const position = state.my_position == null ? null : Number(state.my_position);
+  const myActive = Boolean(state.my_active_game);
+
+  $("minesHostControls").hidden = !host;
+  $("minesPlayerQueueControls").hidden = host;
+  $("startMinesSessionButton").hidden = open;
+  $("endMinesSessionButton").hidden = !open;
+  $("joinMinesQueueButton").hidden = host || !open || position!==null || myActive;
+  $("leaveMinesQueueButton").hidden = host || position===null || myActive;
   $("joinMinesQueueButton").disabled = minesBusy;
-  $("leaveMinesQueueButton").hidden = isHost || state.my_position == null || Boolean(state.my_active_game);
   $("leaveMinesQueueButton").disabled = minesBusy;
 
-  $("minesSessionTitle").textContent = sessionOpen ? "🟢 Mines session is OPEN" : "⚪ Mines session is CLOSED";
-  if (isHost) {
-    $("minesSessionDescription").textContent = sessionOpen
-      ? "You are hosting. Players can join below, and you can watch the live queue. You do not need to join the queue yourself. End the session after all rounds finish."
-      : "You are the host. Press Start Mines Session to open the queue for everyone. Your account cannot join its own queue.";
-  } else {
-    $("minesSessionDescription").textContent = sessionOpen
-      ? `Hosted by ${session?.host_name || "the owner"}. Join the queue and wait for your turn.`
-      : "The host has not opened a Mines session yet. Check back when the owner starts one.";
-  }
-  if (sessionOpen) {
-    updateMinesQueueStatus(isHost ? "Session is live. The queue updates automatically." : "Session is live. You can join the queue.", "success");
-  } else {
-    updateMinesQueueStatus("The Mines session is closed. Players cannot join yet.");
-  }
+  $("minesSessionTitle").textContent = open ? "🟢 Session is OPEN" : "⚪ Session is CLOSED";
+  $("minesSessionDescription").textContent = host
+    ? (open ? "You're hosting. Watch the live queue; your account cannot queue as a player." : "Press Start Mines Session to open the queue for members.")
+    : (open ? `Hosted by ${session.host_name||"the owner"}. Join the queue and wait for your turn.` : "The owner has not started a session yet.");
 
-  if (!queue.length) {
-    host.innerHTML = sessionOpen
-      ? '<div class="empty">Nobody is in the queue yet.</div>'
-      : '<div class="empty">Queue is empty. The host must open a session before players can join.</div>';
-  } else {
-    host.innerHTML = queue.map(player => {
-      const isMe = player.user_id === currentUser?.id;
-      const playing = Boolean(player.playing);
-      const badge = playing
-        ? "<span class=\"queue-badge\">Playing</span>"
-        : Number(player.position) === 1
-          ? "<span class=\"queue-badge\">Next up</span>"
-          : "";
-      const classes = "queue-player" +
-        (Number(player.position) === 1 ? " current" : "") +
-        (playing ? " playing" : "");
-      return `<div class="${classes}"><div class="queue-rank">${Number(player.position)}</div><div class="queue-player-info"><strong>${esc(player.display_name || "Player")}${isMe ? " (you)" : ""}</strong><span>${playing ? "Currently in a round" : "Joined " + esc(timeText(player.joined_at))}</span></div>${badge}</div>`;
-    }).join("");
-  }
+  $("minesQueueCount").textContent = String(queue.length);
+  setStatus("minesQueueStatus",open?(host?"Session open. Queue updates automatically.":"Session open. Members can join the queue."):"The session is closed. Players cannot join.",open?"success":"");
 
-  const form = $("minesStartForm");
-  const myPosition = state.my_position == null ? null : Number(state.my_position);
-  const isQueued = myPosition !== null;
-  const myActive = Boolean(state.my_active_game);
-  const myTurn = myPosition === 1;
+  $("minesQueueList").innerHTML = queue.length ? queue.map(p => {
+    const playing=Boolean(p.playing), isMe=p.user_id===currentUser?.id;
+    return `<div class="queue-player${Number(p.position)===1?" current":""}${playing?" playing":""}"><div class="queue-rank">${Number(p.position)}</div><div class="queue-player-info"><strong>${esc(p.display_name||"Player")}${isMe?" (you)":""}</strong><span>${playing?"Currently playing":"Joined "+esc(timeText(p.joined_at))}</span></div>${playing?'<span class="queue-badge">Playing</span>':Number(p.position)===1?'<span class="queue-badge">Next up</span>':""}</div>`;
+  }).join("") : '<div class="empty">Queue is empty.</div>';
 
-  if (!isHost && sessionOpen && myTurn && !state.active_round && !myActive) {
-    form.hidden = false;
+  if (host) {
+    $("minesStartForm").hidden = true;
+    $("minesPlayTitle").textContent = open?"You're hosting the session":"Waiting to open a session";
+    $("minesPlayDescription").textContent = open?"Players will appear in the queue. The next member plays once the previous round ends.":"Press Start Mines Session to let members join.";
+    if (!activeMinesGame || activeMinesGame.status!=="active") setStatus("minesStatus",open?"You are the host; you do not play in your own queue.":"The host has not started a session.");
+  } else if (!open) {
+    $("minesStartForm").hidden = true;
+    $("minesPlayTitle").textContent = "Waiting for host";
+    $("minesPlayDescription").textContent = "Join Queue will appear after the owner opens the session.";
+    if (!activeMinesGame || activeMinesGame.status!=="active") setStatus("minesStatus","The host has not started a session.");
+  } else if (myActive) {
+    $("minesStartForm").hidden = true;
+    $("minesPlayTitle").textContent = "Your round is active";
+    $("minesPlayDescription").textContent = "Reveal safe tiles and cash out before hitting a mine.";
+  } else if (position===1 && !state.active_round) {
+    $("minesStartForm").hidden = false;
     $("minesPlayTitle").textContent = "It's your turn!";
-    $("minesPlayDescription").textContent = "Choose how many mines and your wager, then start your round.";
-    if (!(activeMinesGame && (activeMinesGame.status === "lost" || activeMinesGame.status === "cashed_out"))) {
-      updateMinesStatus("You're first in the queue. Choose your wager and start your round.", "success");
-    }
+    $("minesPlayDescription").textContent = "Set the number of mines and your wager, then start your round.";
+    if (!activeMinesGame || activeMinesGame.status!=="lost") setStatus("minesStatus","You're first in the queue. Start your round when ready.","success");
+  } else if (position!==null) {
+    $("minesStartForm").hidden = true;
+    $("minesPlayTitle").textContent = "Queue position "+position;
+    $("minesPlayDescription").textContent = "Wait for the player ahead of you to finish.";
+    if (!activeMinesGame || activeMinesGame.status!=="lost") setStatus("minesStatus",state.active_round?`Current player: ${state.current_player||"playing"}.`:`You're number ${position} in the queue.`);
   } else {
-    form.hidden = true;
-    if (isHost) {
-      $("minesPlayTitle").textContent = sessionOpen ? "Hosting the session" : "Waiting to open a session";
-      $("minesPlayDescription").textContent = sessionOpen
-        ? "Watch the queue on the left. The next player can start when the current round is finished."
-        : "Press Start Mines Session to let players join the queue.";
-      updateMinesStatus(sessionOpen ? "You are hosting. You do not play through your own queue." : "Start a session to let players join.");
-    } else if (!sessionOpen) {
-      $("minesPlayTitle").textContent = "Waiting for the host";
-      $("minesPlayDescription").textContent = "The queue is disabled until the owner starts a session.";
-      updateMinesStatus("The host has not started a session.");
-    } else if (myActive) {
-      $("minesPlayTitle").textContent = "Your round is active";
-      $("minesPlayDescription").textContent = "Reveal tiles, then cash out before you hit a mine.";
-    } else if (isQueued) {
-      $("minesPlayTitle").textContent = `Queue position ${myPosition}`;
-      $("minesPlayDescription").textContent = "Wait for the player ahead of you to finish. The queue advances after their round ends.";
-      if (!(activeMinesGame && (activeMinesGame.status === "lost" || activeMinesGame.status === "cashed_out"))) {
-        updateMinesStatus(state.active_round
-          ? `The current player is ${state.current_player || "playing"}. Please wait.`
-          : `You're number ${myPosition} in the queue. Please wait for your turn.`);
-      }
-    } else {
-      $("minesPlayTitle").textContent = "Join the queue";
-      $("minesPlayDescription").textContent = "Join while the session is open. After cashing out or busting, join again for another round.";
-      if (!(activeMinesGame && (activeMinesGame.status === "lost" || activeMinesGame.status === "cashed_out"))) {
-        updateMinesStatus("The session is live. Join the queue when you're ready.");
-      }
-    }
+    $("minesStartForm").hidden = true;
+    $("minesPlayTitle").textContent = "Join the queue";
+    $("minesPlayDescription").textContent = "Join the queue to wait for your turn.";
+    if (!activeMinesGame || activeMinesGame.status!=="lost") setStatus("minesStatus","The session is live. Join when you're ready.");
   }
+
   renderMinesBoard();
 }
 
-async function refreshMinesQueue(silent = false) {
+async function refreshMines(silent=false) {
   if (!currentUser || !db) return;
   try {
-    const [
-      { data: sessionData, error: sessionError },
-      { data: queueData, error: queueError }
-    ] = await Promise.all([
+    const [sessionResult,queueResult] = await Promise.all([
       db.rpc("get_mines_session_state"),
       db.rpc("get_mines_queue")
     ]);
-    if (sessionError) throw sessionError;
-    if (queueError) throw queueError;
-    minesSessionState = sessionData;
-    minesQueueState = queueData;
+    if (sessionResult.error) throw sessionResult.error;
+    if (queueResult.error) throw queueResult.error;
+    minesSessionState = sessionResult.data;
+    minesQueueState = queueResult.data;
 
-    const isHost = Boolean(minesSessionState?.is_host) || isOwner();
-    const myActive = !isHost && Boolean(minesQueueState?.my_active_game);
-    const myTurn = !isHost && Number(minesQueueState?.my_position) === 1;
-    if (myActive && myTurn && (!activeMinesGame || activeMinesGame.status !== "active")) {
-      const { data: gameData, error: gameError } = await db.rpc("get_active_mines_game");
-      if (gameError) throw gameError;
-      activeMinesGame = gameData || null;
-      if (activeMinesGame) {
-        updateMinesStatus(`Your turn is active: wager ${money(activeMinesGame.bet)} coins, ${activeMinesGame.mines_count} mines.`, "success");
-      }
-    } else if (!myActive && activeMinesGame?.status === "active") {
+    if (minesQueueState?.my_active_game && Number(minesQueueState.my_position)===1 && (!activeMinesGame||activeMinesGame.status!=="active")) {
+      const {data,error} = await db.rpc("get_active_mines_game");
+      if (error) throw error;
+      activeMinesGame = data;
+    } else if (!minesQueueState?.my_active_game && activeMinesGame?.status==="active") {
       activeMinesGame = null;
     }
     renderMinesQueue();
   } catch (error) {
-    if (!silent) updateMinesQueueStatus("Session/queue failed to load: " + error.message, "error");
-    console.error("Mines session/queue error:", error);
+    if (!silent) setStatus("minesQueueStatus","Mines failed: "+error.message,"error");
+    console.error("Mines refresh error:",error);
   }
 }
-async function loadActiveMinesGame() {
-  await refreshMinesQueue();
-}
 
-$("joinMinesQueueButton").addEventListener("click", async () => {
-  if (isOwner() || minesSessionState?.is_host) {
-    updateMinesQueueStatus("You are the host. You open the session; you do not join the queue.", "error");
-    return;
-  }
-  if (!minesSessionState?.session_open) {
-    updateMinesQueueStatus("The host must start a Mines session first.", "error");
-    return;
-  }
-  const button = $("joinMinesQueueButton");
-  setBusy(button, true, "Joining queue...", "Join Mines queue");
+$("refreshMinesQueue").addEventListener("click",()=>refreshMines());
+$("joinMinesQueueButton").addEventListener("click",async()=>{
+  if (isOwner() || minesSessionState?.is_host) {setStatus("minesQueueStatus","You're the host. You cannot join your own queue.","error");return;}
+  const button=$("joinMinesQueueButton");
+  setBusy(button,true,"Joining...","Join Queue");
   try {
-    const { data, error } = await db.rpc("join_mines_queue");
-    if (error) throw error;
-    if (activeMinesGame && activeMinesGame.status !== "active") activeMinesGame = null;
-    minesQueueState = data;
-    updateMinesQueueStatus("You joined the queue. Wait for your turn.", "success");
-    renderMinesQueue();
-  } catch (error) {
-    updateMinesQueueStatus("Could not join: " + error.message, "error");
-  } finally {
-    setBusy(button, false, "Joining queue...", "Join Mines queue");
-    renderMinesQueue();
-  }
+    const {data,error}=await db.rpc("join_mines_queue");
+    if(error)throw error;
+    minesQueueState=data;
+    if(activeMinesGame&&activeMinesGame.status!=="active")activeMinesGame=null;
+    await refreshMines(true);
+    toast("You've joined the Mines queue.","success");
+  } catch(error) {setStatus("minesQueueStatus",error.message,"error");}
+  finally {setBusy(button,false,"Joining...","Join Queue");await refreshMines(true);}
 });
-
-$("leaveMinesQueueButton").addEventListener("click", async () => {
-  const button = $("leaveMinesQueueButton");
-  setBusy(button, true, "Leaving...", "Leave queue");
+$("leaveMinesQueueButton").addEventListener("click",async()=>{
+  const button=$("leaveMinesQueueButton");
+  setBusy(button,true,"Leaving...","Leave Queue");
   try {
-    const { data, error } = await db.rpc("leave_mines_queue");
-    if (error) throw error;
-    minesQueueState = data;
-    updateMinesQueueStatus("You left the Mines queue.", "success");
-    renderMinesQueue();
-  } catch (error) {
-    updateMinesQueueStatus("Could not leave queue: " + error.message, "error");
-  } finally {
-    setBusy(button, false, "Leaving...", "Leave queue");
-    renderMinesQueue();
-  }
+    const {data,error}=await db.rpc("leave_mines_queue");
+    if(error)throw error;
+    minesQueueState=data;
+    await refreshMines(true);
+    toast("You've left the queue.","success");
+  } catch(error){setStatus("minesQueueStatus",error.message,"error");}
+  finally {setBusy(button,false,"Leaving...","Leave Queue");}
 });
-
-$("startMinesSessionButton").addEventListener("click", async () => {
-  if (!isOwner()) {
-    updateMinesQueueStatus("Only the site owner can start a Mines session.", "error");
-    return;
-  }
-  const button = $("startMinesSessionButton");
-  setBusy(button, true, "Opening session...", "▶ Start Mines Session");
+$("startMinesSessionButton").addEventListener("click",async()=>{
+  if(!isOwner()){setStatus("minesQueueStatus","Only the owner can start a session.","error");return;}
+  const button=$("startMinesSessionButton");
+  setBusy(button,true,"Opening session...","▶ Start Mines Session");
   try {
-    const { error } = await db.rpc("start_mines_session");
-    if (error) throw error;
-    await refreshMinesQueue(true);
-    toast("Mines session opened. Players can now join the queue.", "success");
-  } catch (error) {
-    updateMinesQueueStatus("Could not start session: " + error.message, "error");
-  } finally {
-    setBusy(button, false, "Opening session...", "▶ Start Mines Session");
-    await refreshMinesQueue(true);
-  }
+    const {error}=await db.rpc("start_mines_session");
+    if(error)throw error;
+    await refreshMines(true);
+    toast("Mines session opened. Members can now join.","success");
+  } catch(error){setStatus("minesQueueStatus",error.message,"error");}
+  finally {setBusy(button,false,"Opening session...","▶ Start Mines Session");}
 });
-
-$("endMinesSessionButton").addEventListener("click", async () => {
-  if (!isOwner()) {
-    updateMinesQueueStatus("Only the site owner can end a Mines session.", "error");
-    return;
-  }
-  if (!confirm("End the Mines session? Players will no longer be able to join. Finish any active round first.")) return;
-  const button = $("endMinesSessionButton");
-  setBusy(button, true, "Closing session...", "End Mines Session");
+$("endMinesSessionButton").addEventListener("click",async()=>{
+  if(!isOwner()||!confirm("End the Mines session? Finish any active round first."))return;
+  const button=$("endMinesSessionButton");
+  setBusy(button,true,"Closing session...","End Mines Session");
   try {
-    const { error } = await db.rpc("end_mines_session");
-    if (error) throw error;
-    activeMinesGame = null;
-    await refreshMinesQueue(true);
-    toast("Mines session closed.", "success");
-  } catch (error) {
-    updateMinesQueueStatus("Could not end session: " + error.message, "error");
-  } finally {
-    setBusy(button, false, "Closing session...", "End Mines Session");
-    await refreshMinesQueue(true);
-  }
+    const {error}=await db.rpc("end_mines_session");
+    if(error)throw error;
+    activeMinesGame=null;
+    await refreshMines(true);
+    toast("Mines session closed.","success");
+  } catch(error){setStatus("minesQueueStatus",error.message,"error");}
+  finally {setBusy(button,false,"Closing session...","End Mines Session");}
 });
-
-$("refreshMinesQueue").addEventListener("click", () => refreshMinesQueue());
-
-$("minesStartForm").addEventListener("submit", async event => {
+$("minesStartForm").addEventListener("submit",async event=>{
   event.preventDefault();
-  if (isOwner() || minesSessionState?.is_host) {
-    updateMinesStatus("The host runs the session and does not play through the queue.", "error");
-    return;
+  if(isOwner()||minesSessionState?.is_host){setStatus("minesStatus","The host does not play in their own queue.","error");return;}
+  if(!minesSessionState?.session_open||Number(minesQueueState?.my_position)!==1||minesQueueState?.active_round){
+    setStatus("minesStatus","Wait until the session is open and you're first in the queue.","error");return;
   }
-  if (!minesSessionState?.session_open) {
-    updateMinesStatus("The host must start a Mines session first.", "error");
-    return;
-  }
-  if (Number(minesQueueState?.my_position) !== 1) {
-    updateMinesStatus("Only the first player in the queue can start.", "error");
-    return;
-  }
-  if (minesQueueState?.active_round) {
-    updateMinesStatus("A round is already active. Wait for it to finish.", "error");
-    return;
-  }
-  if (activeMinesGame?.status === "active") {
-    updateMinesStatus("Finish the current round first.", "error");
-    return;
-  }
-
-  const minesCount = Number($("minesCount").value);
-  const bet = Number($("minesBet").value);
-  if (!Number.isInteger(minesCount) || minesCount < 1 || minesCount > 24) {
-    updateMinesStatus("Choose between 1 and 24 mines.", "error");
-    return;
-  }
-  if (!Number.isSafeInteger(bet) || bet < 1 || bet > 1000000) {
-    updateMinesStatus("Your wager must be 1–1,000,000 coins.", "error");
-    return;
-  }
-  if (Number(myProfile?.coins || 0) < 100) {
-    updateMinesStatus("You need a wallet balance of at least 100 coins to play.", "error");
-    return;
-  }
-  if (bet > Number(myProfile?.coins || 0)) {
-    updateMinesStatus("Your wager cannot exceed your available coin balance.", "error");
-    return;
-  }
-
-  minesBusy = true;
-  const button = $("minesStartButton");
-  setBusy(button, true, "Starting round...", "Start your turn");
-  renderMinesBoard();
+  const mineCount=Number($("minesCount").value),bet=Number($("minesBet").value);
+  if(!Number.isInteger(mineCount)||mineCount<1||mineCount>24){setStatus("minesStatus","Choose 1–24 mines.","error");return;}
+  if(!Number.isSafeInteger(bet)||bet<1||bet>1000000||bet>Number(myProfile?.coins||0)){setStatus("minesStatus","Enter a valid wager not exceeding your wallet balance.","error");return;}
+  if(Number(myProfile?.coins||0)<100){setStatus("minesStatus","You need at least 100 coins in your wallet.","error");return;}
+  minesBusy=true;
+  const button=$("minesStartButton");
+  setBusy(button,true,"Starting...","Start your turn");
   try {
-    const { data, error } = await db.rpc("start_mines_game", {
-      p_mines_count: minesCount,
-      p_bet: bet
-    });
-    if (error) throw error;
-    activeMinesGame = data;
+    const {data,error}=await db.rpc("start_mines_game",{p_mines_count:mineCount,p_bet:bet});
+    if(error)throw error;
+    activeMinesGame=data;
     await refreshMyProfile();
-    updateMinesStatus(`Your round started with ${money(bet)} coins and ${minesCount} mines. Reveal a tile or cash out after a safe tile.`, "success");
-    await refreshMinesQueue(true);
-    renderMinesBoard();
-  } catch (error) {
-    updateMinesStatus("Couldn't start round: " + error.message, "error");
-  } finally {
-    minesBusy = false;
-    setBusy(button, false, "Starting round...", "Start your turn");
-    renderMinesQueue();
-  }
+    setStatus("minesStatus",`Your round started with ${money(bet)} coins and ${mineCount} mines. Reveal a safe tile, then cash out.`,"success");
+    await refreshMines(true);
+  } catch(error){setStatus("minesStatus",error.message,"error");}
+  finally {minesBusy=false;setBusy(button,false,"Starting...","Start your turn");renderMinesQueue();}
 });
-
-$("minesBoard").addEventListener("click", async event => {
-  const button = event.target.closest("[data-mines-cell]");
-  if (!button || !activeMinesGame || activeMinesGame.status !== "active" || minesBusy) return;
-  minesBusy = true;
-  renderMinesBoard();
+$("minesBoard").addEventListener("click",async event=>{
+  const button=event.target.closest("[data-mines-cell]");
+  if(!button||!activeMinesGame||activeMinesGame.status!=="active"||minesBusy)return;
+  minesBusy=true;renderMinesBoard();
   try {
-    const { data, error } = await db.rpc("reveal_mines_tile", {
-      p_game_id: activeMinesGame.game_id,
-      p_cell: Number(button.dataset.minesCell)
+    const {data,error}=await db.rpc("reveal_mines_tile",{
+      p_game_id:activeMinesGame.game_id,p_cell:Number(button.dataset.minesCell)
     });
-    if (error) throw error;
-    activeMinesGame = { ...activeMinesGame, ...data };
-
-    if (data.status === "lost") {
-      updateMinesStatus("💥 Bust! You lost this round's wager. You have been removed from the queue; join again while the session is open.", "error");
-      await refreshMyProfile();
-      await refreshMinesQueue(true);
-      toast("Mines bust. Your turn is over.", "error");
-    } else if (data.status === "cashed_out") {
-      updateMinesStatus(`You hit every safe tile! Auto cash-out paid ${money(data.payout)} coins. You have been removed from the queue; join again for another round.`, "success");
-      await refreshMyProfile();
-      await refreshMinesQueue(true);
+    if(error)throw error;
+    activeMinesGame={...activeMinesGame,...data};
+    if(data.status==="lost"){
+      setStatus("minesStatus","💥 Bust! You lost this round's wager. Join the queue again for another turn.","error");
+      toast("Mines bust. Your turn is over.","error");
+    } else if(data.status==="cashed_out") {
+      setStatus("minesStatus",`Auto cash-out paid ${money(data.payout)} coins. Join the queue again for another turn.`,"success");
     } else {
-      updateMinesStatus(`Safe tile! Current multiplier ${Number(data.multiplier).toFixed(2)}×. Keep going or cash out.`, "success");
+      setStatus("minesStatus",`Safe tile! Multiplier ${Number(data.multiplier).toFixed(2)}×. Keep going or cash out.`,"success");
     }
-    renderMinesQueue();
-  } catch (error) {
-    updateMinesStatus("Tile couldn't be revealed: " + error.message, "error");
-  } finally {
-    minesBusy = false;
-    renderMinesQueue();
-  }
-});
-
-$("minesCashoutButton").addEventListener("click", async () => {
-  if (!activeMinesGame || activeMinesGame.status !== "active" || minesBusy) return;
-  minesBusy = true;
-  renderMinesBoard();
-  try {
-    const { data, error } = await db.rpc("cashout_mines", {
-      p_game_id: activeMinesGame.game_id
-    });
-    if (error) throw error;
-    activeMinesGame = { ...activeMinesGame, ...data };
-    updateMinesStatus(`Cashed out! You received ${money(data.payout)} virtual coins. Your turn is over; join the queue again while the session is open.`, "success");
     await refreshMyProfile();
-    await refreshMinesQueue(true);
-  } catch (error) {
-    updateMinesStatus("Cash-out failed: " + error.message, "error");
-  } finally {
-    minesBusy = false;
-    renderMinesQueue();
-  }
+    await refreshMines(true);
+  } catch(error){setStatus("minesStatus",error.message,"error");}
+  finally {minesBusy=false;renderMinesQueue();}
+});
+$("minesCashoutButton").addEventListener("click",async()=>{
+  if(!activeMinesGame||activeMinesGame.status!=="active"||minesBusy)return;
+  minesBusy=true;renderMinesBoard();
+  try {
+    const {data,error}=await db.rpc("cashout_mines",{p_game_id:activeMinesGame.game_id});
+    if(error)throw error;
+    activeMinesGame={...activeMinesGame,...data};
+    setStatus("minesStatus",`Cashed out for ${money(data.payout)} virtual coins. Join the queue again when ready.`,"success");
+    await refreshMyProfile();
+    await refreshMines(true);
+  } catch(error){setStatus("minesStatus",error.message,"error");}
+  finally {minesBusy=false;renderMinesQueue();}
 });
 
-// Refresh the session and queue every 4 seconds while Mines is visible.
-if (!minesQueueTimer) {
-  minesQueueTimer = window.setInterval(() => {
-    if (currentUser && activePage === "mines" && !minesBusy) refreshMinesQueue(true);
-  }, 4000);
-}
+if(!minesQueueTimer) minesQueueTimer=setInterval(()=>{
+  if(currentUser&&activePage==="mines"&&!minesBusy) refreshMines(true);
+},4000);
 
 async function loadMembers() {
-  if (!isStaff()) return;
-  const host = $("membersList");
-  host.innerHTML = '<div class="empty">Loading members...</div>';
+  if(!isStaff())return;
+  const host=$("membersList");
+  host.innerHTML='<div class="empty">Loading...</div>';
   try {
-    const { data, error } = await db.from("profiles")
+    const {data,error}=await db.from("profiles")
       .select("user_id,display_name,role,coins,created_at")
-      .order("created_at", { ascending: false })
-      .limit(100);
-    if (error) throw error;
-    host.innerHTML = (data || []).map(p => {
-      const roleClass = p.role === "owner" ? "owner" : p.role === "admin" ? "admin" : "";
-      const roleControls = isOwner() && p.role !== "owner"
-        ? `<div class="field"><label>Role</label><select data-role-select="${esc(p.user_id)}"><option value="member" ${p.role === "member" ? "selected" : ""}>Member</option><option value="admin" ${p.role === "admin" ? "selected" : ""}>Admin</option></select><button class="smallbtn" data-change-role="${esc(p.user_id)}" style="margin-top:6px">Save role</button></div>`
-        : "";
-      return `<div class="rowcard"><div class="grow"><strong>${esc(p.display_name)}</strong><span class="tag ${roleClass}">${esc(p.role)}</span><p class="mutedline">${money(p.coins)} coins</p><div class="inlineform"><input type="number" min="1" max="1000000000" value="100" data-grant-amount="${esc(p.user_id)}" aria-label="Coins to grant"><button class="smallbtn" data-grant-coins="${esc(p.user_id)}">Grant coins</button></div>${roleControls}</div></div>`;
-    }).join("") || '<div class="empty">No members found.</div>';
-  } catch (error) {
-    host.innerHTML = `<div class="empty">Member list failed: ${esc(error.message)}</div>`;
-  }
+      .order("created_at",{ascending:false}).limit(100);
+    if(error)throw error;
+    host.innerHTML=data?.length?data.map(p=>{
+      const controls=isOwner()&&p.role!=="owner"
+        ?`<div class="field"><label>ROLE</label><select data-role-select="${esc(p.user_id)}"><option value="member" ${p.role==="member"?"selected":""}>Member</option><option value="admin" ${p.role==="admin"?"selected":""}>Admin</option></select><button class="smallbtn" data-change-role="${esc(p.user_id)}" style="margin-top:6px">Save role</button></div>`:"";
+      return `<div class="rowcard"><div class="grow"><strong>${esc(p.display_name)}</strong><span class="tag ${p.role==="owner"?"owner":p.role==="admin"?"admin":""}">${esc(p.role)}</span><p class="mutedline">${money(p.coins)} coins</p><div class="inlineform"><input type="number" min="1" max="1000000000" value="100" data-grant-amount="${esc(p.user_id)}" aria-label="Amount to grant"><button class="smallbtn" data-grant-coins="${esc(p.user_id)}">Grant coins</button></div>${controls}</div></div>`;
+    }).join(""):'<div class="empty">No members found.</div>';
+  } catch(error){host.innerHTML=`<div class="empty">Members failed: ${esc(error.message)}</div>`;}
 }
-$("reloadMembers").addEventListener("click", loadMembers);
-$("membersList").addEventListener("click", async (event) => {
-  const grant = event.target.closest("[data-grant-coins]");
-  const changeRole = event.target.closest("[data-change-role]");
-
-  if (grant) {
-    const input = document.querySelector(`[data-grant-amount="${CSS.escape(grant.dataset.grantCoins)}"]`);
-    const amount = Number(input?.value);
-    grant.disabled = true;
-    try {
-      const { error } = await db.rpc("grant_fake_coins", {
-        p_user_id: grant.dataset.grantCoins,
-        p_amount: amount
-      });
-      if (error) throw error;
-      await loadMembers();
-      await refreshMyProfile();
-      await loadLeaderboard();
-      toast("Virtual coins granted.", "success");
-    } catch (error) {
-      toast("Grant failed: " + error.message, "error");
-    } finally {
-      grant.disabled = false;
-    }
+$("reloadMembers").addEventListener("click",loadMembers);
+$("membersList").addEventListener("click",async event=>{
+  const grant=event.target.closest("[data-grant-coins]");
+  const change=event.target.closest("[data-change-role]");
+  if(grant){
+    const id=grant.dataset.grantCoins;
+    const input=document.querySelector(`[data-grant-amount="${CSS.escape(id)}"]`);
+    grant.disabled=true;
+    try{
+      const {error}=await db.rpc("grant_fake_coins",{p_user_id:id,p_amount:Number(input?.value)});
+      if(error)throw error;
+      await loadMembers();await refreshMyProfile();await loadLeaderboard();
+      toast("Virtual coins granted.","success");
+    }catch(error){toast("Grant failed: "+error.message,"error");}
+    finally{grant.disabled=false;}
   }
-
-  if (changeRole) {
-    const id = changeRole.dataset.changeRole;
-    const select = document.querySelector(`[data-role-select="${CSS.escape(id)}"]`);
-    changeRole.disabled = true;
-    try {
-      const { error } = await db.rpc("set_member_role", {
-        p_user_id: id,
-        p_role: select.value
-      });
-      if (error) throw error;
-      await loadMembers();
-      toast("Member role updated.", "success");
-    } catch (error) {
-      toast("Role change failed: " + error.message, "error");
-    } finally {
-      changeRole.disabled = false;
-    }
-  }
-});
-
-function showOwnerHudNotice(message, type = "") {
-  const el = $("ownerHudNotice");
-  el.textContent = message;
-  el.className = "notice" + (type ? " " + type : "");
-  el.hidden = false;
-}
-function openOwnerHud() {
-  if (!db) {
-    toast("The site is still connecting. Try again in a moment.", "error");
-    return;
-  }
-  if (!currentUser) {
-    showAuthMode("login");
-    toast("Log in first, then press Alt + F1.", "error");
-    return;
-  }
-  $("ownerHud").hidden = false;
-  $("ownerUnlockCode").value = "";
-  $("ownerHudNotice").hidden = true;
-  window.setTimeout(() => $("ownerUnlockCode").focus(), 0);
-}
-function closeOwnerHud() {
-  $("ownerHud").hidden = true;
-  $("ownerUnlockCode").value = "";
-}
-window.addEventListener("keydown", (event) => {
-  if (event.altKey && event.key === "F1") {
-    event.preventDefault();
-    openOwnerHud();
-  } else if (event.key === "Escape" && !$("ownerHud").hidden) {
-    closeOwnerHud();
-  }
-});
-$("closeOwnerHud").addEventListener("click", closeOwnerHud);
-
-$("ownerUnlockForm").addEventListener("submit", async (event) => {
-  event.preventDefault();
-  if (!db || !currentUser) {
-    showOwnerHudNotice("Log in before claiming owner access.", "error");
-    return;
-  }
-  const code = $("ownerUnlockCode").value;
-  const button = $("ownerUnlockButton");
-  setBusy(button, true, "Checking claim code...", "Claim owner access");
-  try {
-    const { error } = await db.rpc("claim_piltae_owner", { p_code: code });
-    if (error) throw error;
-    await refreshMyProfile();
-    closeOwnerHud();
-    if (isStaff()) {
-      await loadLeaderboard();
-      navigate("admin");
-      toast("Owner access is active for this account.", "success");
-    } else {
-      toast("The server response did not grant owner access. Refresh and check the SQL setup.", "error");
-    }
-  } catch (error) {
-    console.error("Owner claim failed:", error);
-    showOwnerHudNotice("Owner access was not granted: " + error.message, "error");
-  } finally {
-    setBusy(button, false, "Checking claim code...", "Claim owner access");
+  if(change){
+    const id=change.dataset.changeRole;
+    const select=document.querySelector(`[data-role-select="${CSS.escape(id)}"]`);
+    change.disabled=true;
+    try{
+      const {error}=await db.rpc("set_member_role",{p_user_id:id,p_role:select.value});
+      if(error)throw error;
+      await loadMembers();toast("Member role updated.","success");
+    }catch(error){toast("Role change failed: "+error.message,"error");}
+    finally{change.disabled=false;}
   }
 });
 
 async function initialize() {
   try {
-    if (!window.supabase?.createClient) {
-      throw new Error("Supabase's library did not load. Check your internet connection.");
-    }
-    if (!/^https:\/\/[a-z0-9-]+\.supabase\.co\/?$/.test(SUPABASE_URL) ||
-        !SUPABASE_PUBLISHABLE_KEY.startsWith("sb_publishable_")) {
-      throw new Error("Supabase project URL or publishable key is incorrect.");
-    }
-    db = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
-      auth: {
-        autoRefreshToken: true,
-        persistSession: true,
-        detectSessionInUrl: true
-      }
+    if(!window.supabase?.createClient)throw new Error("Supabase library did not load. Check your internet connection.");
+    db=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY,{
+      auth:{autoRefreshToken:true,persistSession:true,detectSessionInUrl:true}
     });
-    db.auth.onAuthStateChange((eventName, session) => {
-      window.setTimeout(() => {
-        if (session?.user) handleSession(session);
-        else if (eventName === "SIGNED_OUT" || eventName === "INITIAL_SESSION") handleSession(null);
-      }, 0);
+    db.auth.onAuthStateChange((event,session)=>{
+      setTimeout(()=>{
+        if(session?.user)handleSession(session);
+        else if(event==="SIGNED_OUT"||event==="INITIAL_SESSION")handleSession(null);
+      },0);
     });
-    const { data, error } = await db.auth.getSession();
-    if (error) throw error;
-    if (data.session?.user) {
-      await handleSession(data.session);
-    } else {
-      $("authView").hidden = false;
-      $("appView").hidden = true;
-      $("topRight").hidden = true;
+    const {data,error}=await db.auth.getSession();
+    if(error)throw error;
+    if(data.session?.user)await handleSession(data.session);
+    else{
+      $("authView").hidden=false;$("appView").hidden=true;$("topRight").hidden=true;
       showAuthMode("signup");
-      const params = new URLSearchParams(window.location.hash.replace(/^#/, ""));
-      const urlError = params.get("error_description") || params.get("error");
-      if (urlError) toast("Authentication link error: " + urlError, "error");
+      const params=new URLSearchParams(location.hash.replace(/^#/,""));
+      const msg=params.get("error_description")||params.get("error");
+      if(msg)toast("Authentication link error: "+msg,"error");
     }
-  } catch (error) {
-    console.error("PILTAE startup error:", error);
-    $("authView").hidden = false;
+  } catch(error) {
+    console.error(error);
+    $("authView").hidden=false;
     showAuthMode("login");
-    toast("Could not start PILTAE: " + error.message, "error");
+    toast("Could not start PILTAE CHATTER: "+error.message,"error");
   }
 }
 initialize();
