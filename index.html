@@ -331,7 +331,7 @@ input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 
       <div class="field"><label for="itemPrice">Price in coins</label><input id="itemPrice" type="number" min="1" max="1000000000" required value="1500"></div>
       <div class="field wide" id="itemThemeField"><label for="itemThemeKey">THEME PRESET</label><select id="itemThemeKey" required></select><p class="muted">Members can equip any preset theme they own from Inventory.</p></div>
       <div class="field wide"><label for="itemDescription">Description</label><textarea id="itemDescription" maxlength="300" placeholder="Describe the skin."></textarea></div>
-      <div class="field wide"><label id="itemImageUrlLabel" for="itemImageUrl">Preview image URL (optional)</label><input id="itemImageUrl" type="url" maxlength="2000" placeholder="https://example.com/image.png"><p class="muted" id="itemImageUrlHint">Optional HTTPS image displayed as the preset skin's shop preview.</p></div>
+      <div class="field wide"><label id="itemImageUrlLabel" for="itemImageFile">Choose image from your computer or phone</label><input id="itemImageFile" type="file" accept="image/png,image/jpeg,image/webp,image/gif"><p class="muted" id="itemImageUrlHint">Choose a PNG, JPG, WEBP, or GIF from your files/gallery. The image will be uploaded so other members can see it.</p><div id="itemImageLocalPreview" class="sectiongap" hidden></div></div>
       <button class="btn wide" id="createItemButton" type="submit">Publish UI / HUD skin</button>
     </form></div>
     <div class="card staffonly sectiongap"><h3>Host a coin-flip event</h3><form id="createEventForm"><div class="field"><label for="eventTitle">Event title</label><input id="eventTitle" maxlength="80" required placeholder="Friday Night Coin Flip"></div><div class="field"><label for="eventDescription">Rules / description</label><textarea id="eventDescription" maxlength="300" placeholder="Pick heads or tails. Winners receive 2x their wager."></textarea></div><button class="btn" type="submit">Open event</button></form></div>
@@ -446,14 +446,24 @@ function populateThemeSelect(){
   select.value=THEME_BY_KEY[previous]&&previous!=="midnight"?previous:"cyber_violet";
 }
 function syncSkinTypeFields(){
-  const isImage=$("itemSkinType")?.value==="image",themeField=$("itemThemeField"),themeSelect=$("itemThemeKey"),url=$("itemImageUrl"),label=$("itemImageUrlLabel"),hint=$("itemImageUrlHint"),submit=$("createItemButton");
+  const isImage=$("itemSkinType")?.value==="image",themeField=$("itemThemeField"),themeSelect=$("itemThemeKey"),file=$("itemImageFile"),label=$("itemImageUrlLabel"),hint=$("itemImageUrlHint"),submit=$("createItemButton");
   if(themeField)themeField.hidden=isImage;
   if(themeSelect)themeSelect.required=!isImage;
-  if(url)url.required=isImage;
-  if(label)label.textContent=isImage?"CUSTOM IMAGE URL (REQUIRED HTTPS)":"Preview image URL (optional HTTPS)";
-  if(hint)hint.textContent=isImage?"Paste a direct HTTPS link to an image file (PNG, JPG, WEBP, or GIF). This becomes the image background when a member equips the skin. This form does not upload local files.":"Optional HTTPS image displayed in the shop card. The preset theme controls the UI colors.";
+  if(file)file.required=isImage;
+  if(label)label.textContent=isImage?"BACKGROUND IMAGE (REQUIRED)":"SHOP PREVIEW IMAGE (OPTIONAL)";
+  if(hint)hint.textContent=isImage?"Choose an image from your computer or phone gallery. PNG, JPG, WEBP, or GIF; maximum 8 MB.":"Optionally choose an image file to display as the preset theme's shop preview.";
   if(submit)submit.textContent=isImage?"Publish custom image skin":"Publish UI / HUD skin";
 }
+$("itemImageFile").addEventListener("change",()=>{
+  const file=$("itemImageFile").files?.[0],preview=$("itemImageLocalPreview");
+  preview.replaceChildren();preview.hidden=true;
+  if(!file)return;
+  if(!file.type.startsWith("image/")){toast("Choose an image file.","error");$("itemImageFile").value="";return;}
+  if(file.size>8*1024*1024){toast("Image must be 8 MB or smaller.","error");$("itemImageFile").value="";return;}
+  const img=document.createElement("img");img.className="shop-image";img.alt="Selected image preview";img.src=URL.createObjectURL(file);
+  preview.appendChild(img);preview.hidden=false;
+});
+
 function showAuthMode(mode){
   const isSignup=mode==="signup";
   $("signupForm").hidden=!isSignup;$("loginForm").hidden=isSignup;
@@ -807,21 +817,31 @@ $("eventsList").addEventListener("click",async event=>{
 $("itemSkinType").addEventListener("change",syncSkinTypeFields);
 syncSkinTypeFields();
 $("createItemForm").addEventListener("submit",async event=>{
-  event.preventDefault();const name=$("itemName").value.trim(),description=$("itemDescription").value.trim(),price=Number($("itemPrice").value),button=event.submitter||$("createItemButton"),skinType=$("itemSkinType").value;
+  event.preventDefault();
+  const name=$("itemName").value.trim(),description=$("itemDescription").value.trim(),price=Number($("itemPrice").value),button=event.submitter||$("createItemButton"),skinType=$("itemSkinType").value,file=$("itemImageFile").files?.[0];
   setBusy(button,true,"Publishing...",skinType==="image"?"Publish custom image skin":"Publish UI / HUD skin");
   try{
     if(!name||name.length>60)throw new Error("Skin name must be 1–60 characters.");
     if(!Number.isSafeInteger(price)||price<1||price>1000000000)throw new Error("Price must be between 1 and 1,000,000,000 coins.");
-    const imageUrl=$("itemImageUrl").value.trim();
+    let imageUrl="";
+    if(file){
+      if(!file.type.startsWith("image/"))throw new Error("Choose a valid image file.");
+      if(file.size>8*1024*1024)throw new Error("Image must be 8 MB or smaller.");
+      const extension=({"image/png":"png","image/jpeg":"jpg","image/webp":"webp","image/gif":"gif"})[file.type];
+      if(!extension)throw new Error("Use a PNG, JPG, WEBP, or GIF image.");
+      const path=`${currentUser.id}/${crypto.randomUUID()}.${extension}`;
+      const {error:uploadError}=await db.storage.from("skin-images").upload(path,file,{contentType:file.type,upsert:false});
+      if(uploadError)throw new Error("Image upload failed. Set up the skin-images bucket in Supabase. "+uploadError.message);
+      imageUrl=db.storage.from("skin-images").getPublicUrl(path).data.publicUrl;
+    }
     if(skinType==="image"){
-      const safe=safeHttpsUrl(imageUrl);if(!safe)throw new Error("For a custom image skin, enter a direct HTTPS image URL.");
-      const {error}=await db.rpc("create_custom_image_skin",{p_name:name,p_description:description,p_price:price,p_image_url:safe});if(error)throw error;
+      if(!file||!imageUrl)throw new Error("Choose the background image from your files/gallery first.");
+      const {error}=await db.rpc("create_custom_image_skin",{p_name:name,p_description:description,p_price:price,p_image_url:imageUrl});if(error)throw error;
     }else{
       const themeKey=$("itemThemeKey").value;if(!THEME_BY_KEY[themeKey]||themeKey==="midnight")throw new Error("Choose a purchasable theme preset.");
-      const safePreview=imageUrl?safeHttpsUrl(imageUrl):"";if(imageUrl&&!safePreview)throw new Error("Preview image must be a valid HTTPS URL, or leave it blank.");
-      const {error}=await db.rpc("create_shop_item",{p_name:name,p_description:description,p_price:price,p_image_url:safePreview,p_theme_key:themeKey});if(error)throw error;
+      const {error}=await db.rpc("create_shop_item",{p_name:name,p_description:description,p_price:price,p_image_url:imageUrl,p_theme_key:themeKey});if(error)throw error;
     }
-    event.target.reset();populateThemeSelect();syncSkinTypeFields();await loadShop();toast(skinType==="image"?"Custom image skin published in the shop.":"UI/HUD skin published.","success");
+    event.target.reset();$("itemImageLocalPreview").replaceChildren();$("itemImageLocalPreview").hidden=true;populateThemeSelect();syncSkinTypeFields();await loadShop();toast(skinType==="image"?"Custom image skin published in the shop.":"UI/HUD skin published.","success");
   }catch(error){toast("Couldn't publish skin: "+error.message,"error");}
   finally{setBusy(button,false,"Publishing...",$("itemSkinType").value==="image"?"Publish custom image skin":"Publish UI / HUD skin");}
 });
