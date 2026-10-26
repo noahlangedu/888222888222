@@ -213,6 +213,11 @@ input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 
 .tos-gate-text strong{color:#fff}
 .tos-gate-actions{margin-top:18px;display:grid;gap:9px}
 .tos-gate-actions .btn{margin-top:0}
+.tos-decline{width:100%;padding:11px 14px;border:1px solid var(--border);border-radius:12px;background:transparent;color:var(--muted);font-weight:800;cursor:pointer}
+.tos-decline:hover{border-color:var(--danger);color:var(--text)}
+.legal-check{display:flex;align-items:flex-start;gap:9px;margin:12px 0 15px;color:var(--muted);font-size:12px;line-height:1.5}
+.legal-check input{margin-top:3px;accent-color:var(--accent)}
+.legal-check button{border:0;background:none;color:var(--accent);font:inherit;font-weight:800;text-decoration:underline;cursor:pointer;padding:0}
 </style>
 </head>
 <body>
@@ -231,6 +236,8 @@ input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 
     </div>
     <div class="tos-gate-actions">
       <button class="btn" id="tosAcceptButton" type="button">Accept &amp; Continue</button>
+      <button class="tos-decline" id="tosDeclineButton" type="button">I Don't Agree — Leave Website</button>
+      <p class="muted" style="font-size:11px;margin:0">You can return to PILTAE CHATTER anytime. You must accept these terms to use the website.</p>
     </div>
   </div>
 </div>
@@ -252,6 +259,7 @@ input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 
       <div class="field"><label for="signupName">DISPLAY NAME</label><input id="signupName" maxlength="24" minlength="1" autocomplete="nickname" required placeholder="Choose a username"></div>
       <div class="field"><label for="signupEmail">EMAIL</label><input id="signupEmail" type="email" autocomplete="email" required placeholder="you@example.com"></div>
       <div class="field"><label for="signupPassword">PASSWORD</label><input id="signupPassword" type="password" minlength="6" autocomplete="new-password" required placeholder="At least 6 characters"></div>
+      <label class="legal-check"><input id="termsAgree" type="checkbox" required><span>I have read and agree to the <button id="termsViewButton" type="button">Terms of Service</button> and website rules.</span></label>
       <button class="btn" id="signupButton" type="submit">Create account →</button>
     </form>
     <form id="loginForm" hidden>
@@ -677,6 +685,9 @@ async function handleSession(session){
 $("signupForm").addEventListener("submit",async event=>{
   event.preventDefault();const name=$("signupName").value.trim(),email=$("signupEmail").value.trim(),password=$("signupPassword").value;
   if(!name||name.length>24){toast("Display name must be 1–24 characters.","error");return;}
+  let tosAcceptedForSignup=false;try{tosAcceptedForSignup=localStorage.getItem(TOS_STORAGE_KEY)==="1";}catch{}
+  if(!tosAcceptedForSignup){showTosGate();toast("You must accept the Terms of Service before creating an account.","error");return;}
+  if(!$("termsAgree").checked){toast("Please agree to the Terms of Service before creating an account.","error");return;}
   const button=$("signupButton");setBusy(button,true,"Creating account...","Create account →");
   try{
     const {data,error}=await db.auth.signUp({email,password,options:{data:{display_name:name},emailRedirectTo:SITE_URL}});
@@ -1295,9 +1306,16 @@ function acceptTos(){
   const gate=$("tosGate");
   if(gate)gate.hidden=true;
   document.body.style.overflow="";
-  showAuthMode("login");
+  showAuthMode("signup");
+}
+function declineTos(){
+  // Do not store acceptance: returning to this URL will show the terms again.
+  try{localStorage.removeItem(TOS_STORAGE_KEY);}catch{}
+  window.location.replace("about:blank");
 }
 $("tosAcceptButton").addEventListener("click",acceptTos);
+$("tosDeclineButton").addEventListener("click",declineTos);
+$("termsViewButton").addEventListener("click",showTosGate);
 let tosAccepted=false;
 try{tosAccepted=localStorage.getItem(TOS_STORAGE_KEY)==="1";}catch{}
 if(tosAccepted){$("tosGate").hidden=true;}else{showTosGate();}
