@@ -178,6 +178,17 @@ input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 
 .mines-turn-clock strong{font-variant-numeric:tabular-nums;font-size:18px;letter-spacing:.5px}
 .mines-turn-clock.urgent strong{color:var(--danger)}
 #minesTurnTimerHint{margin:7px 2px 12px;font-size:11px}
+
+/* TOWER game */
+.tower-layout{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(260px,.9fr);gap:14px;align-items:start}
+.tower-floor-track{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px;margin:15px 0}
+.tower-floor{display:grid;place-items:center;min-height:48px;padding:7px 3px;border:1px solid var(--border);border-radius:9px;background:var(--theme-input);font-size:12px;font-weight:850;color:var(--muted)}
+.tower-floor.done{background:#10332d;border-color:#278571;color:#99f6e4}.tower-floor.current{background:#292344;border-color:var(--accent);color:white;box-shadow:0 0 0 2px color-mix(in srgb,var(--accent) 18%,transparent)}
+.tower-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px}.tower-live-list{display:grid;gap:8px}.tower-live-player{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:11px;border:1px solid var(--border);border-radius:11px;background:var(--theme-surface)}
+.tower-live-player strong{display:block;overflow-wrap:anywhere}.tower-live-player span{font-size:11px;color:var(--muted)}
+.tower-history-list{display:grid;gap:7px}.tower-history-row{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:10px;border-bottom:1px solid var(--border)}
+@media(max-width:700px){.tower-layout{grid-template-columns:1fr}.tower-floor-track{grid-template-columns:repeat(4,minmax(0,1fr))}}
+
 </style>
 </head>
 <body>
@@ -219,6 +230,7 @@ input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 
   <button class="navbtn" data-page="shop"><span class="navicon">▣</span> Shop</button>
   <button class="navbtn" data-page="inventory"><span class="navicon">▤</span> Inventory</button>
   <button class="navbtn" data-page="mines"><span class="navicon">💎</span> Mines</button>
+  <button class="navbtn" data-page="tower"><span class="navicon">🏰</span> TOWER</button>
   <button class="navbtn" data-page="events"><span class="navicon">🎲</span> Fake-coin events</button>
   <button class="navbtn" data-page="admin" id="adminNav" hidden><span class="navicon">⚙</span> Admin panel</button>
 </nav>
@@ -281,6 +293,25 @@ input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 
   <div class="card sectiongap"><h3>Owned skins</h3><p class="muted">Only purchased skins can be equipped. Midnight Default is always free.</p><div id="inventoryList" class="itemsgrid"><div class="empty">Loading inventory...</div></div></div>
 </section>
 
+<section class="page" id="page-tower" hidden>
+  <div class="pagehead"><div><div class="eyebrow">CLIMB · RISK · CASH OUT</div><h2>TOWER</h2><p class="muted">Climb higher for a bigger virtual-coin payout. Each floor can be safe or collapse. Cash out after a safe floor, before the next climb.</p></div><button class="smallbtn" id="towerRefreshButton" type="button">Refresh</button></div>
+  <div class="tower-layout">
+    <div class="card">
+      <div class="stats"><div class="stat"><small>Your wallet</small><strong id="towerWallet">0</strong></div><div class="stat"><small>Current floor</small><strong id="towerFloorValue">0 / 20</strong></div><div class="stat"><small>Multiplier</small><strong id="towerMultiplier">1.00×</strong></div></div>
+      <div id="towerStatus" class="notice" role="status" aria-live="polite">Loading Tower...</div>
+      <form id="towerStartForm">
+        <div class="field"><label for="towerDifficulty">DIFFICULTY</label><select id="towerDifficulty" required><option value="easy">Easy · safer climbs · 1.18× per floor</option><option value="medium">Medium · balanced · 1.40× per floor</option><option value="hard">Hard · risky · 1.75× per floor</option></select></div>
+        <div class="field"><label for="towerWager">WAGER (VIRTUAL COINS)</label><input id="towerWager" type="number" min="1" max="1000000" value="100" required><p class="muted" id="towerWagerHint">The wager is deducted when a run starts. A failed climb loses that wager.</p></div>
+        <button class="btn" id="towerStartButton" type="submit">Start Tower Run</button>
+      </form>
+      <div id="towerFloorTrack" class="tower-floor-track" aria-label="Tower floor progress"></div>
+      <div class="tower-actions"><button class="btn" id="towerClimbButton" type="button" disabled>⬆ Climb next floor</button><button class="btn secondary" id="towerCashoutButton" type="button" disabled>💰 Cash out</button></div>
+      <p class="muted sectiongap">Maximum 20 floors. Easy has a 15% collapse chance per climb, Medium 28%, and Hard 42%. Virtual coins have no real-world value.</p>
+    </div>
+    <div class="card"><div class="pagehead"><div><h3>Live Tower climbers</h3><p class="muted">Spectate live runs in read-only mode. Hidden outcomes are never shared.</p></div><button class="smallbtn" id="towerRefreshLiveButton" type="button">Refresh</button></div><div id="towerLiveList" class="tower-live-list"><div class="empty">Loading live climbers...</div></div><div id="towerSpectatorPanel" class="notice sectiongap" hidden><strong id="towerSpectatorTitle">Spectating</strong><p id="towerSpectatorDescription" class="muted">Read-only live tower status.</p><div id="towerSpectatorTrack" class="tower-floor-track"></div><button class="smallbtn" id="towerStopSpectatingButton" type="button">Stop spectating</button></div><div class="sectiongap"><h3>My recent runs</h3><div id="towerHistoryList" class="tower-history-list"><div class="empty">Loading history...</div></div></div></div>
+  </div>
+</section>
+
 <section class="page" id="page-events" hidden>
   <div class="pagehead"><div><h2>Fake-coin events</h2><p class="muted">Coin-flip wagering uses virtual coins only: no deposits, cash-outs, or real-money value.</p></div><button class="smallbtn" id="reloadEvents" type="button">Refresh</button></div>
   <div id="eventsList" class="eventgrid"><div class="empty">Loading events...</div></div>
@@ -335,6 +366,7 @@ input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 
       <button class="btn wide" id="createItemButton" type="submit">Publish UI / HUD skin</button>
     </form></div>
     <div class="card staffonly sectiongap"><h3>Host a coin-flip event</h3><form id="createEventForm"><div class="field"><label for="eventTitle">Event title</label><input id="eventTitle" maxlength="80" required placeholder="Friday Night Coin Flip"></div><div class="field"><label for="eventDescription">Rules / description</label><textarea id="eventDescription" maxlength="300" placeholder="Pick heads or tails. Winners receive 2x their wager."></textarea></div><button class="btn" type="submit">Open event</button></form></div>
+    <div class="card staffonly sectiongap"><h3>TOWER controls</h3><p class="muted">Enable or pause Tower and set the maximum virtual-coin wager. All results and payouts are validated by Supabase.</p><form id="towerAdminForm" class="twoform"><div class="field"><label for="towerAdminEnabled">TOWER STATUS</label><select id="towerAdminEnabled"><option value="true">Enabled</option><option value="false">Paused</option></select></div><div class="field"><label for="towerAdminMaxWager">MAXIMUM WAGER</label><input id="towerAdminMaxWager" type="number" min="1" max="1000000000" value="1000000" required></div><button class="btn wide" type="submit">Save Tower settings</button></form><div id="towerAdminStatus" class="notice" hidden></div><h3 class="sectiongap">Recent Tower runs (admin)</h3><button class="smallbtn" id="towerAdminRefreshButton" type="button">Refresh Tower history</button><div id="towerAdminHistory" class="tower-history-list sectiongap"><div class="empty">Loading...</div></div></div>
     <div class="card staffonly sectiongap"><h3>Member management</h3><p class="muted">Admins and the owner can grant or remove virtual coins. Only the owner can promote or demote admins.</p><button class="smallbtn" id="reloadMembers" type="button">Refresh members</button><div id="membersList" class="sectiongap"><div class="empty">Loading members...</div></div></div>
     <div class="card staffonly sectiongap"><h3>Public chat moderation</h3><p class="muted">Delete a message from community chat when necessary.</p><p class="muted">Use the “Delete” button alongside public messages; no direct-message content is shown here.</p></div>
   </div>
@@ -477,7 +509,7 @@ $("loginTab").addEventListener("click",()=>showAuthMode("login"));
 $("profileBio").addEventListener("input",()=>$("bioCount").textContent=$("profileBio").value.length);
 
 function navigate(page){
-  const allowed=["dashboard","profile","chat","friends","dm","shop","inventory","mines","events","admin"];
+  const allowed=["dashboard","profile","chat","friends","dm","shop","inventory","mines","tower","events","admin"];
   if(!allowed.includes(page))page="dashboard";
   if(page==="admin"&&!isStaff()){toast("The admin panel is restricted to staff.","error");return;}
   activePage=page;
@@ -489,8 +521,9 @@ function navigate(page){
   if(page==="shop"){loadShop();loadPurchases();}
   if(page==="inventory"){loadInventory();updateInventoryThemeBanner();}
   if(page==="mines")loadActiveMinesGame();
+  if(page==="tower")loadTowerPage();
   if(page==="events")loadEvents();
-  if(page==="admin"&&isStaff()){loadMembers();loadShop();loadEvents();}
+  if(page==="admin"&&isStaff()){loadMembers();loadShop();loadEvents();loadTowerAdmin();}
 }
 document.querySelectorAll("[data-page]").forEach(el=>el.addEventListener("click",()=>navigate(el.dataset.page)));
 
@@ -1030,6 +1063,27 @@ $("minesCashoutButton").addEventListener("click",async()=>{
 });
 if(!minesQueueTimer)minesQueueTimer=window.setInterval(()=>{if(currentUser&&activePage==="mines"&&!minesBusy){refreshMinesQueue(true);if(spectatedPlayerId)refreshMinesSpectator(true);}},3000);
 if(!minesTurnClockTimer)minesTurnClockTimer=window.setInterval(()=>{if(currentUser&&activePage==="mines")updateMinesTurnClock();},1000);
+if(!towerRefreshTimer)towerRefreshTimer=window.setInterval(()=>{if(currentUser&&activePage==="tower"){loadTowerLive();if(towerSpectateId)refreshTowerSpectator();if(towerGame?.status==="active")db.rpc("get_tower_my_game").then(({data,error})=>{if(!error&&data?.game){towerGame=data.game;renderTowerGame();}}).catch(()=>{});}},5000);
+
+/* TOWER: server-authoritative virtual-coin game. Outcomes and wallet changes live in Supabase RPCs. */
+let towerGame=null,towerBusy=false,towerSpectateId=null,towerRefreshTimer=null;
+function towerNotice(message,type=""){const el=$("towerStatus");if(el){el.textContent=message;el.className="notice"+(type?" "+type:"");}}
+function towerMultiplierFor(difficulty,floor){const base={easy:1.18,medium:1.40,hard:1.75}[difficulty]||1.18;return Math.pow(base,Number(floor||0));}
+function renderTowerTrack(){const host=$("towerFloorTrack");if(!host)return;const floor=Number(towerGame?.floor||0);host.innerHTML=Array.from({length:20},(_,i)=>{const n=i+1,cls="tower-floor"+(n<=floor?" done":"")+(n===floor+1&&towerGame?.status==="active"?" current":"");return `<div class="${cls}" title="Floor ${n}">${n<=floor?"✓":"F"+n}</div>`;}).join("");}
+function renderTowerGame(){const g=towerGame,active=g?.status==="active";$("towerWallet").textContent=money(myProfile?.coins||0);$("towerFloorValue").textContent=`${Number(g?.floor||0)} / 20`;$("towerMultiplier").textContent=Number(g?.multiplier||1).toFixed(2)+"×";$("towerStartForm").hidden=Boolean(active);$("towerClimbButton").disabled=!active||towerBusy;$("towerCashoutButton").disabled=!active||Number(g?.floor||0)<1||towerBusy;$("towerDifficulty").disabled=Boolean(active);$("towerWager").disabled=Boolean(active);renderTowerTrack();if(active){const potential=Math.floor(Number(g.wager)*Number(g.multiplier));$("towerWagerHint").textContent=`Wager ${money(g.wager)} · potential cashout ${money(potential)} coins. Your next climb may bust.`;}else{$("towerWagerHint").textContent="The wager is deducted when a run starts. A failed climb loses that wager.";}}
+async function loadTowerPage(){if(!currentUser)return;try{const {data,error}=await db.rpc("get_tower_my_game");if(error)throw error;towerGame=data?.game||null;await refreshMyProfile();renderTowerGame();await loadTowerLive();await loadTowerHistory();if(towerGame?.status==="active")towerNotice(`Active run: ${towerGame.difficulty.toUpperCase()} · floor ${towerGame.floor}/20. Climb carefully or cash out after a safe floor.`,"success");else towerNotice("Choose a difficulty and wager to begin a new run.");}catch(error){towerNotice("Tower is not ready yet. Run the Tower SQL query in Supabase, then refresh. "+error.message,"error");}}
+$("towerStartForm").addEventListener("submit",async event=>{event.preventDefault();if(towerBusy)return;const difficulty=$("towerDifficulty").value,wager=Number($("towerWager").value);if(!["easy","medium","hard"].includes(difficulty)||!Number.isSafeInteger(wager)||wager<1){towerNotice("Choose a difficulty and a valid positive coin wager.","error");return;}towerBusy=true;setBusy($("towerStartButton"),true,"Starting run...","Start Tower Run");try{const {data,error}=await db.rpc("tower_start_game",{p_difficulty:difficulty,p_wager:wager});if(error)throw error;towerGame=data;await refreshMyProfile();renderTowerGame();await loadTowerHistory();towerNotice(`Tower run started on ${difficulty.toUpperCase()}. Your wager is locked in. Climb to risk it or cash out after a safe floor.`,"success");await loadTowerLive();}catch(error){towerNotice("Could not start Tower: "+error.message,"error");}finally{towerBusy=false;setBusy($("towerStartButton"),false,"Starting run...","Start Tower Run");renderTowerGame();}});
+$("towerClimbButton").addEventListener("click",async()=>{if(!towerGame||towerGame.status!=="active"||towerBusy)return;towerBusy=true;$("towerClimbButton").disabled=true;try{const {data,error}=await db.rpc("tower_climb");if(error)throw error;towerGame=data;await refreshMyProfile();renderTowerGame();if(data.status==="lost")towerNotice(`💥 The tower collapsed on floor ${data.floor}. You lost the wager. Start another run when ready.`,"error");else if(data.status==="cashed_out")towerNotice(`🏆 You reached the top! Auto-payout: ${money(data.payout)} virtual coins.`,"success");else towerNotice(`Safe climb! You reached floor ${data.floor}/20 at ${Number(data.multiplier).toFixed(2)}×. Cash out or risk the next floor.`,"success");await loadTowerHistory();await loadTowerLive();}catch(error){towerNotice("Could not climb: "+error.message,"error");}finally{towerBusy=false;renderTowerGame();}});
+$("towerCashoutButton").addEventListener("click",async()=>{if(!towerGame||towerGame.status!=="active"||towerBusy)return;towerBusy=true;$("towerCashoutButton").disabled=true;try{const {data,error}=await db.rpc("tower_cashout");if(error)throw error;towerGame=data;await refreshMyProfile();renderTowerGame();towerNotice(`💰 Cashed out ${money(data.payout)} virtual coins at floor ${data.floor} (${Number(data.multiplier).toFixed(2)}×).`,"success");await loadTowerHistory();await loadTowerLive();}catch(error){towerNotice("Cash-out failed: "+error.message,"error");}finally{towerBusy=false;renderTowerGame();}});
+async function loadTowerLive(){if(!currentUser)return;const host=$("towerLiveList");try{const {data,error}=await db.rpc("get_tower_live_games");if(error)throw error;const games=data||[];host.innerHTML=games.length?games.map(g=>`<div class="tower-live-player"><div><strong>${esc(g.display_name||"Player")}${g.user_id===currentUser.id?" (you)":""}</strong><span>${esc(String(g.difficulty).toUpperCase())} · Floor ${Number(g.floor)}/20 · ${Number(g.multiplier).toFixed(2)}×</span></div>${g.user_id!==currentUser.id?`<button class="smallbtn" type="button" data-tower-spectate="${esc(g.id)}" data-tower-name="${esc(g.display_name||"Player")}">Spectate</button>`:'<span class="tag admin">You</span>'}</div>`).join(""):'<div class="empty">No one is climbing right now. Start a run to appear here.</div>';}catch(error){host.innerHTML=`<div class="empty">Live climbers unavailable: ${esc(error.message)}</div>`;}}
+async function loadTowerHistory(){if(!currentUser)return;const host=$("towerHistoryList");try{const {data,error}=await db.rpc("get_tower_history");if(error)throw error;host.innerHTML=(data||[]).length?(data||[]).map(g=>`<div class="tower-history-row"><div><strong>${esc(String(g.difficulty).toUpperCase())} · ${esc(g.status)}</strong><div class="mutedline">Floor ${Number(g.floor)}/20 · ${money(g.wager)} wager · ${esc(timeText(g.created_at))}</div></div><span class="coin">${g.payout>0?"+":""}${money(g.payout||0)}</span></div>`).join(""):'<div class="empty">No Tower runs yet.</div>';}catch(error){host.innerHTML=`<div class="empty">History unavailable: ${esc(error.message)}</div>`;}}
+async function refreshTowerSpectator(){if(!towerSpectateId||activePage!=="tower")return;try{const {data,error}=await db.rpc("get_tower_spectator_state",{p_game_id:towerSpectateId});if(error)throw error;$("towerSpectatorPanel").hidden=false;$("towerSpectatorTitle").textContent=`Spectating ${data.display_name||"Player"} · ${String(data.difficulty).toUpperCase()}`;$("towerSpectatorDescription").textContent=data.status==="active"?`Live read-only view · floor ${data.floor}/20 · ${Number(data.multiplier).toFixed(2)}× · hidden outcomes are never shared.`:"This run has ended.";const floor=Number(data.floor||0);$("towerSpectatorTrack").innerHTML=Array.from({length:20},(_,i)=>`<div class="tower-floor${i<floor?" done":""}${i===floor&&data.status==="active"?" current":""}">${i<floor?"✓":"F"+(i+1)}</div>`).join("");if(data.status!=="active"){towerSpectateId=null;}}catch(error){$("towerSpectatorPanel").hidden=false;$("towerSpectatorDescription").textContent="This run ended or is no longer available. "+error.message;towerSpectateId=null;}}
+$("towerLiveList").addEventListener("click",async event=>{const b=event.target.closest("[data-tower-spectate]");if(!b)return;b.disabled=true;try{towerSpectateId=b.dataset.towerSpectate;await refreshTowerSpectator();$("towerSpectatorPanel").scrollIntoView({behavior:"smooth",block:"nearest"});toast(`Spectating ${b.dataset.towerName||"player"}.`,"success");}catch(error){towerNotice("Spectating failed: "+error.message,"error");}finally{b.disabled=false;}});
+$("towerStopSpectatingButton").addEventListener("click",()=>{towerSpectateId=null;$("towerSpectatorPanel").hidden=true;});
+$("towerRefreshButton").addEventListener("click",loadTowerPage);$("towerRefreshLiveButton").addEventListener("click",loadTowerLive);
+async function loadTowerAdmin(){if(!isStaff())return;try{const {data,error}=await db.rpc("get_tower_admin_data");if(error)throw error;$("towerAdminEnabled").value=String(data.enabled);$("towerAdminMaxWager").value=String(data.max_wager);$("towerAdminStatus").hidden=false;$("towerAdminStatus").textContent=`Tower is ${data.enabled?"enabled":"paused"}. Maximum wager: ${money(data.max_wager)} coins.`;$("towerAdminHistory").innerHTML=(data.history||[]).length?data.history.map(g=>`<div class="tower-history-row"><div><strong>${esc(g.display_name||"Player")} · ${esc(String(g.difficulty).toUpperCase())}</strong><div class="mutedline">${esc(g.status)} · Floor ${Number(g.floor)}/20 · Wager ${money(g.wager)} · ${esc(timeText(g.created_at))}</div></div><span class="coin">${money(g.payout||0)}</span></div>`).join(""):'<div class="empty">No Tower runs yet.</div>';}catch(error){$("towerAdminStatus").hidden=false;$("towerAdminStatus").className="notice error";$("towerAdminStatus").textContent="Tower admin data unavailable: "+error.message;}}
+$("towerAdminForm").addEventListener("submit",async event=>{event.preventDefault();if(!isStaff())return;const enabled=$("towerAdminEnabled").value==="true",maxWager=Number($("towerAdminMaxWager").value);if(!Number.isSafeInteger(maxWager)||maxWager<1||maxWager>1000000000){toast("Maximum wager must be 1–1,000,000,000 coins.","error");return;}const button=event.submitter;setBusy(button,true,"Saving...","Save Tower settings");try{const {data,error}=await db.rpc("set_tower_settings",{p_enabled:enabled,p_max_wager:maxWager});if(error)throw error;$("towerAdminStatus").hidden=false;$("towerAdminStatus").className="notice success";$("towerAdminStatus").textContent=`Tower ${enabled?"enabled":"paused"}. Maximum wager ${money(maxWager)} coins.`;toast("Tower settings saved.","success");}catch(error){toast("Could not save Tower settings: "+error.message,"error");}finally{setBusy(button,false,"Saving...","Save Tower settings");}});
+$("towerAdminRefreshButton").addEventListener("click",loadTowerAdmin);
 
 async function loadMembers(){
   if(!isStaff())return;const host=$("membersList");host.innerHTML='<div class="empty">Loading members...</div>';
