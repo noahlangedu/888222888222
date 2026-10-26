@@ -446,7 +446,7 @@ input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 
 </section>
 
 <section class="page" id="page-admin" hidden>
-  <div class="pagehead"><div><h2>Admin panel</h2><p class="muted">Publish UI/HUD skins, create and settle events, grant/remove virtual coins, and manage members.</p></div><span id="adminRoleBadge" class="tag admin">Staff</span></div>
+  <div class="pagehead"><div><h2>Admin panel</h2><p class="muted">Publish UI/HUD skins, manage events, and configure game settings.</p></div><span id="adminRoleBadge" class="tag admin">Staff</span></div>
   <div id="adminForbidden" class="notice error" hidden>This area is only available to admins and the owner.</div>
   <div id="adminTools" class="stack">
     <div class="card staffonly"><h3>Publish a UI / HUD skin</h3><p class="muted">List a built-in color theme or a custom image background. Set a virtual-coin price; members can buy and save it to Inventory.</p><form id="createItemForm" class="twoform">
@@ -462,7 +462,6 @@ input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 
     <div class="card staffonly sectiongap"><h3>TOWER controls</h3><p class="muted">Enable or pause Tower and set the maximum virtual-coin wager. All results and payouts are validated by Supabase.</p><form id="towerAdminForm" class="twoform"><div class="field"><label for="towerAdminEnabled">TOWER STATUS</label><select id="towerAdminEnabled"><option value="true">Enabled</option><option value="false">Paused</option></select></div><div class="field"><label for="towerAdminMaxWager">MAXIMUM WAGER</label><input id="towerAdminMaxWager" type="number" min="1" max="1000000000" value="1000000" required></div><button class="btn wide" type="submit">Save Tower settings</button></form><div id="towerAdminStatus" class="notice" hidden></div><h3 class="sectiongap">Recent Tower runs (admin)</h3><button class="smallbtn" id="towerAdminRefreshButton" type="button">Refresh Tower history</button><div id="towerAdminHistory" class="tower-history-list sectiongap"><div class="empty">Loading...</div></div></div>
 
     <div class="card staffonly sectiongap"><h3>NEON ARCADE controls</h3><p class="muted">Pause all three arcade games or set their maximum wager. Admin changes do not affect Tower settings.</p><form id="arcadeAdminForm" class="twoform"><div class="field"><label for="arcadeAdminEnabled">ARCADE STATUS</label><select id="arcadeAdminEnabled"><option value="true">Enabled</option><option value="false">Paused</option></select></div><div class="field"><label for="arcadeAdminMaxWager">MAXIMUM WAGER</label><input id="arcadeAdminMaxWager" type="number" min="1" max="1000000000" value="1000000" required></div><button class="btn wide" type="submit">Save Arcade settings</button></form><div id="arcadeAdminStatus" class="notice" hidden></div><h3 class="sectiongap">Recent arcade activity</h3><button class="smallbtn" id="arcadeAdminRefreshButton" type="button">Refresh arcade history</button><div id="arcadeAdminHistory" class="tower-history-list sectiongap"><div class="empty">Loading...</div></div></div>
-    <div class="card staffonly sectiongap"><h3>Member management</h3><p class="muted">Admins and the owner can grant or remove virtual coins. Only the owner can promote or demote admins.</p><button class="smallbtn" id="reloadMembers" type="button">Refresh members</button><div id="membersList" class="sectiongap"><div class="empty">Loading members...</div></div></div>
     <div class="card staffonly sectiongap"><h3>Public chat moderation</h3><p class="muted">Delete a message from community chat when necessary.</p><p class="muted">Use the “Delete” button alongside public messages; no direct-message content is shown here.</p></div>
   </div>
 </section>
@@ -635,7 +634,7 @@ function navigate(page){
   if(page==="tower")loadTowerPage();
   if(page==="arcade")loadArcadePage();
   if(page==="events")loadEvents();
-  if(page==="admin"&&isStaff()){loadMembers();loadShop();loadEvents();loadTowerAdmin();loadArcadeAdmin();}
+  if(page==="admin"&&isStaff()){loadShop();loadEvents();loadTowerAdmin();loadArcadeAdmin();}
 }
 document.querySelectorAll("[data-page]").forEach(el=>el.addEventListener("click",()=>navigate(el.dataset.page)));
 
@@ -1225,36 +1224,6 @@ async function loadArcadeAdmin(){if(!isStaff())return;try{const {data,error}=awa
 $("arcadeAdminForm").addEventListener("submit",async e=>{e.preventDefault();if(!isStaff())return;const enabled=$("arcadeAdminEnabled").value==="true",max=Number($("arcadeAdminMaxWager").value);if(!Number.isSafeInteger(max)||max<1||max>1000000000){toast("Maximum wager must be between 1 and 1,000,000,000.","error");return;}try{const {error}=await db.rpc("set_arcade_settings",{p_enabled:enabled,p_max_wager:max});if(error)throw error;toast("Arcade settings saved.","success");await loadArcadeAdmin();}catch(e){toast("Could not save arcade settings: "+e.message,"error");}});$("arcadeAdminRefreshButton").addEventListener("click",loadArcadeAdmin);
 if(!arcadeRefreshTimer)arcadeRefreshTimer=window.setInterval(()=>{if(currentUser&&activePage==="arcade")loadArcadeLive();if(currentUser&&activePage==="admin"&&isStaff())loadArcadeAdmin();},7000);
 
-async function loadMembers(){
-  if(!isStaff())return;const host=$("membersList");host.innerHTML='<div class="empty">Loading members...</div>';
-  try{
-    const {data,error}=await db.from("profiles").select("user_id,display_name,role,coins,created_at").order("created_at",{ascending:false}).limit(100);if(error)throw error;
-    host.innerHTML=(data||[]).map(p=>{
-      const roleClass=p.role==="owner"?"owner":p.role==="admin"?"admin":"";
-      const roles=isOwner()&&p.role!=="owner"?`<div class="field"><label>Role</label><select data-role-select="${esc(p.user_id)}"><option value="member" ${p.role==="member"?"selected":""}>Member</option><option value="admin" ${p.role==="admin"?"selected":""}>Admin</option></select><button class="smallbtn" data-change-role="${esc(p.user_id)}" style="margin-top:6px">Save role</button></div>`:"";
-      return `<div class="rowcard"><div class="grow"><strong>${esc(p.display_name)}</strong><span class="tag ${roleClass}">${esc(p.role)}</span><p class="mutedline">${money(p.coins)} coins</p><div class="inlineform"><input type="number" min="1" max="1000000000" value="100" data-grant-amount="${esc(p.user_id)}" aria-label="Coin adjustment amount"><button class="smallbtn" data-grant-coins="${esc(p.user_id)}">Grant</button>${isOwner()?`<button class="smallbtn" data-remove-coins="${esc(p.user_id)}">Remove</button>`:""}</div>${roles}</div></div>`;
-    }).join("")||'<div class="empty">No members found.</div>';
-  }catch(error){host.innerHTML=`<div class="empty">Member list failed: ${esc(error.message)}</div>`;}
-}
-$("reloadMembers").addEventListener("click",loadMembers);
-$("membersList").addEventListener("click",async event=>{
-  const grant=event.target.closest("[data-grant-coins]"),remove=event.target.closest("[data-remove-coins]"),change=event.target.closest("[data-change-role]"),adjust=grant||remove;
-  if(adjust){
-    const id=grant?grant.dataset.grantCoins:remove.dataset.removeCoins,input=document.querySelector(`[data-grant-amount="${CSS.escape(id)}"]`),amount=Number(input?.value);
-    if(!Number.isSafeInteger(amount)||amount<1||amount>1000000000){toast("Enter an amount between 1 and 1,000,000,000.","error");return;}
-    if(remove&&!confirm(`Remove ${money(amount)} virtual coins from this member? The balance cannot go below zero.`))return;
-    adjust.disabled=true;
-    try{const {error}=await db.rpc(grant?"grant_fake_coins":"remove_fake_coins",{p_user_id:id,p_amount:amount});if(error)throw error;await loadMembers();await refreshMyProfile();await loadLeaderboard();toast(grant?"Virtual coins granted.":"Virtual coins removed.","success");}
-    catch(error){toast((grant?"Grant":"Removal")+" failed: "+error.message,"error");}
-    finally{adjust.disabled=false;}
-  }
-  if(change){
-    const id=change.dataset.changeRole,select=document.querySelector(`[data-role-select="${CSS.escape(id)}"]`);change.disabled=true;
-    try{const {error}=await db.rpc("set_member_role",{p_user_id:id,p_role:select.value});if(error)throw error;await loadMembers();toast("Member role updated.","success");}
-    catch(error){toast("Role change failed: "+error.message,"error");}
-    finally{change.disabled=false;}
-  }
-});
 
 function showOwnerHudNotice(message,type=""){const el=$("ownerHudNotice");el.textContent=message;el.className="notice"+(type?" "+type:"");el.hidden=false;}
 function openOwnerHud(){
