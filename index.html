@@ -280,6 +280,7 @@ input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 
   <button class="navbtn active" data-page="dashboard"><span class="navicon">⌂</span> Dashboard</button>
   <button class="navbtn" data-page="profile"><span class="navicon">◉</span> Profile</button>
   <button class="navbtn" data-page="chat"><span class="navicon">☷</span> Community chat</button>
+  <button class="navbtn" data-page="suggestions"><span class="navicon">💡</span> Suggestions</button>
   <button class="navbtn" data-page="friends"><span class="navicon">♧</span> Friends</button>
   <button class="navbtn" data-page="dm"><span class="navicon">✉</span> Private messages</button>
   <button class="navbtn" data-page="shop"><span class="navicon">▣</span> Shop</button>
@@ -308,6 +309,12 @@ input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 
     <button class="quickcard navbtn" data-page="events">🎲 <strong>Fake-coin events</strong><span class="muted">Join no-cash-value coin flip events.</span></button>
   </div></div>
   <div class="card sectiongap"><div class="pagehead"><div><h2>Leaderboard</h2><p class="muted">Top members ranked by virtual coin balance.</p></div><button class="smallbtn" id="reloadLeaderboard" type="button">Refresh</button></div><div id="leaderboard"><div class="empty">Loading leaderboard...</div></div></div>
+</section>
+
+<section class="page" id="page-suggestions" hidden>
+ <div class="pagehead"><div><h2>Website suggestions</h2><p class="muted">Got an idea for PILTAE CHATTER? Share it here so everyone can see suggestions.</p></div><button class="smallbtn" id="refreshSuggestions" type="button">Refresh</button></div>
+ <div class="card"><form id="suggestionForm"><div class="field"><label for="suggestionText">Your suggestion</label><textarea id="suggestionText" minlength="3" maxlength="1000" required placeholder="What would you like added to the website?"></textarea></div><button class="btn" id="sendSuggestionButton" type="submit">Post suggestion</button></form><p class="muted">Keep suggestions respectful and specific. Do not share private information.</p></div>
+ <div class="card sectiongap"><h3>Community suggestions</h3><div id="suggestionMessages" class="stack"><div class="empty">Loading suggestions...</div></div></div>
 </section>
 
 <section class="page" id="page-profile" hidden>
@@ -645,7 +652,7 @@ $("loginTab").addEventListener("click",()=>showAuthMode("login"));
 $("profileBio").addEventListener("input",()=>$("bioCount").textContent=$("profileBio").value.length);
 
 function navigate(page){
-  const allowed=["dashboard","profile","chat","friends","dm","shop","inventory","mines","tower","arcade","events","admin","terms","audit","reports","credits"];
+  const allowed=["dashboard","profile","chat","suggestions","friends","dm","shop","inventory","mines","tower","arcade","events","admin","terms","audit","reports","credits"];
   if(!allowed.includes(page))page="dashboard";
   if(page==="audit"&&!isStaff()){toast("The audit log is restricted to admins and the owner.","error");return;}
   if(page==="admin"&&!isStaff()){toast("The admin panel is restricted to staff.","error");return;}
@@ -653,6 +660,7 @@ function navigate(page){
   document.querySelectorAll(".page").forEach(el=>el.hidden=el.id!=="page-"+page);
   document.querySelectorAll(".sidebar .navbtn").forEach(el=>el.classList.toggle("active",el.dataset.page===page));
   if(page==="chat")loadChat();
+  if(page==="suggestions")loadSuggestions();
   if(page==="friends")loadFriends();
   if(page==="dm")loadDmFriendChoices();
   if(page==="shop"){loadShop();loadPurchases();}
@@ -775,9 +783,10 @@ async function loadDashboardFriendsCount(){
 function setupRealtime(){
   realtimeChannels.forEach(ch=>db.removeChannel(ch));realtimeChannels=[];
   const pub=db.channel("piltae-public-chat").on("postgres_changes",{event:"*",schema:"public",table:"chat_messages"},()=>{if(activePage==="chat")loadChat();}).subscribe();
+  const suggestions=db.channel("piltae-website-suggestions").on("postgres_changes",{event:"*",schema:"public",table:"website_suggestions"},()=>{if(activePage==="suggestions")loadSuggestions();}).subscribe();
   const dm=db.channel("piltae-private-messages").on("postgres_changes",{event:"*",schema:"public",table:"direct_messages"},()=>{if(activePage==="dm"&&selectedDmId)loadDmMessages();}).subscribe();
   const profile=db.channel("piltae-profile-changes").on("postgres_changes",{event:"UPDATE",schema:"public",table:"profiles",filter:`user_id=eq.${currentUser.id}`},async()=>{try{await refreshMyProfile();}catch(e){console.warn(e);}}).subscribe();
-  realtimeChannels.push(pub,dm,profile);
+  realtimeChannels.push(pub,dm,profile,suggestions);
 }
 
 async function loadChat(){
@@ -805,6 +814,16 @@ $("chatMessages").addEventListener("click",async event=>{
   try{const {error}=await db.from("chat_messages").delete().eq("id",button.dataset.deleteChat);if(error)throw error;toast("Message deleted.","success");loadChat();}
   catch(error){toast("Could not delete message: "+error.message,"error");}
 });
+
+async function loadSuggestions(){
+ if(!currentUser)return;const host=$("suggestionMessages");if(!host)return;host.innerHTML='<div class="empty">Loading suggestions...</div>';
+ try{const {data,error}=await db.from("website_suggestions").select("id,author_id,body,created_at").order("created_at",{ascending:false}).limit(150);if(error)throw error;const profiles=await fetchProfiles([...new Set((data||[]).map(m=>m.author_id))]);
+ host.innerHTML=(data||[]).map(m=>{const profile=profiles.get(m.author_id);const role=profile?.role||"member";return `<article class="message"><div class="messagehead"><strong>${esc(profile?.display_name||"Member")} ${role!=="member"?`<span class="tag ${esc(role)}">${esc(role)}</span>`:""}</strong><time>${esc(timeText(m.created_at))}</time></div><p>${esc(m.body)}</p>${m.author_id===currentUser.id?`<button class="smallbtn" type="button" data-delete-suggestion="${esc(m.id)}">Delete my suggestion</button>`:""}</article>`;}).join("")||'<div class="empty">No suggestions yet. Be the first to share an idea!</div>';
+ }catch(error){host.innerHTML=`<div class="empty">Suggestions could not load: ${esc(error.message)}. Run the suggestion SQL in Supabase first.</div>`;}
+}
+$("refreshSuggestions")?.addEventListener("click",loadSuggestions);
+$("suggestionForm")?.addEventListener("submit",async event=>{event.preventDefault();if(!currentUser)return;const body=$("suggestionText").value.trim();if(body.length<3){toast("Please enter a suggestion of at least 3 characters.","error");return;}const button=$("sendSuggestionButton");setBusy(button,true,"Posting...","Post suggestion");try{const {error}=await db.from("website_suggestions").insert({author_id:currentUser.id,body});if(error)throw error;$("suggestionText").value="";logClientAction("posted a website suggestion",{});await loadSuggestions();toast("Suggestion posted!","success");}catch(error){toast("Could not post suggestion: "+error.message,"error");}finally{setBusy(button,false,"Posting...","Post suggestion");}});
+$("suggestionMessages")?.addEventListener("click",async event=>{const button=event.target.closest("[data-delete-suggestion]");if(!button||!currentUser)return;if(!confirm("Delete your suggestion?"))return;try{const {error}=await db.from("website_suggestions").delete().eq("id",button.dataset.deleteSuggestion).eq("author_id",currentUser.id);if(error)throw error;await loadSuggestions();toast("Suggestion deleted.","success");}catch(error){toast("Could not delete suggestion: "+error.message,"error");}});
 
 async function fetchProfiles(ids){
   const map=new Map();if(!ids.length)return map;
