@@ -178,15 +178,18 @@ input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 
 .mines-turn-clock strong{font-variant-numeric:tabular-nums;font-size:18px;letter-spacing:.5px}
 .mines-turn-clock.urgent strong{color:var(--danger)}
 #minesTurnTimerHint{margin:7px 2px 12px;font-size:11px}
-
-/* TOWER game */
+/* TOWER game: uses the same theme variables as the rest of PILTAE */
 .tower-layout{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(260px,.9fr);gap:14px;align-items:start}
 .tower-floor-track{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px;margin:15px 0}
 .tower-floor{display:grid;place-items:center;min-height:48px;padding:7px 3px;border:1px solid var(--border);border-radius:9px;background:var(--theme-input);font-size:12px;font-weight:850;color:var(--muted)}
-.tower-floor.done{background:#10332d;border-color:#278571;color:#99f6e4}.tower-floor.current{background:#292344;border-color:var(--accent);color:white;box-shadow:0 0 0 2px color-mix(in srgb,var(--accent) 18%,transparent)}
-.tower-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px}.tower-live-list{display:grid;gap:8px}.tower-live-player{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:11px;border:1px solid var(--border);border-radius:11px;background:var(--theme-surface)}
+.tower-floor.done{background:color-mix(in srgb,var(--mint) 18%,var(--theme-surface));border-color:var(--mint);color:var(--text)}
+.tower-floor.current{background:color-mix(in srgb,var(--accent) 20%,var(--theme-surface));border-color:var(--accent);color:var(--text);box-shadow:0 0 0 2px color-mix(in srgb,var(--accent) 18%,transparent)}
+.tower-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.tower-live-list{display:grid;gap:8px}
+.tower-live-player{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:11px;border:1px solid var(--border);border-radius:11px;background:var(--theme-surface);color:var(--text)}
 .tower-live-player strong{display:block;overflow-wrap:anywhere}.tower-live-player span{font-size:11px;color:var(--muted)}
-.tower-history-list{display:grid;gap:7px}.tower-history-row{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:10px;border-bottom:1px solid var(--border)}
+.tower-history-list{display:grid;gap:7px}.tower-history-row{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:10px;border-bottom:1px solid var(--border);color:var(--text)}
+.tower-floor.current{outline-color:var(--accent)}
 @media(max-width:700px){.tower-layout{grid-template-columns:1fr}.tower-floor-track{grid-template-columns:repeat(4,minmax(0,1fr))}}
 
 </style>
@@ -1063,10 +1066,9 @@ $("minesCashoutButton").addEventListener("click",async()=>{
 });
 if(!minesQueueTimer)minesQueueTimer=window.setInterval(()=>{if(currentUser&&activePage==="mines"&&!minesBusy){refreshMinesQueue(true);if(spectatedPlayerId)refreshMinesSpectator(true);}},3000);
 if(!minesTurnClockTimer)minesTurnClockTimer=window.setInterval(()=>{if(currentUser&&activePage==="mines")updateMinesTurnClock();},1000);
-if(!towerRefreshTimer)towerRefreshTimer=window.setInterval(()=>{if(currentUser&&activePage==="tower"){loadTowerLive();if(towerSpectateId)refreshTowerSpectator();if(towerGame?.status==="active")db.rpc("get_tower_my_game").then(({data,error})=>{if(!error&&data?.game){towerGame=data.game;renderTowerGame();}}).catch(()=>{});}},5000);
-
 /* TOWER: server-authoritative virtual-coin game. Outcomes and wallet changes live in Supabase RPCs. */
 let towerGame=null,towerBusy=false,towerSpectateId=null,towerRefreshTimer=null;
+if(!towerRefreshTimer)towerRefreshTimer=window.setInterval(()=>{if(currentUser&&activePage==="tower"){loadTowerLive();if(towerSpectateId)refreshTowerSpectator();if(towerGame?.status==="active")db.rpc("get_tower_my_game").then(({data,error})=>{if(!error&&data?.game){towerGame=data.game;renderTowerGame();}}).catch(()=>{});}},5000);
 function towerNotice(message,type=""){const el=$("towerStatus");if(el){el.textContent=message;el.className="notice"+(type?" "+type:"");}}
 function towerMultiplierFor(difficulty,floor){const base={easy:1.18,medium:1.40,hard:1.75}[difficulty]||1.18;return Math.pow(base,Number(floor||0));}
 function renderTowerTrack(){const host=$("towerFloorTrack");if(!host)return;const floor=Number(towerGame?.floor||0);host.innerHTML=Array.from({length:20},(_,i)=>{const n=i+1,cls="tower-floor"+(n<=floor?" done":"")+(n===floor+1&&towerGame?.status==="active"?" current":"");return `<div class="${cls}" title="Floor ${n}">${n<=floor?"✓":"F"+n}</div>`;}).join("");}
@@ -1084,6 +1086,7 @@ $("towerRefreshButton").addEventListener("click",loadTowerPage);$("towerRefreshL
 async function loadTowerAdmin(){if(!isStaff())return;try{const {data,error}=await db.rpc("get_tower_admin_data");if(error)throw error;$("towerAdminEnabled").value=String(data.enabled);$("towerAdminMaxWager").value=String(data.max_wager);$("towerAdminStatus").hidden=false;$("towerAdminStatus").textContent=`Tower is ${data.enabled?"enabled":"paused"}. Maximum wager: ${money(data.max_wager)} coins.`;$("towerAdminHistory").innerHTML=(data.history||[]).length?data.history.map(g=>`<div class="tower-history-row"><div><strong>${esc(g.display_name||"Player")} · ${esc(String(g.difficulty).toUpperCase())}</strong><div class="mutedline">${esc(g.status)} · Floor ${Number(g.floor)}/20 · Wager ${money(g.wager)} · ${esc(timeText(g.created_at))}</div></div><span class="coin">${money(g.payout||0)}</span></div>`).join(""):'<div class="empty">No Tower runs yet.</div>';}catch(error){$("towerAdminStatus").hidden=false;$("towerAdminStatus").className="notice error";$("towerAdminStatus").textContent="Tower admin data unavailable: "+error.message;}}
 $("towerAdminForm").addEventListener("submit",async event=>{event.preventDefault();if(!isStaff())return;const enabled=$("towerAdminEnabled").value==="true",maxWager=Number($("towerAdminMaxWager").value);if(!Number.isSafeInteger(maxWager)||maxWager<1||maxWager>1000000000){toast("Maximum wager must be 1–1,000,000,000 coins.","error");return;}const button=event.submitter;setBusy(button,true,"Saving...","Save Tower settings");try{const {data,error}=await db.rpc("set_tower_settings",{p_enabled:enabled,p_max_wager:maxWager});if(error)throw error;$("towerAdminStatus").hidden=false;$("towerAdminStatus").className="notice success";$("towerAdminStatus").textContent=`Tower ${enabled?"enabled":"paused"}. Maximum wager ${money(maxWager)} coins.`;toast("Tower settings saved.","success");}catch(error){toast("Could not save Tower settings: "+error.message,"error");}finally{setBusy(button,false,"Saving...","Save Tower settings");}});
 $("towerAdminRefreshButton").addEventListener("click",loadTowerAdmin);
+
 
 async function loadMembers(){
   if(!isStaff())return;const host=$("membersList");host.innerHTML='<div class="empty">Loading members...</div>';
