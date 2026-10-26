@@ -218,6 +218,9 @@ input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 
 .legal-check{display:flex;align-items:flex-start;gap:9px;margin:12px 0 15px;color:var(--muted);font-size:12px;line-height:1.5}
 .legal-check input{margin-top:3px;accent-color:var(--accent)}
 .legal-check button{border:0;background:none;color:var(--accent);font:inherit;font-weight:800;text-decoration:underline;cursor:pointer;padding:0}
+
+/* Community safety tools */
+.audit-list{max-height:68vh;overflow:auto;display:grid;gap:8px}.audit-entry{padding:10px;border:1px solid var(--border);border-radius:10px;background:var(--panel2);overflow-wrap:anywhere}.audit-entry small{display:block;color:var(--muted);margin-top:4px}.warn-banner{margin:0 0 14px;padding:12px 14px;border:1px solid #f59e0b;border-radius:12px;background:#78350f44;color:#fde68a}.danger-zone{border-color:#fb7185}.staff-nav-note{font-size:12px;color:var(--muted)}
 </style>
 </head>
 <body>
@@ -287,9 +290,13 @@ input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 
   <button class="navbtn" data-page="events"><span class="navicon">🎲</span> Fake-coin events</button>
   <button class="navbtn" data-page="admin" id="adminNav" hidden><span class="navicon">⚙</span> Admin panel</button>
   <button class="navbtn" data-page="terms"><span class="navicon">ⓘ</span> Terms of Service</button>
+  <button class="navbtn" data-page="audit" id="auditNav" hidden><span class="navicon">≡</span> Audit log</button>
+  <button class="navbtn" data-page="reports" id="reportsNav"><span class="navicon">⚑</span> Report a member</button>
+  <button class="navbtn" data-page="credits" id="creditsNav"><span class="navicon">✦</span> Credits</button>
 </nav>
 <div class="maincol">
 <div id="appNotice" class="notice" role="status" aria-live="polite" hidden></div>
+<div id="memberWarningBanner" class="warn-banner" role="alert" hidden></div>
 
 <section class="page" id="page-dashboard">
   <div class="pagehead"><div><div class="eyebrow">PILTAE NETWORK</div><h2>Dashboard</h2><p class="muted">Welcome back, <strong id="welcomeName">Player</strong>.</p></div><span id="roleBadge" class="tag">Member</span></div>
@@ -310,11 +317,13 @@ input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 
     <div class="field"><label for="profileBio">BIO</label><textarea id="profileBio" maxlength="160" placeholder="Say something about yourself..."></textarea><p class="muted"><span id="bioCount">0</span>/160 characters</p></div>
     <button class="btn" id="saveProfileButton" type="submit">Save profile and return to dashboard</button>
   </form></div>
+
+  <div class="card danger-zone sectiongap"><h3>Delete your account</h3><p class="muted">This permanently deletes your account and profile. This cannot be undone.</p><button class="btn" id="openDeleteAccount" type="button">Delete my account permanently</button><div id="deleteAccountConfirm" class="sectiongap" hidden><label for="deleteAccountText">Type <strong>DELETE</strong> to confirm</label><input id="deleteAccountText" autocomplete="off" maxlength="6" placeholder="Type DELETE"><button class="btn" id="confirmDeleteAccount" type="button">Permanently delete account</button><button class="btn secondary" id="cancelDeleteAccount" type="button">Cancel</button></div></div>
 </section>
 
 <section class="page" id="page-chat" hidden>
   <div class="pagehead"><div><h2>Community chat</h2><p class="muted">Messages are visible to signed-in members. Keep it respectful.</p></div><button class="smallbtn" id="reloadChat" type="button">Refresh</button></div>
-  <div class="card"><div id="chatMessages" class="chatbox"><div class="empty">Loading messages...</div></div><form id="chatForm" class="chatinput"><textarea id="chatText" maxlength="500" required placeholder="Write a message..."></textarea><button class="btn" id="sendChatButton" type="submit">Send</button></form></div>
+  <div class="card"><div id="chatMessages" class="chatbox"><div class="empty">Loading messages...</div></div><p class="muted">Public community messages are visible to staff and included in the moderation audit log. Private messages are not included in the audit log.</p><form id="chatForm" class="chatinput"><textarea id="chatText" maxlength="500" required placeholder="Write a public message..."></textarea><button class="btn" id="sendChatButton" type="submit">Send</button></form></div>
 </section>
 
 <section class="page" id="page-friends" hidden>
@@ -446,7 +455,7 @@ input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 
 </section>
 
 <section class="page" id="page-admin" hidden>
-  <div class="pagehead"><div><h2>Admin panel</h2><p class="muted">Publish UI/HUD skins, create and settle events, grant/remove virtual coins, and manage members.</p></div><span id="adminRoleBadge" class="tag admin">Staff</span></div>
+  <div class="pagehead"><div><h2>Admin panel</h2><p class="muted">Publish UI/HUD skins, create and settle events, and manage members. Only the owner can adjust coins or change roles.</p></div><span id="adminRoleBadge" class="tag admin">Staff</span></div>
   <div id="adminForbidden" class="notice error" hidden>This area is only available to admins and the owner.</div>
   <div id="adminTools" class="stack">
     <div class="card staffonly"><h3>Publish a UI / HUD skin</h3><p class="muted">List a built-in color theme or a custom image background. Set a virtual-coin price; members can buy and save it to Inventory.</p><form id="createItemForm" class="twoform">
@@ -495,6 +504,22 @@ input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 
     <p class="muted">If your role is not Owner yet, run the owner setup query in Supabase using your login email. Shortcut: Alt + F1 · Press Escape to close.</p>
   </div>
 </section>
+
+<section class="page" id="page-audit" hidden>
+ <div class="pagehead"><div><h2>Universal audit log</h2><p class="muted">Staff-only activity history. Public chat messages and recorded site actions are included; passwords and private-message contents are never recorded.</p></div><button class="smallbtn" id="refreshAudit" type="button">Refresh</button></div>
+ <div class="card"><div id="auditLogList" class="audit-list"><div class="empty">Loading audit log...</div></div></div>
+</section>
+<section class="page" id="page-reports" hidden>
+ <div class="pagehead"><div><h2>Report a member</h2><p class="muted">Tell the moderation team what happened. Please do not use reports for jokes or disagreements.</p></div></div>
+ <div class="card"><form id="memberReportForm"><div class="field"><label for="reportTarget">Member to report</label><select id="reportTarget" required><option value="">Choose a member...</option></select></div><div class="field"><label for="reportReason">Why are you reporting them?</label><textarea id="reportReason" minlength="10" maxlength="1500" required placeholder="Explain what happened, including where and when..."></textarea></div><button class="btn" id="submitReportButton" type="submit">Submit report</button></form><p class="muted">Your report reason is visible to admins and the owner. Reports are not public.</p></div>
+ <div class="card staffonly sectiongap" id="reportsAdminPanel" hidden><div class="pagehead"><div><h3>Member reports</h3><p class="muted">Admins and the owner can review reports and apply warnings, timeouts, or bans.</p></div><button class="smallbtn" id="refreshReports" type="button">Refresh</button></div><div id="moderationReports" class="stack"><div class="empty">Loading reports...</div></div></div>
+</section>
+<section class="page" id="page-credits" hidden>
+ <div class="pagehead"><div><h2>Credits</h2><p class="muted">The people who helped make PILTAE CHATTER.</p></div></div>
+ <div class="card"><div id="creditsList" class="stack"><div class="empty">Loading credits...</div></div></div>
+ <div class="card staffonly sectiongap" id="creditsEditor" hidden><h3>Manage credits (owner only)</h3><form id="creditsForm"><div class="field"><label for="creditName">Name / handle</label><input id="creditName" maxlength="60" required></div><div class="field"><label for="creditContribution">Contribution</label><input id="creditContribution" maxlength="160" required placeholder="Website design, coding, art..."></div><div class="inlineform"><button class="btn" type="submit">Add credit</button><button class="btn secondary" id="refreshCredits" type="button">Refresh</button></div></form><div id="creditsManageList" class="stack sectiongap"></div></div>
+</section>
+
 <div class="footer">PILTAE CHATTER · Community coins are simulated and have no real-world value.</div>
 </main>
 
@@ -620,8 +645,9 @@ $("loginTab").addEventListener("click",()=>showAuthMode("login"));
 $("profileBio").addEventListener("input",()=>$("bioCount").textContent=$("profileBio").value.length);
 
 function navigate(page){
-  const allowed=["dashboard","profile","chat","friends","dm","shop","inventory","mines","tower","arcade","events","admin","terms"];
+  const allowed=["dashboard","profile","chat","friends","dm","shop","inventory","mines","tower","arcade","events","admin","terms","audit","reports","credits"];
   if(!allowed.includes(page))page="dashboard";
+  if(page==="audit"&&!isStaff()){toast("The audit log is restricted to admins and the owner.","error");return;}
   if(page==="admin"&&!isStaff()){toast("The admin panel is restricted to staff.","error");return;}
   activePage=page;
   document.querySelectorAll(".page").forEach(el=>el.hidden=el.id!=="page-"+page);
@@ -636,6 +662,9 @@ function navigate(page){
   if(page==="arcade")loadArcadePage();
   if(page==="events")loadEvents();
   if(page==="admin"&&isStaff()){loadMembers();loadShop();loadEvents();loadTowerAdmin();loadArcadeAdmin();}
+  if(page==="audit"&&isStaff())loadAuditLog();
+  if(page==="reports"){loadReportTargets();if(isStaff())loadReports();}
+  if(page==="credits")loadCredits();
 }
 document.querySelectorAll("[data-page]").forEach(el=>el.addEventListener("click",()=>navigate(el.dataset.page)));
 
@@ -664,7 +693,7 @@ async function refreshMyProfile(){
   $("dashRole").textContent=roleTitle(data.role);$("welcomeName").textContent=data.display_name;
   $("roleBadge").textContent=roleTitle(data.role);
   $("roleBadge").className="tag"+(data.role==="owner"?" owner":data.role==="admin"?" admin":"");
-  $("adminNav").hidden=!isStaff();$("adminRoleBadge").textContent=roleTitle(data.role);
+  $("adminNav").hidden=!isStaff();if($("auditNav"))$("auditNav").hidden=!isStaff();$("adminRoleBadge").textContent=roleTitle(data.role);
   $("adminTools").hidden=!isStaff();$("adminForbidden").hidden=isStaff();
   $("profileName").value=data.display_name||"";$("profileBio").value=data.bio||"";$("bioCount").textContent=$("profileBio").value.length;
 }
@@ -759,7 +788,7 @@ async function loadChat(){
     if(!data?.length){box.innerHTML='<div class="empty">No messages yet. Start the conversation!</div>';return;}
     box.innerHTML=data.reverse().map(m=>{
       const name=m.profiles?.display_name||"Member",role=m.profiles?.role||"member",canDelete=isStaff()||m.user_id===currentUser.id;
-      return `<div class="message"><div class="messagehead"><strong>${esc(name)} ${role!=="member"?`<span class="tag ${esc(role)}">${esc(role)}</span>`:""}</strong><time>${esc(timeText(m.created_at))}</time></div><p>${esc(m.body)}</p>${canDelete?`<button class="smallbtn" data-delete-chat="${esc(m.id)}" type="button">Delete</button>`:""}</div>`;
+      return `<div class="message"><div class="messagehead"><strong>${esc(name)} ${role!=="member"?`<span class="tag ${esc(role)}">${esc(role)}</span>`:""}</strong><time>${esc(timeText(m.created_at))}</time></div><p>${esc(m.body)}</p>${canDelete?`<button class="smallbtn" data-delete-chat="${esc(m.id)}" type="button">Delete</button>`:""}${m.user_id!==currentUser.id?` <button class="smallbtn" data-report-user="${esc(m.user_id)}" type="button">Report member</button>`:""}</div>`;
     }).join("");box.scrollTop=box.scrollHeight;
   }catch(error){box.innerHTML=`<div class="empty">Chat didn't load: ${esc(error.message)}</div>`;}
 }
@@ -1246,14 +1275,14 @@ $("membersList").addEventListener("click",async event=>{
     if(!Number.isSafeInteger(amount)||amount<1||amount>1000000000){toast("Enter an amount between 1 and 1,000,000,000.","error");return;}
     if(remove&&!confirm(`Remove ${money(amount)} virtual coins from this member? The balance cannot go below zero.`))return;
     adjust.disabled=true;
-    try{const {error}=await db.rpc(grant?"grant_fake_coins":"remove_fake_coins",{p_user_id:id,p_amount:amount});if(error)throw error;await loadMembers();await refreshMyProfile();await loadLeaderboard();toast(grant?"Virtual coins granted.":"Virtual coins removed.","success");}
+    try{const {error}=await db.rpc(grant?"grant_fake_coins":"remove_fake_coins",{p_user_id:id,p_amount:amount});if(error)throw error;logClientAction(grant?"granted virtual coins":"removed virtual coins",{target:id,amount});await loadMembers();await refreshMyProfile();await loadLeaderboard();toast(grant?"Virtual coins granted.":"Virtual coins removed.","success");}
     catch(error){toast((grant?"Grant":"Removal")+" failed: "+error.message,"error");}
     finally{adjust.disabled=false;}
   }
   if(change){
     if(!isOwner()){toast("Only the owner can change member roles.","error");return;}
     const id=change.dataset.changeRole,select=document.querySelector(`[data-role-select="${CSS.escape(id)}"]`);change.disabled=true;
-    try{const {error}=await db.rpc("set_member_role",{p_user_id:id,p_role:select.value});if(error)throw error;await loadMembers();toast("Member role updated.","success");}
+    try{const {error}=await db.rpc("set_member_role",{p_user_id:id,p_role:select.value});if(error)throw error;logClientAction("changed member role",{target:id,role:select.value});await loadMembers();toast("Member role updated.","success");}
     catch(error){toast("Role change failed: "+error.message,"error");}
     finally{change.disabled=false;}
   }
@@ -1324,6 +1353,61 @@ try{tosAccepted=localStorage.getItem(TOS_STORAGE_KEY)==="1";}catch{}
 if(tosAccepted){$("tosGate").hidden=true;}else{showTosGate();}
 
 initialize();
+
+
+// PILTAE community safety, audit, reports, credits, and account controls.
+function logClientAction(action, details={}){
+  if(!db||!currentUser)return;
+  const safeDetails={};
+  for(const [k,v] of Object.entries(details)) if(typeof v==="string"||typeof v==="number"||typeof v==="boolean") safeDetails[k]=String(v).slice(0,300);
+  db.rpc("record_audit_event",{p_action:String(action).slice(0,100),p_details:safeDetails}).then(({error})=>{if(error)console.warn("Audit event not saved:",error.message);});
+}
+async function loadAuditLog(){
+  if(!isStaff())return;const host=$("auditLogList");host.innerHTML='<div class="empty">Loading audit log...</div>';
+  try{const {data,error}=await db.from("audit_logs").select("id,actor_id,actor_name,action,details,created_at").order("created_at",{ascending:false}).limit(300);if(error)throw error;
+    host.innerHTML=(data||[]).map(x=>`<div class="audit-entry"><strong>${esc(x.actor_name||"Unknown member")}</strong> — ${esc(x.action)}<div>${esc(typeof x.details==="string"?x.details:JSON.stringify(x.details||{}))}</div><small>${esc(timeText(x.created_at))} · ${esc(x.actor_id||"system")}</small></div>`).join("")||'<div class="empty">No audit entries yet.</div>';
+  }catch(e){host.innerHTML=`<div class="empty">Audit log unavailable: ${esc(e.message)}. Run the supplied Supabase SQL first.</div>`;}
+}
+$("refreshAudit")?.addEventListener("click",loadAuditLog);
+async function loadReportTargets(){
+ if(!currentUser)return;const select=$("reportTarget");if(!select)return;
+ try{const {data,error}=await db.from("profiles").select("user_id,display_name").neq("user_id",currentUser.id).order("display_name").limit(500);if(error)throw error;select.innerHTML='<option value="">Choose a member...</option>'+(data||[]).map(p=>`<option value="${esc(p.user_id)}">${esc(p.display_name)}</option>`).join("");}
+ catch(e){select.innerHTML='<option value="">Could not load members</option>';toast("Could not load report targets: "+e.message,"error");}
+}
+async function loadReports(){
+ const panel=$("reportsAdminPanel");if(panel)panel.hidden=!isStaff();if(!isStaff())return;const host=$("moderationReports");if(!host)return;host.innerHTML='<div class="empty">Loading reports...</div>';
+ try{const {data,error}=await db.from("member_reports").select("id,reporter_id,reporter_name,target_id,target_name,reason,status,created_at").order("created_at",{ascending:false}).limit(200);if(error)throw error;
+ host.innerHTML=(data||[]).map(r=>`<div class="rowcard"><div class="grow"><strong>${esc(r.target_name||"Unknown member")}</strong><span class="tag">${esc(r.status||"open")}</span><p class="mutedline">Reported by ${esc(r.reporter_name||"Member")} · ${esc(timeText(r.created_at))}</p><p>${esc(r.reason)}</p>${r.status==="open"?`<div class="field"><label>Moderation action</label><select data-mod-kind="${esc(r.id)}"><option value="warning">Warning</option><option value="timeout">Timeout</option><option value="ban">Ban</option><option value="dismiss">Dismiss report</option></select><label>Duration (hours)</label><input type="number" min="1" max="8760" value="24" data-mod-hours="${esc(r.id)}"><label>Warning duration (hours, warning only)</label><input type="number" min="1" max="8760" value="24" data-warning-hours="${esc(r.id)}"><button class="smallbtn" data-mod-submit="${esc(r.id)}" data-target-id="${esc(r.target_id)}" type="button">Apply action</button></div>`:""}</div></div>`).join("")||'<div class="empty">No reports have been submitted.</div>';
+ }catch(e){host.innerHTML=`<div class="empty">Reports unavailable: ${esc(e.message)}. Run the supplied Supabase SQL first.</div>`;}
+}
+$("refreshReports")?.addEventListener("click",loadReports);
+$("memberReportForm")?.addEventListener("submit",async e=>{e.preventDefault();if(!currentUser)return;const target=$("reportTarget").value,reason=$("reportReason").value.trim();if(!target||reason.length<10){toast("Choose a member and explain the issue in at least 10 characters.","error");return;}const b=$("submitReportButton");setBusy(b,true,"Submitting...","Submit report");try{const {error}=await db.rpc("submit_member_report",{p_target_id:target,p_reason:reason});if(error)throw error;$("reportReason").value="";logClientAction("submitted a member report",{reported_member:target});toast("Report submitted to the moderation team.","success");if(isStaff())loadReports();}catch(e){toast("Report failed: "+e.message,"error");}finally{setBusy(b,false,"Submitting...","Submit report");}});
+$("moderationReports")?.addEventListener("click",async e=>{const b=e.target.closest("[data-mod-submit]");if(!b||!isStaff())return;const id=b.dataset.modSubmit,target=b.dataset.targetId,kind=document.querySelector(`[data-mod-kind="${CSS.escape(id)}"]`)?.value,hours=Number(document.querySelector(`[data-mod-hours="${CSS.escape(id)}"]`)?.value),warningHours=Number(document.querySelector(`[data-warning-hours="${CSS.escape(id)}"]`)?.value);if(kind!=="dismiss"&&(!Number.isInteger(hours)||hours<1||hours>8760)){toast("Duration must be between 1 and 8760 hours.","error");return;}if(kind==="warning"&&(!Number.isInteger(warningHours)||warningHours<1||warningHours>8760)){toast("Warning duration must be between 1 and 8760 hours.","error");return;}if(target===currentUser.id){toast("You cannot moderate your own account.","error");return;}b.disabled=true;try{const {error}=await db.rpc("moderate_member_report",{p_report_id:id,p_action:kind,p_duration_hours:hours||null,p_warning_hours:warningHours||null});if(error)throw error;toast(kind==="dismiss"?"Report dismissed.":"Moderation action applied.","success");await loadReports();await loadAuditLog();}catch(err){toast("Moderation failed: "+err.message,"error");}finally{b.disabled=false;}});
+async function loadCredits(){
+ const host=$("creditsList");if(!host)return;host.innerHTML='<div class="empty">Loading credits...</div>';
+ try{const {data,error}=await db.from("site_credits").select("id,name,contribution,created_at").order("created_at",{ascending:true});if(error)throw error;host.innerHTML=(data||[]).map(c=>`<div class="rowcard"><div class="grow"><strong>${esc(c.name)}</strong><p class="mutedline">${esc(c.contribution)}</p></div>${isOwner()?`<button class="smallbtn" data-credit-delete="${esc(c.id)}" type="button">Remove</button>`:""}</div>`).join("")||'<div class="empty">Credits have not been added yet.</div>';$("creditsEditor").hidden=!isOwner();if(isOwner())$("creditsManageList").innerHTML=host.innerHTML;
+ }catch(e){host.innerHTML=`<div class="empty">Credits unavailable: ${esc(e.message)}. Run the supplied Supabase SQL first.</div>`;}
+}
+$("creditsForm")?.addEventListener("submit",async e=>{e.preventDefault();if(!isOwner()){toast("Only the owner can edit credits.","error");return;}const name=$("creditName").value.trim(),contribution=$("creditContribution").value.trim();if(!name||!contribution)return;try{const {error}=await db.rpc("owner_add_credit",{p_name:name,p_contribution:contribution});if(error)throw error;$("creditName").value="";$("creditContribution").value="";logClientAction("added a website credit",{name});await loadCredits();toast("Credit added.","success");}catch(e){toast("Could not add credit: "+e.message,"error");}});
+$("creditsManageList")?.addEventListener("click",async e=>{const b=e.target.closest("[data-credit-delete]");if(!b||!isOwner())return;if(!confirm("Remove this credit?"))return;try{const {error}=await db.rpc("owner_delete_credit",{p_credit_id:b.dataset.creditDelete});if(error)throw error;await loadCredits();toast("Credit removed.","success");}catch(e){toast("Could not remove credit: "+e.message,"error");}});
+$("refreshCredits")?.addEventListener("click",loadCredits);
+$("openDeleteAccount")?.addEventListener("click",()=>{$("deleteAccountConfirm").hidden=false;$("deleteAccountText").value="";$("deleteAccountText").focus();});
+$("cancelDeleteAccount")?.addEventListener("click",()=>{$("deleteAccountConfirm").hidden=true;$ ("deleteAccountText").value="";});
+$("confirmDeleteAccount")?.addEventListener("click",async()=>{if($("deleteAccountText").value!=="DELETE"){toast('Type exactly DELETE to confirm.','error');return;}if(!confirm("FINAL CONFIRMATION: permanently delete your account? This cannot be undone."))return;const b=$("confirmDeleteAccount");setBusy(b,true,"Deleting account...","Permanently delete account");try{const {error}=await db.rpc("delete_my_account_permanently");if(error)throw error;await db.auth.signOut();toast("Account deletion request completed.","success");}catch(e){toast("Account could not be deleted: "+e.message,"error");}finally{setBusy(b,false,"Deleting account...","Permanently delete account");}});
+// Open the report form with a member preselected from their public chat message.
+$("chatMessages")?.addEventListener("click",async e=>{const b=e.target.closest("[data-report-user]");if(!b)return;await loadReportTargets();$("reportTarget").value=b.dataset.reportUser;navigate("reports");$("reportTarget").value=b.dataset.reportUser;$("reportReason").focus();});
+// Warning notices and temporary bans/timeouts are read from the server, not local storage.
+async function refreshMyModerationStatus(){if(!currentUser||!db)return;try{const {data,error}=await db.rpc("get_my_moderation_status");if(error)throw error;const active=data?.[0]||data;if(active?.banned){toast("Your account is currently banned until "+timeText(active.ends_at)+".","error");await db.auth.signOut();return;}const banner=$("memberWarningBanner");if(active?.warning_text){banner.textContent="⚠ Website warning: "+active.warning_text+" · Expires "+timeText(active.warning_ends_at);banner.hidden=false;}else{banner.hidden=true;banner.textContent="";}const timedOut=Boolean(active?.timed_out);document.querySelectorAll("#chatForm button,#chatText,#dmForm button,#dmText").forEach(el=>{if(el.dataset.moderationDisabled==="1")delete el.dataset.moderationDisabled;if(timedOut){el.dataset.moderationDisabled="1";el.disabled=true;}else if(el.dataset.moderationDisabled==="1"){el.disabled=false;delete el.dataset.moderationDisabled;}});if(timedOut)toast("Your account is timed out until "+timeText(active.ends_at)+".","error");}catch(e){console.warn("Moderation status could not be checked:",e.message);}}
+let moderationPollTimer=null;
+const priorHandleSession=handleSession;
+handleSession=async function(session){await priorHandleSession(session);if(session?.user&&currentUser){try{await refreshMyModerationStatus();await loadCredits();if(moderationPollTimer)clearInterval(moderationPollTimer);moderationPollTimer=setInterval(()=>{if(currentUser)refreshMyModerationStatus();},60000);}catch(e){console.warn(e);}}};
+// Broad action trail: record button/form actions without collecting password fields or private-message text. Public chat body is logged by the database trigger.
+document.addEventListener("click",event=>{const el=event.target.closest("button,[role=button]");if(!el||!currentUser)return;const label=(el.innerText||el.getAttribute("aria-label")||el.id||"button action").trim().replace(/\s+/g," ").slice(0,100);if(label)logClientAction("clicked control",{label,page:activePage});},true);
+document.addEventListener("submit",event=>{if(!currentUser)return;const id=event.target?.id;if(id&&id!=="loginForm"&&id!=="signupForm")logClientAction("submitted form",{form:id,page:activePage});},true);
+// Record navigation and the public-chat message content only. Private messages and credentials are deliberately excluded.
+const priorNavigate=navigate;
+navigate=function(page){priorNavigate(page);if(currentUser)logClientAction("opened page",{page});if(page==="audit"&&isStaff())loadAuditLog();if(page==="reports"&&isStaff())loadReports();};
+
 </script>
 </body>
 </html>
