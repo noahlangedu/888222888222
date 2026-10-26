@@ -278,6 +278,7 @@ input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 
   <button class="navbtn" data-page="arcade"><span class="navicon">🎰</span> Arcade Games</button>
   <button class="navbtn" data-page="events"><span class="navicon">🎲</span> Fake-coin events</button>
   <button class="navbtn" data-page="admin" id="adminNav" hidden><span class="navicon">⚙</span> Admin panel</button>
+  <button class="navbtn" data-page="terms"><span class="navicon">ⓘ</span> Terms of Service</button>
 </nav>
 <div class="maincol">
 <div id="appNotice" class="notice" role="status" aria-live="polite" hidden></div>
@@ -457,6 +458,22 @@ input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 
     <div class="card staffonly sectiongap"><h3>Public chat moderation</h3><p class="muted">Delete a message from community chat when necessary.</p><p class="muted">Use the “Delete” button alongside public messages; no direct-message content is shown here.</p></div>
   </div>
 </section>
+
+<section class="page" id="page-terms" hidden>
+  <div class="pagehead"><div><div class="eyebrow">PILTAE CHATTER</div><h2>Terms of Service</h2><p class="muted">Please review how the website and its virtual-coin games work.</p></div></div>
+  <div class="card">
+    <h3>1. Fun and fake-money games only</h3>
+    <p class="muted">This website is for fun and entertainment only. PILTAE CHATTER includes chat features and simulated gambling-style games that use <strong>fake virtual coins only</strong>. The coins have no real-world or cash value and cannot be exchanged for real money.</p>
+    <p class="muted">The games are not real-money gambling. You do not deposit real money, withdraw real money, or receive real-world prizes from the virtual-coin games.</p>
+    <h3>2. Account and email information</h3>
+    <p class="muted">The website uses your email address for account registration and login. Your email address does not give the website owner access to your other personal accounts, files, contacts, messages, photos, or other private information.</p>
+    <p class="muted"><strong>Your password is not given to the website owner.</strong> Account authentication is handled through the site's authentication provider. The website may process information needed to provide your account and the features you use.</p>
+    <h3>3. Chat and profile information</h3>
+    <p class="muted">Chat and profile information you choose to submit can be visible to other members as described by the website's features. Do not post information you do not want other members to see.</p>
+    <h3>4. Agreement</h3>
+    <p class="muted">By using PILTAE CHATTER, you agree to use the website responsibly and follow its rules. You understand that the coins and games are for entertainment only and have no real-world value.</p>
+  </div>
+</section>
 </div>
 </div>
 </section>
@@ -595,7 +612,7 @@ $("loginTab").addEventListener("click",()=>showAuthMode("login"));
 $("profileBio").addEventListener("input",()=>$("bioCount").textContent=$("profileBio").value.length);
 
 function navigate(page){
-  const allowed=["dashboard","profile","chat","friends","dm","shop","inventory","mines","tower","arcade","events","admin"];
+  const allowed=["dashboard","profile","chat","friends","dm","shop","inventory","mines","tower","arcade","events","admin","terms"];
   if(!allowed.includes(page))page="dashboard";
   if(page==="admin"&&!isStaff()){toast("The admin panel is restricted to staff.","error");return;}
   activePage=page;
