@@ -1,4 +1,4 @@
-=<!doctype html>
+<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -281,6 +281,7 @@ input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 
   <button class="navbtn" data-page="profile"><span class="navicon">◉</span> Profile</button>
   <button class="navbtn" data-page="chat"><span class="navicon">☷</span> Community chat</button>
   <button class="navbtn" data-page="suggestions"><span class="navicon">💡</span> Suggestions</button>
+  <button class="navbtn" data-page="redeem"><span class="navicon">🎟️</span> Redeem code</button>
   <button class="navbtn" data-page="friends"><span class="navicon">♧</span> Friends</button>
   <button class="navbtn" data-page="dm"><span class="navicon">✉</span> Private messages</button>
   <button class="navbtn" data-page="shop"><span class="navicon">▣</span> Shop</button>
@@ -315,6 +316,11 @@ input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 
  <div class="pagehead"><div><h2>Website suggestions</h2><p class="muted">Got an idea for PILTAE CHATTER? Share it here so everyone can see suggestions.</p></div><button class="smallbtn" id="refreshSuggestions" type="button">Refresh</button></div>
  <div class="card"><form id="suggestionForm"><div class="field"><label for="suggestionText">Your suggestion</label><textarea id="suggestionText" minlength="3" maxlength="1000" required placeholder="What would you like added to the website?"></textarea></div><button class="btn" id="sendSuggestionButton" type="submit">Post suggestion</button></form><p class="muted">Keep suggestions respectful and specific. Do not share private information.</p></div>
  <div class="card sectiongap"><h3>Community suggestions</h3><div id="suggestionMessages" class="stack"><div class="empty">Loading suggestions...</div></div></div>
+</section>
+
+<section class="page" id="page-redeem" hidden>
+ <div class="pagehead"><div><h2>Redeem a code</h2><p class="muted">Enter a reward code from the website owner to receive virtual coins. Each code can be redeemed once per account.</p></div></div>
+ <div class="card"><form id="redeemCodeForm"><div class="field"><label for="redeemCodeInput">REWARD CODE</label><input id="redeemCodeInput" maxlength="64" autocomplete="off" autocapitalize="characters" required placeholder="Enter your code"></div><button class="btn" id="redeemCodeButton" type="submit">Redeem code</button></form><div id="redeemCodeStatus" class="notice sectiongap" role="status" aria-live="polite" hidden></div></div>
 </section>
 
 <section class="page" id="page-profile" hidden>
@@ -465,6 +471,7 @@ input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 
   <div class="pagehead"><div><h2>Admin panel</h2><p class="muted">Publish UI/HUD skins, create and settle events, and manage members. Only the owner can adjust coins or change roles.</p></div><span id="adminRoleBadge" class="tag admin">Staff</span></div>
   <div id="adminForbidden" class="notice error" hidden>This area is only available to admins and the owner.</div>
   <div id="adminTools" class="stack">
+    <div class="card sectiongap" id="rewardCodesOwnerPanel" hidden><h3>Reward codes (owner only)</h3><p class="muted">Create a code or enter an existing code to change its coin reward. Members can redeem each code once per account.</p><form id="rewardCodeOwnerForm" class="twoform"><div class="field"><label for="ownerRewardCode">Code</label><input id="ownerRewardCode" maxlength="64" required placeholder="HALLOWEEN2026"></div><div class="field"><label for="ownerRewardAmount">Coins rewarded</label><input id="ownerRewardAmount" type="number" min="1" max="1000000000" required value="500"></div><button class="btn wide" id="saveRewardCodeButton" type="submit">Create / update code</button></form><div class="inlineform sectiongap"><button class="smallbtn" id="refreshRewardCodes" type="button">Refresh codes</button></div><div id="ownerRewardCodesList" class="stack sectiongap"><div class="empty">Loading reward codes...</div></div></div>
     <div class="card staffonly"><h3>Publish a UI / HUD skin</h3><p class="muted">List a built-in color theme or a custom image background. Set a virtual-coin price; members can buy and save it to Inventory.</p><form id="createItemForm" class="twoform">
       <div class="field wide"><label for="itemSkinType">SKIN TYPE</label><select id="itemSkinType" required><option value="theme">Preset UI / HUD theme</option><option value="image">Custom image background</option></select><p class="muted">Preset themes recolor the website. Custom image skins use your chosen image behind the website panels.</p></div>
       <div class="field"><label for="itemName">Skin name</label><input id="itemName" maxlength="60" required placeholder="Example: Emerald Operator"></div>
@@ -652,7 +659,7 @@ $("loginTab").addEventListener("click",()=>showAuthMode("login"));
 $("profileBio").addEventListener("input",()=>$("bioCount").textContent=$("profileBio").value.length);
 
 function navigate(page){
-  const allowed=["dashboard","profile","chat","suggestions","friends","dm","shop","inventory","mines","tower","arcade","events","admin","terms","audit","reports","credits"];
+  const allowed=["dashboard","profile","chat","suggestions","redeem","friends","dm","shop","inventory","mines","tower","arcade","events","admin","terms","audit","reports","credits"];
   if(!allowed.includes(page))page="dashboard";
   if(page==="audit"&&!isStaff()){toast("The audit log is restricted to admins and the owner.","error");return;}
   if(page==="admin"&&!isStaff()){toast("The admin panel is restricted to staff.","error");return;}
@@ -661,6 +668,7 @@ function navigate(page){
   document.querySelectorAll(".sidebar .navbtn").forEach(el=>el.classList.toggle("active",el.dataset.page===page));
   if(page==="chat")loadChat();
   if(page==="suggestions")loadSuggestions();
+  if(page==="redeem"){$("redeemCodeStatus").hidden=true;$("redeemCodeInput").focus();}
   if(page==="friends")loadFriends();
   if(page==="dm")loadDmFriendChoices();
   if(page==="shop"){loadShop();loadPurchases();}
@@ -669,7 +677,7 @@ function navigate(page){
   if(page==="tower")loadTowerPage();
   if(page==="arcade")loadArcadePage();
   if(page==="events")loadEvents();
-  if(page==="admin"&&isStaff()){loadMembers();loadShop();loadEvents();loadTowerAdmin();loadArcadeAdmin();}
+  if(page==="admin"&&isStaff()){loadMembers();loadShop();loadEvents();loadTowerAdmin();loadArcadeAdmin();if(isOwner())loadOwnerRewardCodes();}
   if(page==="audit"&&isStaff())loadAuditLog();
   if(page==="reports"){loadReportTargets();if(isStaff())loadReports();}
   if(page==="credits")loadCredits();
@@ -703,6 +711,7 @@ async function refreshMyProfile(){
   $("roleBadge").className="tag"+(data.role==="owner"?" owner":data.role==="admin"?" admin":"");
   $("adminNav").hidden=!isStaff();if($("auditNav"))$("auditNav").hidden=!isStaff();$("adminRoleBadge").textContent=roleTitle(data.role);
   $("adminTools").hidden=!isStaff();$("adminForbidden").hidden=isStaff();
+  if($("rewardCodesOwnerPanel"))$("rewardCodesOwnerPanel").hidden=!isOwner();
   $("profileName").value=data.display_name||"";$("profileBio").value=data.bio||"";$("bioCount").textContent=$("profileBio").value.length;
 }
 async function handleSession(session){
@@ -1402,6 +1411,16 @@ async function loadReports(){
 $("refreshReports")?.addEventListener("click",loadReports);
 $("memberReportForm")?.addEventListener("submit",async e=>{e.preventDefault();if(!currentUser)return;const target=$("reportTarget").value,reason=$("reportReason").value.trim();if(!target||reason.length<10){toast("Choose a member and explain the issue in at least 10 characters.","error");return;}const b=$("submitReportButton");setBusy(b,true,"Submitting...","Submit report");try{const {error}=await db.rpc("submit_member_report",{p_target_id:target,p_reason:reason});if(error)throw error;$("reportReason").value="";logClientAction("submitted a member report",{reported_member:target});toast("Report submitted to the moderation team.","success");if(isStaff())loadReports();}catch(e){toast("Report failed: "+e.message,"error");}finally{setBusy(b,false,"Submitting...","Submit report");}});
 $("moderationReports")?.addEventListener("click",async e=>{const b=e.target.closest("[data-mod-submit]");if(!b||!isStaff())return;const id=b.dataset.modSubmit,target=b.dataset.targetId,kind=document.querySelector(`[data-mod-kind="${CSS.escape(id)}"]`)?.value,hours=Number(document.querySelector(`[data-mod-hours="${CSS.escape(id)}"]`)?.value),warningHours=Number(document.querySelector(`[data-warning-hours="${CSS.escape(id)}"]`)?.value);if(kind!=="dismiss"&&(!Number.isInteger(hours)||hours<1||hours>8760)){toast("Duration must be between 1 and 8760 hours.","error");return;}if(kind==="warning"&&(!Number.isInteger(warningHours)||warningHours<1||warningHours>8760)){toast("Warning duration must be between 1 and 8760 hours.","error");return;}if(target===currentUser.id){toast("You cannot moderate your own account.","error");return;}b.disabled=true;try{const {error}=await db.rpc("moderate_member_report",{p_report_id:id,p_action:kind,p_duration_hours:hours||null,p_warning_hours:warningHours||null});if(error)throw error;toast(kind==="dismiss"?"Report dismissed.":"Moderation action applied.","success");await loadReports();await loadAuditLog();}catch(err){toast("Moderation failed: "+err.message,"error");}finally{b.disabled=false;}});
+async function loadOwnerRewardCodes(){
+ if(!isOwner())return;const host=$("ownerRewardCodesList");if(!host)return;host.innerHTML='<div class="empty">Loading reward codes...</div>';
+ try{const {data,error}=await db.from("reward_codes").select("code,reward_amount,active,created_at,updated_at").order("created_at",{ascending:false});if(error)throw error;host.innerHTML=(data||[]).map(c=>`<div class="rowcard"><div class="grow"><strong>${esc(c.code)}</strong><span class="mutedline">${money(c.reward_amount)} coins · ${c.active?"Active":"Disabled"}</span></div><button class="smallbtn" type="button" data-edit-reward-code="${esc(c.code)}" data-reward-amount="${esc(c.reward_amount)}">Edit amount</button><button class="smallbtn" type="button" data-delete-reward-code="${esc(c.code)}">Delete</button></div>`).join("")||'<div class="empty">No reward codes yet. Create one above.</div>';
+ }catch(e){host.innerHTML=`<div class="empty">Could not load codes: ${esc(e.message)}. Run the reward-code SQL in Supabase first.</div>`;}
+}
+$("rewardCodeOwnerForm")?.addEventListener("submit",async e=>{e.preventDefault();if(!isOwner()){toast("Only the owner can create or change reward codes.","error");return;}const code=$("ownerRewardCode").value.trim().toUpperCase(),amount=Number($("ownerRewardAmount").value);if(!code||code.length>64||!/^[A-Z0-9_-]+$/.test(code)){toast("Use only letters, numbers, underscores, and hyphens for the code.","error");return;}if(!Number.isSafeInteger(amount)||amount<1||amount>1000000000){toast("Reward must be between 1 and 1,000,000,000 coins.","error");return;}const b=$("saveRewardCodeButton");setBusy(b,true,"Saving code...","Create / update code");try{const {error}=await db.rpc("owner_save_reward_code",{p_code:code,p_reward_amount:amount});if(error)throw error;$("ownerRewardCode").value="";await loadOwnerRewardCodes();toast("Reward code saved. Existing code amount updated if it already existed.","success");logClientAction("saved reward code",{code,reward_amount:amount});}catch(err){toast("Could not save reward code: "+err.message,"error");}finally{setBusy(b,false,"Saving code...","Create / update code");}});
+$("refreshRewardCodes")?.addEventListener("click",loadOwnerRewardCodes);
+$("ownerRewardCodesList")?.addEventListener("click",async e=>{const edit=e.target.closest("[data-edit-reward-code]");if(edit&&isOwner()){$("ownerRewardCode").value=edit.dataset.editRewardCode;$("ownerRewardAmount").value=edit.dataset.rewardAmount;$("ownerRewardCode").focus();return;}const del=e.target.closest("[data-delete-reward-code]");if(!del||!isOwner())return;if(!confirm(`Delete reward code ${del.dataset.deleteRewardCode}? Members will no longer be able to redeem it.`))return;try{const {error}=await db.rpc("owner_delete_reward_code",{p_code:del.dataset.deleteRewardCode});if(error)throw error;await loadOwnerRewardCodes();toast("Reward code deleted.","success");}catch(err){toast("Could not delete code: "+err.message,"error");}});
+$("redeemCodeForm")?.addEventListener("submit",async e=>{e.preventDefault();if(!currentUser)return;const code=$("redeemCodeInput").value.trim().toUpperCase();if(!code){toast("Enter a reward code.","error");return;}const b=$("redeemCodeButton"),status=$("redeemCodeStatus");status.hidden=true;setBusy(b,true,"Redeeming...","Redeem code");try{const {data,error}=await db.rpc("redeem_reward_code",{p_code:code});if(error)throw error;const reward=Number(data?.reward_amount??data?.coins_awarded??data);await refreshMyProfile();await loadLeaderboard();$("redeemCodeInput").value="";status.textContent=`Success! You received ${money(Number.isFinite(reward)?reward:0)} virtual coins.`;status.className="notice sectiongap success";status.hidden=false;toast("Reward code redeemed!","success");logClientAction("redeemed reward code",{code,coins_awarded:reward});}catch(err){status.textContent=err.message||"That code could not be redeemed.";status.className="notice sectiongap error";status.hidden=false;}finally{setBusy(b,false,"Redeeming...","Redeem code");}});
+
 async function loadCredits(){
  const host=$("creditsList");if(!host)return;host.innerHTML='<div class="empty">Loading credits...</div>';
  try{const {data,error}=await db.from("site_credits").select("id,name,contribution,created_at").order("created_at",{ascending:true});if(error)throw error;host.innerHTML=(data||[]).map(c=>`<div class="rowcard"><div class="grow"><strong>${esc(c.name)}</strong><p class="mutedline">${esc(c.contribution)}</p></div>${isOwner()?`<button class="smallbtn" data-credit-delete="${esc(c.id)}" type="button">Remove</button>`:""}</div>`).join("")||'<div class="empty">Credits have not been added yet.</div>';$("creditsEditor").hidden=!isOwner();if(isOwner())$("creditsManageList").innerHTML=host.innerHTML;
