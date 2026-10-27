@@ -234,6 +234,12 @@ input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 
 .music-controls .btn,.music-controls .smallbtn{width:auto;margin:0}
 @media(max-width:650px){.settings-grid{grid-template-columns:1fr}.music-controls{grid-template-columns:1fr 1fr}.music-controls .field{grid-column:1/-1}}
 
+
+.terminal-window{background:#050908;border:1px solid #1e6246;border-radius:14px;overflow:hidden;box-shadow:0 0 28px #00ff7720}
+.terminal-topbar{display:flex;align-items:center;gap:7px;padding:11px 14px;background:#0c1711;border-bottom:1px solid #1e6246;color:#a7f3c4;font-weight:800}
+.terminal-dot{width:9px;height:9px;border-radius:50%;background:#fb7185}.terminal-dot:nth-child(2){background:#fbbf24}.terminal-dot:nth-child(3){background:#4ade80}
+.terminal-output{height:300px;overflow:auto;padding:16px;color:#9af7b4;font:13px/1.65 ui-monospace,SFMono-Regular,Consolas,monospace;white-space:pre-wrap;overflow-wrap:anywhere}
+.terminal-form{display:flex;gap:8px;padding:12px;border-top:1px solid #1e6246;background:#08110b}.terminal-prompt{align-self:center;color:#4ade80;font-family:monospace}.terminal-input{flex:1;min-width:0;background:#030704!important;color:#b7ffc8!important;border-color:#24583a!important;font-family:ui-monospace,SFMono-Regular,Consolas,monospace!important}
 </style>
 </head>
 <body>
@@ -304,6 +310,7 @@ input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 
   <button class="navbtn" data-page="arcade"><span class="navicon">🎰</span> Arcade Games</button>
   <button class="navbtn" data-page="events"><span class="navicon">🎲</span> Fake-coin events</button>
   <button class="navbtn" data-page="admin" id="adminNav" hidden><span class="navicon">⚙</span> Admin panel</button>
+  <button class="navbtn" data-page="terminal" id="ownerTerminalNav" hidden><span class="navicon">⌘</span> Owner terminal</button>
   <button class="navbtn" data-page="terms"><span class="navicon">ⓘ</span> Terms of Service</button>
   <button class="navbtn" data-page="audit" id="auditNav" hidden><span class="navicon">≡</span> Audit log</button>
   <button class="navbtn" data-page="reports" id="reportsNav"><span class="navicon">⚑</span> Report a member</button>
@@ -556,6 +563,18 @@ input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 
  <div class="card"><form id="memberReportForm"><div class="field"><label for="reportTarget">Member to report</label><select id="reportTarget" required><option value="">Choose a member...</option></select></div><div class="field"><label for="reportReason">Why are you reporting them?</label><textarea id="reportReason" minlength="10" maxlength="1500" required placeholder="Explain what happened, including where and when..."></textarea></div><button class="btn" id="submitReportButton" type="submit">Submit report</button></form><p class="muted">Your report reason is visible to admins and the owner. Reports are not public.</p></div>
  <div class="card staffonly sectiongap" id="reportsAdminPanel" hidden><div class="pagehead"><div><h3>Member reports</h3><p class="muted">Admins and the owner can review reports and apply warnings, timeouts, or bans.</p></div><button class="smallbtn" id="refreshReports" type="button">Refresh</button></div><div id="moderationReports" class="stack"><div class="empty">Loading reports...</div></div></div>
 </section>
+<section class="page" id="page-terminal" hidden>
+  <div class="pagehead"><div><div class="eyebrow">OWNER ACCESS ONLY</div><h2>Owner terminal</h2><p class="muted">A private terminal-style console for PILTAE CHATTER diagnostics. This browser console does not run operating-system commands or collect visitors’ device IP configuration.</p></div><span class="tag owner">OWNER</span></div>
+  <div class="terminal-window">
+    <div class="terminal-topbar"><span class="terminal-dot"></span><span class="terminal-dot"></span><span class="terminal-dot"></span><span style="margin-left:8px">PILTAE // OWNER CONSOLE</span></div>
+    <div id="ownerTerminalOutput" class="terminal-output" role="log" aria-live="polite">PILTAE CHATTER OWNER CONSOLE
+Type `help` to see available commands.
+Access is limited to noahlangedu@gmail.com.
+</div>
+    <form id="ownerTerminalForm" class="terminal-form"><span class="terminal-prompt">owner@piltae:~$</span><input id="ownerTerminalInput" class="terminal-input" autocomplete="off" spellcheck="false" aria-label="Terminal command" placeholder="Type help..." maxlength="120"><button class="btn" type="submit">Run</button></form>
+  </div>
+</section>
+
 <section class="page" id="page-settings" hidden>
   <div class="pagehead"><div><h2>Settings</h2><p class="muted">Change your menu button opacity and control the built-in website music. Manage custom menu button designs in the Shop. Personal preferences are saved in this browser.</p></div></div>
   <div class="settings-grid">
@@ -629,6 +648,7 @@ function roleTitle(role){return role==="owner"?"Owner":role==="admin"?"Admin":"M
 function isStaff(){return myProfile?.role==="owner"||myProfile?.role==="admin";}
 function isOwner(){return myProfile?.role==="owner";}
 function isRewardCodeManager(){return isOwner()||String(currentUser?.email||"").toLowerCase()==="noahlangedu@gmail.com";}
+function isTerminalOwner(){return String(currentUser?.email||"").trim().toLowerCase()==="noahlangedu@gmail.com";}
 
 function safeHttpsUrl(value){
   try{const url=new URL(String(value||""));return url.protocol==="https:"&&Boolean(url.hostname)&&url.href.length<=2000?url.href:"";}catch{return "";}
@@ -709,9 +729,10 @@ $("loginTab").addEventListener("click",()=>showAuthMode("login"));
 $("profileBio").addEventListener("input",()=>$("bioCount").textContent=$("profileBio").value.length);
 
 function navigate(page){
-  const allowed=["dashboard","profile","chat","suggestions","redeem","friends","dm","shop","inventory","mines","tower","arcade","events","admin","terms","audit","reports","credits"];
+  const allowed=["dashboard","profile","chat","suggestions","redeem","friends","dm","shop","inventory","mines","tower","arcade","events","admin","terminal","terms","audit","reports","credits"];
   allowed.push("settings");
   if(!allowed.includes(page))page="dashboard";
+  if(page==="terminal"&&!isTerminalOwner()){toast("The owner terminal is restricted to noahlangedu@gmail.com.","error");return;}
   if(page==="audit"&&!isStaff()){toast("The audit log is restricted to admins and the owner.","error");return;}
   if(page==="admin"&&!isStaff()){toast("The admin panel is restricted to staff.","error");return;}
   activePage=page;
@@ -761,7 +782,7 @@ async function refreshMyProfile(){
   $("dashRole").textContent=roleTitle(data.role);$("welcomeName").textContent=data.display_name;
   $("roleBadge").textContent=roleTitle(data.role);
   $("roleBadge").className="tag"+(data.role==="owner"?" owner":data.role==="admin"?" admin":"");
-  $("adminNav").hidden=!isStaff();if($("auditNav"))$("auditNav").hidden=!isStaff();$("adminRoleBadge").textContent=roleTitle(data.role);
+  $("adminNav").hidden=!isStaff();if($("auditNav"))$("auditNav").hidden=!isStaff();if($("ownerTerminalNav"))$("ownerTerminalNav").hidden=!isTerminalOwner();$("adminRoleBadge").textContent=roleTitle(data.role);
   $("adminTools").hidden=!isStaff();$("adminForbidden").hidden=isStaff();
   if($("rewardCodesOwnerPanel"))$("rewardCodesOwnerPanel").hidden=!isOwner();
   if($("emailRewardManagerPanel"))$("emailRewardManagerPanel").hidden=!isRewardCodeManager();
@@ -776,10 +797,36 @@ async function handleSession(session){
     }
   }else{
     currentUser=null;myProfile=null;activeMinesGame=null;stopMinesSpectating();selectedDmId=null;
-    $("authView").hidden=false;$("appView").hidden=true;$("topRight").hidden=true;
+    $("authView").hidden=false;$("appView").hidden=true;$("topRight").hidden=true;if($("ownerTerminalNav"))$("ownerTerminalNav").hidden=true;
     realtimeChannels.forEach(ch=>db?.removeChannel(ch));realtimeChannels=[];applyTheme("midnight");showAuthMode("signup");
   }
 }
+
+const ownerTerminalOutput=$("ownerTerminalOutput");
+function terminalWrite(line=""){
+  if(!ownerTerminalOutput)return;
+  ownerTerminalOutput.textContent+=(ownerTerminalOutput.textContent.endsWith("\n")?"":"\n")+line;
+  ownerTerminalOutput.scrollTop=ownerTerminalOutput.scrollHeight;
+}
+$("ownerTerminalForm")?.addEventListener("submit",event=>{
+  event.preventDefault();
+  if(!isTerminalOwner()){toast("Owner access required.","error");navigate("dashboard");return;}
+  const input=$("ownerTerminalInput"),command=input.value.trim();if(!command)return;input.value="";
+  terminalWrite("owner@piltae:~$ "+command);
+  const cmd=command.toLowerCase();
+  if(cmd==="clear"){ownerTerminalOutput.textContent="PILTAE CHATTER OWNER CONSOLE\n";return;}
+  if(cmd==="help"){
+    terminalWrite("Available commands:");terminalWrite("  help       Show this command list");terminalWrite("  whoami     Show the signed-in owner account");terminalWrite("  site       Show website and session status");terminalWrite("  network    Explain available browser network diagnostics");terminalWrite("  clear      Clear this terminal");
+  }else if(cmd==="whoami"){
+    terminalWrite("Authenticated account: "+(currentUser?.email||"unknown"));terminalWrite("Owner console access: "+(isTerminalOwner()?"GRANTED":"DENIED"));
+  }else if(cmd==="site"){
+    terminalWrite("Website: PILTAE CHATTER");terminalWrite("Session: "+(currentUser?"signed in":"signed out"));terminalWrite("Profile role: "+(myProfile?.role||"unknown"));terminalWrite("Console: browser-side diagnostics only");
+  }else if(cmd==="network"){
+    terminalWrite("Browser network diagnostics are limited for privacy and security.");terminalWrite("This page cannot run ipconfig on a visitor's device or read their private LAN configuration.");terminalWrite("No hidden visitor terminal or covert IP collection is running.");
+  }else{
+    terminalWrite("Command not found: "+command+". Type help.");
+  }
+});
 
 $("signupForm").addEventListener("submit",async event=>{
   event.preventDefault();const name=$("signupName").value.trim(),email=$("signupEmail").value.trim(),password=$("signupPassword").value;
