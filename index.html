@@ -376,6 +376,18 @@ input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 
   <div class="card theme-banner sectiongap"><div id="currentThemePreview"></div><div class="theme-banner-copy"><div class="eyebrow">CURRENT LOOK</div><h3 id="currentThemeName">Midnight Default</h3><p class="muted" id="currentThemeDescription">The original PILTAE look.</p><button class="smallbtn" id="resetThemeButton" type="button">Use Midnight Default</button></div></div>
   <div id="shopItems" class="itemsgrid"><div class="empty">Loading skins...</div></div>
   <div class="card sectiongap"><h3>Your purchases</h3><div id="purchasesList"><div class="empty">Loading purchases...</div></div></div>
+  <div class="card sectiongap" id="ownerMenuAppearanceCard" hidden>
+    <h3>Custom menu button designs (owner)</h3>
+    <p class="muted">Choose a menu button, customize its color, and optionally add a background image URL. These designs are shared with signed-in visitors. This owner tool is now located in the Shop.</p>
+    <form id="menuAppearanceForm" class="twoform">
+      <div class="field"><label for="menuAppearancePage">MENU BUTTON</label><select id="menuAppearancePage"><option value="dashboard">Dashboard</option><option value="profile">Profile</option><option value="chat">Community chat</option><option value="suggestions">Suggestions</option><option value="redeem">Redeem code</option><option value="friends">Friends</option><option value="dm">Private messages</option><option value="shop">Shop</option><option value="inventory">Inventory</option><option value="mines">Mines</option><option value="tower">Tower</option><option value="arcade">Arcade Games</option><option value="events">Fake-coin events</option><option value="terms">Terms of Service</option><option value="reports">Report a member</option><option value="credits">Credits</option><option value="settings">Settings</option></select></div>
+      <div class="field"><label for="menuAppearanceColor">BUTTON COLOR</label><input id="menuAppearanceColor" type="color" value="#111521"></div>
+      <div class="field wide"><label for="menuAppearanceImage">CUSTOM BUTTON IMAGE URL (OPTIONAL)</label><input id="menuAppearanceImage" type="url" placeholder="https://.../mines-button.png"><p class="muted">Use a direct HTTPS image link. Leave blank to use only the selected color.</p></div>
+      <div class="settings-preview wide"><span class="muted">PREVIEW</span><button class="menu-preview-button" id="menuAppearancePreview" type="button">💎 Mines menu button</button></div>
+      <button class="btn" id="saveMenuAppearanceButton" type="submit">Save menu button</button><button class="smallbtn" id="resetMenuAppearanceButton" type="button">Reset this button</button>
+    </form>
+    <div id="menuAppearanceStatus" class="notice" role="status" aria-live="polite" hidden></div>
+  </div>
 </section>
 
 <section class="page" id="page-inventory" hidden>
@@ -544,7 +556,7 @@ input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 
  <div class="card staffonly sectiongap" id="reportsAdminPanel" hidden><div class="pagehead"><div><h3>Member reports</h3><p class="muted">Admins and the owner can review reports and apply warnings, timeouts, or bans.</p></div><button class="smallbtn" id="refreshReports" type="button">Refresh</button></div><div id="moderationReports" class="stack"><div class="empty">Loading reports...</div></div></div>
 </section>
 <section class="page" id="page-settings" hidden>
-  <div class="pagehead"><div><h2>Settings</h2><p class="muted">Personalize your menu and control website music. Member preferences are saved in this browser.</p></div></div>
+  <div class="pagehead"><div><h2>Settings</h2><p class="muted">Change your menu button opacity and control the built-in website music. Manage custom menu button designs in the Shop. Personal preferences are saved in this browser.</p></div></div>
   <div class="settings-grid">
     <div class="card">
       <h3>Menu button opacity</h3>
@@ -554,26 +566,12 @@ input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 
       <button class="smallbtn sectiongap" id="resetMemberSettings" type="button">Reset my settings</button>
     </div>
     <div class="card">
-      <h3>Website music</h3>
-      <p class="muted">Paste a direct HTTPS link to an MP3, OGG, or WAV file. Browsers require you to press Play; music will not autoplay.</p>
-      <div class="field"><label for="musicUrlInput">MUSIC FILE URL</label><input id="musicUrlInput" type="url" placeholder="https://example.com/music.mp3" autocomplete="url"></div>
+      <h3>Built-in website music</h3>
+      <p class="muted">A built-in, looping electronic soundtrack made by the website itself. No music URL or download is needed. Press Play once to start it; browsers block autoplay.</p>
       <div class="field"><label for="musicVolumeRange">VOLUME: <span id="musicVolumeValue">25%</span></label><input class="settings-range" id="musicVolumeRange" type="range" min="0" max="100" step="5" value="25"></div>
-      <div class="music-controls"><button class="btn" id="musicPlayButton" type="button">▶ Play music</button><button class="smallbtn" id="musicPauseButton" type="button">Ⅱ Pause</button><button class="smallbtn" id="musicSaveButton" type="button">Save link</button></div>
-      <div id="musicStatus" class="notice sectiongap" role="status" aria-live="polite">Music is paused.</div>
-      <audio id="siteMusicAudio" loop preload="none"></audio>
+      <div class="music-controls"><button class="btn" id="musicPlayButton" type="button">▶ Play music</button><button class="smallbtn" id="musicPauseButton" type="button">Ⅱ Pause</button></div>
+      <div id="musicStatus" class="notice sectiongap" role="status" aria-live="polite">Built-in music is paused.</div>
     </div>
-  </div>
-  <div class="card sectiongap" id="ownerMenuAppearanceCard" hidden>
-    <h3>Menu appearance (owner)</h3>
-    <p class="muted">Choose a menu item, set its color, and optionally add a background image URL. These appearance settings are saved to Supabase and shared with signed-in visitors after the SQL upgrade is installed.</p>
-    <form id="menuAppearanceForm" class="twoform">
-      <div class="field"><label for="menuAppearancePage">MENU BUTTON</label><select id="menuAppearancePage"><option value="dashboard">Dashboard</option><option value="profile">Profile</option><option value="chat">Community chat</option><option value="suggestions">Suggestions</option><option value="redeem">Redeem code</option><option value="friends">Friends</option><option value="dm">Private messages</option><option value="shop">Shop</option><option value="inventory">Inventory</option><option value="mines">Mines</option><option value="tower">Tower</option><option value="arcade">Arcade Games</option><option value="events">Fake-coin events</option><option value="terms">Terms of Service</option><option value="reports">Report a member</option><option value="credits">Credits</option><option value="settings">Settings</option></select></div>
-      <div class="field"><label for="menuAppearanceColor">BUTTON COLOR</label><input id="menuAppearanceColor" type="color" value="#111521"></div>
-      <div class="field wide"><label for="menuAppearanceImage">CUSTOM BUTTON IMAGE URL (OPTIONAL)</label><input id="menuAppearanceImage" type="url" placeholder="https://.../mines-button.png"><p class="muted">Use a direct HTTPS image link. Leave blank to use only the selected color.</p></div>
-      <div class="settings-preview wide"><span class="muted">PREVIEW</span><button class="menu-preview-button" id="menuAppearancePreview" type="button">💎 Mines menu button</button></div>
-      <button class="btn" id="saveMenuAppearanceButton" type="submit">Save menu button</button><button class="smallbtn" id="resetMenuAppearanceButton" type="button">Reset this button</button>
-    </form>
-    <div id="menuAppearanceStatus" class="notice" role="status" aria-live="polite" hidden></div>
   </div>
 </section>
 
@@ -722,7 +720,7 @@ function navigate(page){
   if(page==="redeem"){$("redeemCodeStatus").hidden=true;$("redeemCodeInput").focus();if(isRewardCodeManager())loadRewardCodesInto("emailManagerCodesList","email");}
   if(page==="friends")loadFriends();
   if(page==="dm")loadDmFriendChoices();
-  if(page==="shop"){loadShop();loadPurchases();}
+  if(page==="shop"){loadShop();loadPurchases();$("ownerMenuAppearanceCard").hidden=!canManageMenuAppearance();if(canManageMenuAppearance())loadMenuAppearanceEditor();}
   if(page==="inventory"){loadInventory();updateInventoryThemeBanner();}
   if(page==="mines")loadActiveMinesGame();
   if(page==="tower")loadTowerPage();
@@ -1560,11 +1558,8 @@ function loadPersonalSettingsUI(){
   const saved=readMemberSettings(),opacity=Math.max(25,Math.min(100,Number(saved.menuOpacity??100))),volume=Math.max(0,Math.min(100,Number(saved.musicVolume??25)));
   $("menuOpacityRange").value=opacity;$("menuOpacityValue").textContent=opacity+"%";
   $("menuOpacityPreview").style.opacity=String(opacity/100);$("menuOpacityPreview").style.backgroundColor="#282044";
-  $("musicUrlInput").value=saved.musicUrl||"";$("musicVolumeRange").value=volume;$("musicVolumeValue").textContent=volume+"%";
-  const audio=$("siteMusicAudio");audio.volume=volume/100;
-  if(saved.musicUrl&&audio.dataset.savedUrl!==saved.musicUrl){audio.pause();audio.removeAttribute("src");audio.src=saved.musicUrl;audio.dataset.savedUrl=saved.musicUrl;audio.load();}
-  $("ownerMenuAppearanceCard").hidden=!canManageMenuAppearance();
-  if(canManageMenuAppearance())loadMenuAppearanceEditor();
+  $("musicVolumeRange").value=volume;$("musicVolumeValue").textContent=volume+"%";
+  setBuiltInMusicVolume(volume/100);
   applyMenuAppearance();
 }
 $("menuOpacityRange")?.addEventListener("input",()=>{
@@ -1574,24 +1569,54 @@ $("menuOpacityRange")?.addEventListener("input",()=>{
 $("resetMemberSettings")?.addEventListener("click",()=>{
   const settings=readMemberSettings();settings.menuOpacity=100;writeMemberSettings(settings);$("menuOpacityRange").value=100;$("menuOpacityValue").textContent="100%";$("menuOpacityPreview").style.opacity="1";applyMenuAppearance();toast("Your menu opacity was reset.","success");
 });
+// Built-in PILTAE soundtrack: generated with Web Audio so it needs no external audio URL or file.
+let builtInMusicContext=null,builtInMusicMaster=null,builtInMusicTimer=null,builtInMusicStep=0,builtInMusicPlaying=false;
+const BUILTIN_MUSIC_TEMPO=112;
+const BUILTIN_MUSIC_MELODY=[72,76,79,76,74,76,79,83,79,76,74,71,72,76,79,76,72,76,81,79,76,79,84,81,77,81,84,81,76,79,83,79];
+const BUILTIN_MUSIC_CHORDS=[[48,55,60,64],[45,52,57,60],[41,48,53,57],[43,50,55,59]];
+function setBuiltInMusicVolume(value){
+  const volume=Math.max(0,Math.min(1,Number(value)||0));
+  if(builtInMusicMaster&&builtInMusicContext){builtInMusicMaster.gain.cancelScheduledValues(builtInMusicContext.currentTime);builtInMusicMaster.gain.setTargetAtTime(builtInMusicPlaying?volume:0,builtInMusicContext.currentTime,0.04);}
+}
+function builtInNoteFrequency(midi){return 440*Math.pow(2,(midi-69)/12);}
+function playBuiltInNote(midi,when,duration,waveform,peak){
+  if(!builtInMusicContext||!builtInMusicMaster)return;
+  const osc=builtInMusicContext.createOscillator(),gain=builtInMusicContext.createGain();
+  osc.type=waveform;osc.frequency.setValueAtTime(builtInNoteFrequency(midi),when);
+  gain.gain.setValueAtTime(0.0001,when);gain.gain.exponentialRampToValueAtTime(Math.max(0.0002,peak),when+0.025);gain.gain.exponentialRampToValueAtTime(0.0001,when+duration);
+  osc.connect(gain);gain.connect(builtInMusicMaster);osc.start(when);osc.stop(when+duration+0.04);
+}
+function scheduleBuiltInMusicStep(){
+  if(!builtInMusicPlaying||!builtInMusicContext)return;
+  const now=builtInMusicContext.currentTime+0.025,step=builtInMusicStep%32,beat=60/BUILTIN_MUSIC_TEMPO/2;
+  const melody=BUILTIN_MUSIC_MELODY[step];
+  if(step%2===0)playBuiltInNote(melody,now,beat*0.82,"triangle",0.12);
+  if(step%4===0){const chord=BUILTIN_MUSIC_CHORDS[Math.floor(step/8)%4];playBuiltInNote(chord[0],now,beat*3.7,"sine",0.11);playBuiltInNote(chord[1],now,beat*3.5,"sine",0.045);}
+  if(step%8===0){const chord=BUILTIN_MUSIC_CHORDS[Math.floor(step/8)%4];chord.slice(1).forEach((note,i)=>playBuiltInNote(note+12,now,beat*7.3,"sine",i===1?0.025:0.018));}
+  builtInMusicStep=(step+1)%32;
+  builtInMusicTimer=setTimeout(scheduleBuiltInMusicStep,beat*1000);
+}
+async function startBuiltInMusic(){
+  try{
+    const AudioContextClass=window.AudioContext||window.webkitAudioContext;
+    if(!AudioContextClass)throw new Error("This browser does not support built-in audio.");
+    if(!builtInMusicContext){builtInMusicContext=new AudioContextClass();builtInMusicMaster=builtInMusicContext.createGain();builtInMusicMaster.gain.value=0;builtInMusicMaster.connect(builtInMusicContext.destination);}
+    await builtInMusicContext.resume();
+    if(builtInMusicTimer)clearTimeout(builtInMusicTimer);
+    builtInMusicPlaying=true;setBuiltInMusicVolume(Number($("musicVolumeRange").value)/100);scheduleBuiltInMusicStep();
+    $("musicStatus").textContent="Built-in music is playing. Adjust the volume or press Pause.";$("musicStatus").className="notice sectiongap success";
+  }catch(e){$("musicStatus").textContent="Could not start built-in music: "+e.message;$("musicStatus").className="notice sectiongap error";}
+}
+function pauseBuiltInMusic(){
+  builtInMusicPlaying=false;if(builtInMusicTimer){clearTimeout(builtInMusicTimer);builtInMusicTimer=null;}
+  setBuiltInMusicVolume(0);$("musicStatus").textContent="Built-in music is paused.";$("musicStatus").className="notice sectiongap";
+}
 $("musicVolumeRange")?.addEventListener("input",()=>{
-  const value=Number($("musicVolumeRange").value);$("musicVolumeValue").textContent=value+"%";$("siteMusicAudio").volume=value/100;const settings=readMemberSettings();settings.musicVolume=value;writeMemberSettings(settings);
+  const value=Number($("musicVolumeRange").value);$("musicVolumeValue").textContent=value+"%";setBuiltInMusicVolume(value/100);
+  const settings=readMemberSettings();settings.musicVolume=value;writeMemberSettings(settings);
 });
-$("musicSaveButton")?.addEventListener("click",()=>{
-  const raw=$("musicUrlInput").value.trim();let url="";
-  if(raw){url=safeMenuImage(raw);if(!url){$("musicStatus").textContent="Please use a valid direct HTTPS audio file URL.";$("musicStatus").className="notice sectiongap error";return;}}
-  const audio=$("siteMusicAudio");audio.pause();audio.removeAttribute("src");audio.dataset.savedUrl=url;
-  if(url){audio.src=url;audio.load();$("musicStatus").textContent="Music link saved. Press Play music to start.";$("musicStatus").className="notice sectiongap success";}
-  else{$("musicStatus").textContent="Music link cleared.";$("musicStatus").className="notice sectiongap";}
-  const settings=readMemberSettings();settings.musicUrl=url;settings.musicVolume=Number($("musicVolumeRange").value);writeMemberSettings(settings);
-});
-$("musicPlayButton")?.addEventListener("click",async()=>{
-  const audio=$("siteMusicAudio"),raw=$("musicUrlInput").value.trim();
-  if(raw&&audio.dataset.savedUrl!==raw){$("musicSaveButton").click();if(!audio.src){return;}}
-  if(!audio.src){$("musicStatus").textContent="Add a direct HTTPS audio file URL and click Save link first.";$("musicStatus").className="notice sectiongap error";return;}
-  try{await audio.play();$("musicStatus").textContent="Music is playing. Use Pause to stop it.";$("musicStatus").className="notice sectiongap success";}catch(e){$("musicStatus").textContent="Could not play this link. Check that it points directly to an audio file and allows playback.";$("musicStatus").className="notice sectiongap error";}
-});
-$("musicPauseButton")?.addEventListener("click",()=>{$("siteMusicAudio").pause();$("musicStatus").textContent="Music is paused.";$("musicStatus").className="notice sectiongap";});
+$("musicPlayButton")?.addEventListener("click",startBuiltInMusic);
+$("musicPauseButton")?.addEventListener("click",pauseBuiltInMusic);
 $("menuAppearancePage")?.addEventListener("change",loadMenuAppearanceEditor);
 $("menuAppearanceColor")?.addEventListener("input",()=>setMenuPreview($("menuAppearancePreview"),$("menuAppearanceColor").value,$("menuAppearanceImage").value,menuPageLabel($("menuAppearancePage").value)));
 $("menuAppearanceImage")?.addEventListener("input",()=>setMenuPreview($("menuAppearancePreview"),$("menuAppearanceColor").value,$("menuAppearanceImage").value,menuPageLabel($("menuAppearancePage").value)));
