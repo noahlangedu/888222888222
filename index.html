@@ -709,7 +709,8 @@ $("loginTab").addEventListener("click",()=>showAuthMode("login"));
 $("profileBio").addEventListener("input",()=>$("bioCount").textContent=$("profileBio").value.length);
 
 function navigate(page){
-  const allowed=["dashboard","profile","chat","suggestions","redeem","friends","dm","shop","inventory","mines","tower","arcade","events","admin","terms","audit","reports","credits","settings"];
+  const allowed=["dashboard","profile","chat","suggestions","redeem","friends","dm","shop","inventory","mines","tower","arcade","events","admin","terms","audit","reports","credits"];
+  allowed.push("settings");
   if(!allowed.includes(page))page="dashboard";
   if(page==="audit"&&!isStaff()){toast("The audit log is restricted to admins and the owner.","error");return;}
   if(page==="admin"&&!isStaff()){toast("The admin panel is restricted to staff.","error");return;}
