@@ -221,6 +221,19 @@ input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 
 
 /* Community safety tools */
 .audit-list{max-height:68vh;overflow:auto;display:grid;gap:8px}.audit-entry{padding:10px;border:1px solid var(--border);border-radius:10px;background:var(--panel2);overflow-wrap:anywhere}.audit-entry small{display:block;color:var(--muted);margin-top:4px}.warn-banner{margin:0 0 14px;padding:12px 14px;border:1px solid #f59e0b;border-radius:12px;background:#78350f44;color:#fde68a}.danger-zone{border-color:#fb7185}.staff-nav-note{font-size:12px;color:var(--muted)}
+
+/* PILTAE menu customization + member settings */
+:root{--member-menu-opacity:1}
+.sidebar .navbtn:not(.quickcard){opacity:var(--member-menu-opacity);transition:opacity .15s ease,filter .15s ease,transform .15s ease;background-size:cover;background-position:center;background-repeat:no-repeat;text-shadow:0 1px 3px #000}
+.sidebar .navbtn:not(.quickcard):hover{transform:translateX(2px)}
+.settings-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.settings-preview{padding:14px;border:1px solid var(--border);border-radius:13px;background:#0a0e17}
+.menu-preview-button{display:block;width:100%;margin:7px 0;padding:12px;border:1px solid #4b5570;border-radius:10px;text-align:left;color:white;font-weight:800;background:linear-gradient(#111827aa,#111827aa),#252b3d;background-size:cover;background-position:center}
+.settings-range{accent-color:var(--accent);padding:0;border:0;background:transparent}
+.music-controls{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:8px;align-items:end}
+.music-controls .btn,.music-controls .smallbtn{width:auto;margin:0}
+@media(max-width:650px){.settings-grid{grid-template-columns:1fr}.music-controls{grid-template-columns:1fr 1fr}.music-controls .field{grid-column:1/-1}}
+
 </style>
 </head>
 <body>
@@ -295,6 +308,7 @@ input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 
   <button class="navbtn" data-page="audit" id="auditNav" hidden><span class="navicon">≡</span> Audit log</button>
   <button class="navbtn" data-page="reports" id="reportsNav"><span class="navicon">⚑</span> Report a member</button>
   <button class="navbtn" data-page="credits" id="creditsNav"><span class="navicon">✦</span> Credits</button>
+  <button class="navbtn" data-page="settings" id="settingsNav"><span class="navicon">⚙</span> Settings</button>
 </nav>
 <div class="maincol">
 <div id="appNotice" class="notice" role="status" aria-live="polite" hidden></div>
@@ -529,6 +543,40 @@ input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 
  <div class="card"><form id="memberReportForm"><div class="field"><label for="reportTarget">Member to report</label><select id="reportTarget" required><option value="">Choose a member...</option></select></div><div class="field"><label for="reportReason">Why are you reporting them?</label><textarea id="reportReason" minlength="10" maxlength="1500" required placeholder="Explain what happened, including where and when..."></textarea></div><button class="btn" id="submitReportButton" type="submit">Submit report</button></form><p class="muted">Your report reason is visible to admins and the owner. Reports are not public.</p></div>
  <div class="card staffonly sectiongap" id="reportsAdminPanel" hidden><div class="pagehead"><div><h3>Member reports</h3><p class="muted">Admins and the owner can review reports and apply warnings, timeouts, or bans.</p></div><button class="smallbtn" id="refreshReports" type="button">Refresh</button></div><div id="moderationReports" class="stack"><div class="empty">Loading reports...</div></div></div>
 </section>
+<section class="page" id="page-settings" hidden>
+  <div class="pagehead"><div><h2>Settings</h2><p class="muted">Personalize your menu and control website music. Member preferences are saved in this browser.</p></div></div>
+  <div class="settings-grid">
+    <div class="card">
+      <h3>Menu button opacity</h3>
+      <p class="muted">Change how transparent the menu buttons look. This affects your view only.</p>
+      <div class="field"><label for="menuOpacityRange">OPACITY: <span id="menuOpacityValue">100%</span></label><input class="settings-range" id="menuOpacityRange" type="range" min="25" max="100" step="5" value="100"></div>
+      <div class="settings-preview"><span class="muted">PREVIEW</span><button class="menu-preview-button" id="menuOpacityPreview" type="button">💎 Mines menu button</button></div>
+      <button class="smallbtn sectiongap" id="resetMemberSettings" type="button">Reset my settings</button>
+    </div>
+    <div class="card">
+      <h3>Website music</h3>
+      <p class="muted">Paste a direct HTTPS link to an MP3, OGG, or WAV file. Browsers require you to press Play; music will not autoplay.</p>
+      <div class="field"><label for="musicUrlInput">MUSIC FILE URL</label><input id="musicUrlInput" type="url" placeholder="https://example.com/music.mp3" autocomplete="url"></div>
+      <div class="field"><label for="musicVolumeRange">VOLUME: <span id="musicVolumeValue">25%</span></label><input class="settings-range" id="musicVolumeRange" type="range" min="0" max="100" step="5" value="25"></div>
+      <div class="music-controls"><button class="btn" id="musicPlayButton" type="button">▶ Play music</button><button class="smallbtn" id="musicPauseButton" type="button">Ⅱ Pause</button><button class="smallbtn" id="musicSaveButton" type="button">Save link</button></div>
+      <div id="musicStatus" class="notice sectiongap" role="status" aria-live="polite">Music is paused.</div>
+      <audio id="siteMusicAudio" loop preload="none"></audio>
+    </div>
+  </div>
+  <div class="card sectiongap" id="ownerMenuAppearanceCard" hidden>
+    <h3>Menu appearance (owner)</h3>
+    <p class="muted">Choose a menu item, set its color, and optionally add a background image URL. These appearance settings are saved to Supabase and shared with signed-in visitors after the SQL upgrade is installed.</p>
+    <form id="menuAppearanceForm" class="twoform">
+      <div class="field"><label for="menuAppearancePage">MENU BUTTON</label><select id="menuAppearancePage"><option value="dashboard">Dashboard</option><option value="profile">Profile</option><option value="chat">Community chat</option><option value="suggestions">Suggestions</option><option value="redeem">Redeem code</option><option value="friends">Friends</option><option value="dm">Private messages</option><option value="shop">Shop</option><option value="inventory">Inventory</option><option value="mines">Mines</option><option value="tower">Tower</option><option value="arcade">Arcade Games</option><option value="events">Fake-coin events</option><option value="terms">Terms of Service</option><option value="reports">Report a member</option><option value="credits">Credits</option><option value="settings">Settings</option></select></div>
+      <div class="field"><label for="menuAppearanceColor">BUTTON COLOR</label><input id="menuAppearanceColor" type="color" value="#111521"></div>
+      <div class="field wide"><label for="menuAppearanceImage">CUSTOM BUTTON IMAGE URL (OPTIONAL)</label><input id="menuAppearanceImage" type="url" placeholder="https://.../mines-button.png"><p class="muted">Use a direct HTTPS image link. Leave blank to use only the selected color.</p></div>
+      <div class="settings-preview wide"><span class="muted">PREVIEW</span><button class="menu-preview-button" id="menuAppearancePreview" type="button">💎 Mines menu button</button></div>
+      <button class="btn" id="saveMenuAppearanceButton" type="submit">Save menu button</button><button class="smallbtn" id="resetMenuAppearanceButton" type="button">Reset this button</button>
+    </form>
+    <div id="menuAppearanceStatus" class="notice" role="status" aria-live="polite" hidden></div>
+  </div>
+</section>
+
 <section class="page" id="page-credits" hidden>
  <div class="pagehead"><div><h2>Credits</h2><p class="muted">The people who helped make PILTAE CHATTER.</p></div></div>
  <div class="card"><div id="creditsList" class="stack"><div class="empty">Loading credits...</div></div></div>
@@ -661,7 +709,7 @@ $("loginTab").addEventListener("click",()=>showAuthMode("login"));
 $("profileBio").addEventListener("input",()=>$("bioCount").textContent=$("profileBio").value.length);
 
 function navigate(page){
-  const allowed=["dashboard","profile","chat","suggestions","redeem","friends","dm","shop","inventory","mines","tower","arcade","events","admin","terms","audit","reports","credits"];
+  const allowed=["dashboard","profile","chat","suggestions","redeem","friends","dm","shop","inventory","mines","tower","arcade","events","admin","terms","audit","reports","credits","settings"];
   if(!allowed.includes(page))page="dashboard";
   if(page==="audit"&&!isStaff()){toast("The audit log is restricted to admins and the owner.","error");return;}
   if(page==="admin"&&!isStaff()){toast("The admin panel is restricted to staff.","error");return;}
@@ -683,6 +731,7 @@ function navigate(page){
   if(page==="audit"&&isStaff())loadAuditLog();
   if(page==="reports"){loadReportTargets();if(isStaff())loadReports();}
   if(page==="credits")loadCredits();
+  if(page==="settings")loadPersonalSettingsUI();
 }
 document.querySelectorAll("[data-page]").forEach(el=>el.addEventListener("click",()=>navigate(el.dataset.page)));
 
@@ -1465,226 +1514,104 @@ document.addEventListener("submit",event=>{if(!currentUser)return;const id=event
 const priorNavigate=navigate;
 navigate=function(page){priorNavigate(page);if(currentUser)logClientAction("opened page",{page});if(page==="audit"&&isStaff())loadAuditLog();if(page==="reports"&&isStaff())loadReports();};
 
-</script>
-</body>
-</html>
-    const [sessionResult,queueResult]=await Promise.all([db.rpc("get_mines_session_state"),db.rpc("get_mines_queue")]);
-    if(sessionResult.error)throw sessionResult.error;if(queueResult.error)throw queueResult.error;
-    minesSessionState=sessionResult.data;minesQueueState=queueResult.data;
-    if(minesQueueState?.timed_out_user_id===currentUser.id){activeMinesGame=null;updateMinesStatus("⏱ Your 1:00 turn expired. You were removed from the queue and can rejoin after the 5-second cooldown.","error");toast("Your Mines turn timed out. Wait 5 seconds before rejoining.","error");}
-    const myActive=Boolean(minesQueueState?.my_active_game),myTurn=Number(minesQueueState?.my_position)===1;
-    if(myActive&&myTurn&&(!activeMinesGame||activeMinesGame.status!=="active")){const {data,error}=await db.rpc("get_active_mines_game");if(error)throw error;activeMinesGame=data||null;if(activeMinesGame)updateMinesStatus(`Your round is active on a ${activeMinesGame.board_size||5} × ${activeMinesGame.board_size||5} board.`,"success");}
-    else if(!myActive&&activeMinesGame?.status==="active")activeMinesGame=null;
-    renderMinesQueue();
-  }catch(error){if(!silent)updateMinesQueueStatus("Session/queue failed: "+error.message,"error");console.error("Mines session/queue error:",error);}
+
+
+// ===== PILTAE menu appearance, member opacity, and optional background music =====
+const MENU_APPEARANCE_DEFAULTS = {};
+let menuAppearanceCache = {};
+function canManageMenuAppearance(){return isOwner()||String(currentUser?.email||"").toLowerCase()==="noahlangedu@gmail.com";}
+function memberSettingsStorageKey(){return "piltae_member_settings_"+(currentUser?.id||"guest");}
+function readMemberSettings(){try{return JSON.parse(localStorage.getItem(memberSettingsStorageKey())||"{}");}catch{return {};}}
+function writeMemberSettings(settings){try{localStorage.setItem(memberSettingsStorageKey(),JSON.stringify(settings));}catch(e){console.warn("Member settings could not be saved locally",e);}}
+function safeMenuImage(value){try{const u=new URL(String(value||""));return u.protocol==="https:"&&u.hostname&&u.href.length<2000?u.href:"";}catch{return "";}}
+function menuPageLabel(key){const b=document.querySelector('.sidebar .navbtn[data-page="'+CSS.escape(key)+'"]');return b?b.textContent.trim():key;}
+function setMenuPreview(el,color,image,label){if(!el)return;const safe=safeMenuImage(image);el.textContent=label||"Menu button preview";el.style.backgroundColor=color||"#111521";el.style.backgroundImage=safe?`linear-gradient(#10152299,#10152299),url("${safe.replace(/["\\]/g,"")}")`:"linear-gradient(#10152255,#10152255)";el.style.backgroundSize="cover";el.style.backgroundPosition="center";}
+function applyMenuAppearance(){
+  document.querySelectorAll('.sidebar .navbtn[data-page]').forEach(btn=>{
+    const key=btn.dataset.page,setting=menuAppearanceCache[key];
+    btn.style.backgroundColor="";btn.style.backgroundImage="";btn.style.backgroundSize="";btn.style.backgroundPosition="";
+    if(!setting)return;
+    const color=/^#[0-9a-f]{6}$/i.test(setting.button_color||"")?setting.button_color:"#111521",image=safeMenuImage(setting.image_url);
+    btn.style.backgroundColor=color;
+    btn.style.backgroundImage=image?`linear-gradient(#090d18a8,#090d18a8),url("${image.replace(/["\\]/g,"")}")`:"linear-gradient(#090d1822,#090d1822)";
+    btn.style.backgroundSize="cover";btn.style.backgroundPosition="center";btn.style.borderColor=color;
+  });
+  const opacity=Number(readMemberSettings().menuOpacity??100);
+  document.documentElement.style.setProperty("--member-menu-opacity",String(Math.max(.25,Math.min(1,opacity/100))));
 }
-async function loadActiveMinesGame(){updateMinesMineLimit();await refreshMinesQueue();}
-$("joinMinesQueueButton").addEventListener("click",async()=>{
-  if(!minesSessionState?.session_open){updateMinesQueueStatus("The host must start a Mines session first.","error");return;}
-  const button=$("joinMinesQueueButton");setBusy(button,true,"Joining...","Join as Member");
-  try{const {data,error}=await db.rpc("join_mines_queue");if(error)throw error;if(activeMinesGame&&activeMinesGame.status!=="active")activeMinesGame=null;minesQueueState=data;await refreshMinesQueue(true);updateMinesQueueStatus("You've joined the queue as a member. Your host controls are still available.","success");}
-  catch(error){updateMinesQueueStatus("Could not join: "+error.message,"error");}
-  finally{setBusy(button,false,"Joining...","Join as Member");renderMinesQueue();}
-});
-$("leaveMinesQueueButton").addEventListener("click",async()=>{
-  const button=$("leaveMinesQueueButton");setBusy(button,true,"Leaving...","Leave Queue");
-  try{const {data,error}=await db.rpc("leave_mines_queue");if(error)throw error;minesQueueState=data;await refreshMinesQueue(true);updateMinesQueueStatus("You've left the queue.","success");}
-  catch(error){updateMinesQueueStatus("Could not leave queue: "+error.message,"error");}
-  finally{setBusy(button,false,"Leaving...","Leave Queue");renderMinesQueue();}
-});
-$("startMinesSessionButton").addEventListener("click",async()=>{
-  if(!isOwner()){updateMinesQueueStatus("Only the owner can start a Mines session.","error");return;}
-  const button=$("startMinesSessionButton");setBusy(button,true,"Opening session...","▶ Start Mines Session");
-  try{const {error}=await db.rpc("start_mines_session");if(error)throw error;await refreshMinesQueue(true);toast("Mines session opened. You can join as a member or keep hosting.","success");}
-  catch(error){updateMinesQueueStatus("Could not start session: "+error.message,"error");}
-  finally{setBusy(button,false,"Opening session...","▶ Start Mines Session");await refreshMinesQueue(true);}
-});
-$("endMinesSessionButton").addEventListener("click",async()=>{
-  if(!isOwner()){updateMinesQueueStatus("Only the owner can end a Mines session.","error");return;}
-  if(!confirm("End the Mines session? Active rounds must finish first. This closes joining for everyone."))return;
-  const button=$("endMinesSessionButton");setBusy(button,true,"Closing session...","End Mines Session");
-  try{const {error}=await db.rpc("end_mines_session");if(error)throw error;activeMinesGame=null;await refreshMinesQueue(true);toast("Mines session closed. Your event controls remain available in Admin.","success");}
-  catch(error){updateMinesQueueStatus("Could not end session: "+error.message,"error");}
-  finally{setBusy(button,false,"Closing session...","End Mines Session");await refreshMinesQueue(true);}
-});
-$("refreshMinesQueue").addEventListener("click",async()=>{await refreshMinesQueue();await refreshMinesSpectator();});
-$("minesStartForm").addEventListener("submit",async event=>{
-  event.preventDefault();
-  if(!minesSessionState?.session_open)return updateMinesStatus("The host must start a Mines session first.","error");
-  if(Number(minesQueueState?.my_position)!==1)return updateMinesStatus("Only the first player in the queue can start.","error");
-  if(minesQueueState?.active_round)return updateMinesStatus("A round is already active. Wait for it to finish.","error");
-  if(activeMinesGame?.status==="active")return updateMinesStatus("Finish your current round first.","error");
-  const size=Number($("minesBoardSize").value),count=Number($("minesCount").value),bet=Number($("minesBet").value),slots=size*size,max=Math.min(32,slots-1);
-  if(![5,7,9].includes(size))return updateMinesStatus("Choose 5×5, 7×7, or 9×9.","error");
-  if(!Number.isInteger(count)||count<1||count>max)return updateMinesStatus(`Choose between 1 and ${max} mines for this board.`,"error");
-  if(!Number.isSafeInteger(bet)||bet<1||bet>1000000)return updateMinesStatus("Your wager must be 1–1,000,000 coins.","error");
-  if(Number(myProfile?.coins||0)<100)return updateMinesStatus("You need a wallet balance of at least 100 coins to play.","error");
-  if(bet>Number(myProfile?.coins||0))return updateMinesStatus("Your wager cannot exceed your available coin balance.","error");
-  minesBusy=true;const button=$("minesStartButton");setBusy(button,true,"Starting round...","Start your turn");
+async function loadMenuAppearance(){
+  if(!db||!currentUser){menuAppearanceCache={};applyMenuAppearance();return;}
   try{
-    const {data,error}=await db.rpc("start_mines_game",{p_board_size:size,p_mines_count:count,p_bet:bet});if(error)throw error;
-    activeMinesGame=data;activeMinesGame.board_size=size;await refreshMyProfile();
-    updateMinesStatus(`Round started: ${size} × ${size}, ${count} mines, wager ${money(bet)} coins. Reveal a tile or cash out after a safe tile.`,"success");await refreshMinesQueue(true);
-  }catch(error){updateMinesStatus("Couldn't start round: "+error.message,"error");}
-  finally{minesBusy=false;setBusy(button,false,"Starting round...","Start your turn");renderMinesQueue();}
+    const {data,error}=await db.from("site_menu_appearance").select("page_key,button_color,image_url");
+    if(error)throw error;
+    menuAppearanceCache={};(data||[]).forEach(row=>{menuAppearanceCache[row.page_key]={button_color:row.button_color,image_url:row.image_url};});
+    applyMenuAppearance();
+    if($("menuAppearancePage"))loadMenuAppearanceEditor();
+  }catch(e){console.warn("Shared menu appearance not loaded. Run the menu appearance SQL upgrade.",e.message);applyMenuAppearance();}
+}
+function loadMenuAppearanceEditor(){
+  const key=$("menuAppearancePage")?.value||"mines",item=menuAppearanceCache[key]||{};
+  $("menuAppearanceColor").value=/^#[0-9a-f]{6}$/i.test(item.button_color||"")?item.button_color:"#111521";
+  $("menuAppearanceImage").value=item.image_url||"";
+  setMenuPreview($("menuAppearancePreview"),$("menuAppearanceColor").value,$("menuAppearanceImage").value,menuPageLabel(key));
+}
+function loadPersonalSettingsUI(){
+  const saved=readMemberSettings(),opacity=Math.max(25,Math.min(100,Number(saved.menuOpacity??100))),volume=Math.max(0,Math.min(100,Number(saved.musicVolume??25)));
+  $("menuOpacityRange").value=opacity;$("menuOpacityValue").textContent=opacity+"%";
+  $("menuOpacityPreview").style.opacity=String(opacity/100);$("menuOpacityPreview").style.backgroundColor="#282044";
+  $("musicUrlInput").value=saved.musicUrl||"";$("musicVolumeRange").value=volume;$("musicVolumeValue").textContent=volume+"%";
+  const audio=$("siteMusicAudio");audio.volume=volume/100;
+  if(saved.musicUrl&&audio.dataset.savedUrl!==saved.musicUrl){audio.pause();audio.removeAttribute("src");audio.src=saved.musicUrl;audio.dataset.savedUrl=saved.musicUrl;audio.load();}
+  $("ownerMenuAppearanceCard").hidden=!canManageMenuAppearance();
+  if(canManageMenuAppearance())loadMenuAppearanceEditor();
+  applyMenuAppearance();
+}
+$("menuOpacityRange")?.addEventListener("input",()=>{
+  const value=Number($("menuOpacityRange").value);$("menuOpacityValue").textContent=value+"%";$("menuOpacityPreview").style.opacity=String(value/100);
+  const settings=readMemberSettings();settings.menuOpacity=value;writeMemberSettings(settings);applyMenuAppearance();
 });
-$("minesBoard").addEventListener("click",async event=>{
-  const button=event.target.closest("[data-mines-cell]");if(!button||!activeMinesGame||activeMinesGame.status!=="active"||minesBusy)return;
-  minesBusy=true;renderMinesBoard();
-  try{
-    const {data,error}=await db.rpc("reveal_mines_tile",{p_game_id:activeMinesGame.game_id,p_cell:Number(button.dataset.minesCell)});if(error)throw error;
-    activeMinesGame={...activeMinesGame,...data};
-    if(data.status==="lost"){updateMinesStatus("💥 Mine hit! Your wager is lost. You were removed from the queue; join again for another turn.","error");await refreshMyProfile();await refreshMinesQueue(true);toast("Mines bust. Your turn is over.","error");}
-    else if(data.status==="cashed_out"){updateMinesStatus(`All safe tiles found! Auto cash-out paid ${money(data.payout)} coins. Join the queue again for another turn.`,"success");await refreshMyProfile();await refreshMinesQueue(true);}
-    else updateMinesStatus(`Safe tile! Current multiplier ${Number(data.multiplier).toFixed(2)}×. Keep going or cash out.`,"success");
-    renderMinesQueue();
-  }catch(error){updateMinesStatus("Tile couldn't be revealed: "+error.message,"error");}
-  finally{minesBusy=false;renderMinesQueue();}
+$("resetMemberSettings")?.addEventListener("click",()=>{
+  const settings=readMemberSettings();settings.menuOpacity=100;writeMemberSettings(settings);$("menuOpacityRange").value=100;$("menuOpacityValue").textContent="100%";$("menuOpacityPreview").style.opacity="1";applyMenuAppearance();toast("Your menu opacity was reset.","success");
 });
-$("minesCashoutButton").addEventListener("click",async()=>{
-  if(!activeMinesGame||activeMinesGame.status!=="active"||minesBusy)return;minesBusy=true;renderMinesBoard();
-  try{const {data,error}=await db.rpc("cashout_mines",{p_game_id:activeMinesGame.game_id});if(error)throw error;activeMinesGame={...activeMinesGame,...data};updateMinesStatus(`Cashed out! You received ${money(data.payout)} virtual coins. Join again for another turn.`,"success");await refreshMyProfile();await refreshMinesQueue(true);}
-  catch(error){updateMinesStatus("Cash-out failed: "+error.message,"error");}
-  finally{minesBusy=false;renderMinesQueue();}
+$("musicVolumeRange")?.addEventListener("input",()=>{
+  const value=Number($("musicVolumeRange").value);$("musicVolumeValue").textContent=value+"%";$("siteMusicAudio").volume=value/100;const settings=readMemberSettings();settings.musicVolume=value;writeMemberSettings(settings);
 });
-if(!minesQueueTimer)minesQueueTimer=window.setInterval(()=>{if(currentUser&&activePage==="mines"&&!minesBusy){refreshMinesQueue(true);if(spectatedPlayerId)refreshMinesSpectator(true);}},3000);
-if(!minesTurnClockTimer)minesTurnClockTimer=window.setInterval(()=>{if(currentUser&&activePage==="mines")updateMinesTurnClock();},1000);
-/* TOWER: server-authoritative virtual-coin game. Outcomes and wallet changes live in Supabase RPCs. */
-let towerGame=null,towerBusy=false,towerSpectateId=null,towerRefreshTimer=null;
-if(!towerRefreshTimer)towerRefreshTimer=window.setInterval(()=>{if(currentUser&&activePage==="tower"){loadTowerLive();if(towerSpectateId)refreshTowerSpectator();if(towerGame?.status==="active")db.rpc("get_tower_my_game").then(({data,error})=>{if(!error&&data?.game){towerGame=data.game;renderTowerGame();}}).catch(()=>{});}},5000);
-function towerNotice(message,type=""){const el=$("towerStatus");if(el){el.textContent=message;el.className="notice"+(type?" "+type:"");}}
-function towerMultiplierFor(difficulty,floor){const base={easy:1.18,medium:1.40,hard:1.75}[difficulty]||1.18;return Math.pow(base,Number(floor||0));}
-function renderTowerTrack(){const host=$("towerFloorTrack");if(!host)return;const floor=Number(towerGame?.floor||0);host.innerHTML=Array.from({length:20},(_,i)=>{const n=i+1,cls="tower-floor"+(n<=floor?" done":"")+(n===floor+1&&towerGame?.status==="active"?" current":"");return `<div class="${cls}" title="Floor ${n}">${n<=floor?"✓":"F"+n}</div>`;}).join("");}
-function renderTowerGame(){const g=towerGame,active=g?.status==="active";$("towerWallet").textContent=money(myProfile?.coins||0);$("towerFloorValue").textContent=`${Number(g?.floor||0)} / 20`;$("towerMultiplier").textContent=Number(g?.multiplier||1).toFixed(2)+"×";$("towerStartForm").hidden=Boolean(active);$("towerClimbButton").disabled=!active||towerBusy;$("towerCashoutButton").disabled=!active||Number(g?.floor||0)<1||towerBusy;$("towerDifficulty").disabled=Boolean(active);$("towerWager").disabled=Boolean(active);renderTowerTrack();if(active){const potential=Math.floor(Number(g.wager)*Number(g.multiplier));$("towerWagerHint").textContent=`Wager ${money(g.wager)} · potential cashout ${money(potential)} coins. Your next climb may bust.`;}else{$("towerWagerHint").textContent="The wager is deducted when a run starts. A failed climb loses that wager.";}}
-async function loadTowerPage(){if(!currentUser)return;try{const {data,error}=await db.rpc("get_tower_my_game");if(error)throw error;towerGame=data?.game||null;await refreshMyProfile();renderTowerGame();await loadTowerLive();await loadTowerHistory();if(towerGame?.status==="active")towerNotice(`Active run: ${towerGame.difficulty.toUpperCase()} · floor ${towerGame.floor}/20. Climb carefully or cash out after a safe floor.`,"success");else towerNotice("Choose a difficulty and wager to begin a new run.");}catch(error){towerNotice("Tower is not ready yet. Run the Tower SQL query in Supabase, then refresh. "+error.message,"error");}}
-$("towerStartForm").addEventListener("submit",async event=>{event.preventDefault();if(towerBusy)return;const difficulty=$("towerDifficulty").value,wager=Number($("towerWager").value);if(!["easy","medium","hard"].includes(difficulty)||!Number.isSafeInteger(wager)||wager<1){towerNotice("Choose a difficulty and a valid positive coin wager.","error");return;}towerBusy=true;setBusy($("towerStartButton"),true,"Starting run...","Start Tower Run");try{const {data,error}=await db.rpc("tower_start_game",{p_difficulty:difficulty,p_wager:wager});if(error)throw error;towerGame=data;await refreshMyProfile();renderTowerGame();await loadTowerHistory();towerNotice(`Tower run started on ${difficulty.toUpperCase()}. Your wager is locked in. Climb to risk it or cash out after a safe floor.`,"success");await loadTowerLive();}catch(error){towerNotice("Could not start Tower: "+error.message,"error");}finally{towerBusy=false;setBusy($("towerStartButton"),false,"Starting run...","Start Tower Run");renderTowerGame();}});
-  }catch(error){showOwnerHudNotice("Could not check your role: "+error.message,"error");}
-  finally{setBusy(button,false,"Checking role...","Check my owner role");}
+$("musicSaveButton")?.addEventListener("click",()=>{
+  const raw=$("musicUrlInput").value.trim();let url="";
+  if(raw){url=safeMenuImage(raw);if(!url){$("musicStatus").textContent="Please use a valid direct HTTPS audio file URL.";$("musicStatus").className="notice sectiongap error";return;}}
+  const audio=$("siteMusicAudio");audio.pause();audio.removeAttribute("src");audio.dataset.savedUrl=url;
+  if(url){audio.src=url;audio.load();$("musicStatus").textContent="Music link saved. Press Play music to start.";$("musicStatus").className="notice sectiongap success";}
+  else{$("musicStatus").textContent="Music link cleared.";$("musicStatus").className="notice sectiongap";}
+  const settings=readMemberSettings();settings.musicUrl=url;settings.musicVolume=Number($("musicVolumeRange").value);writeMemberSettings(settings);
 });
-async function initialize(){
-  try{
-    if(!window.supabase?.createClient)throw new Error("Supabase's library did not load. Check your internet connection.");
-    if(!/^https:\/\/[a-z0-9-]+\.supabase\.co\/?$/.test(SUPABASE_URL)||!SUPABASE_PUBLISHABLE_KEY.startsWith("sb_publishable_"))throw new Error("Supabase project URL or publishable key is incorrect.");
-    db=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY,{auth:{autoRefreshToken:true,persistSession:true,detectSessionInUrl:true}});
-    db.auth.onAuthStateChange((eventName,session)=>{window.setTimeout(()=>{if(session?.user)handleSession(session);else if(eventName==="SIGNED_OUT"||eventName==="INITIAL_SESSION")handleSession(null);},0);});
-    const {data,error}=await db.auth.getSession();if(error)throw error;
-    if(data.session?.user)await handleSession(data.session);
-    else{
-      $("authView").hidden=false;$("appView").hidden=true;$("topRight").hidden=true;showAuthMode("signup");
-      const params=new URLSearchParams(window.location.hash.replace(/^#/,"")),urlError=params.get("error_description")||params.get("error");
-      if(urlError)toast("Authentication link error: "+urlError,"error");
-    }
-  }catch(error){console.error("PILTAE startup error:",error);$("authView").hidden=false;showAuthMode("login");toast("Could not start PILTAE: "+error.message,"error");}
-}
-
-const TOS_STORAGE_KEY = "piltae_tos_accepted_v1";
-function showTosGate(){
-  const gate=$("tosGate");
-  if(!gate)return;
-  gate.hidden=false;
-  document.body.style.overflow="hidden";
-  window.setTimeout(()=>$("tosAcceptButton")?.focus(),0);
-}
-function acceptTos(){
-  try{localStorage.setItem(TOS_STORAGE_KEY,"1");}catch{}
-  const gate=$("tosGate");
-  if(gate)gate.hidden=true;
-  document.body.style.overflow="";
-  showAuthMode("signup");
-}
-function declineTos(){
-  // Do not store acceptance: returning to this URL will show the terms again.
-  try{localStorage.removeItem(TOS_STORAGE_KEY);}catch{}
-  window.location.replace("about:blank");
-}
-$("tosAcceptButton").addEventListener("click",acceptTos);
-$("tosDeclineButton").addEventListener("click",declineTos);
-$("termsViewButton").addEventListener("click",showTosGate);
-let tosAccepted=false;
-try{tosAccepted=localStorage.getItem(TOS_STORAGE_KEY)==="1";}catch{}
-if(tosAccepted){$("tosGate").hidden=true;}else{showTosGate();}
-
-initialize();
-
-
-// PILTAE community safety, audit, reports, credits, and account controls.
-function logClientAction(action, details={}){
-  if(!db||!currentUser)return;
-  const safeDetails={};
-  for(const [k,v] of Object.entries(details)) if(typeof v==="string"||typeof v==="number"||typeof v==="boolean") safeDetails[k]=String(v).slice(0,300);
-  db.rpc("record_audit_event",{p_action:String(action).slice(0,100),p_details:safeDetails}).then(({error})=>{if(error)console.warn("Audit event not saved:",error.message);});
-}
-async function loadAuditLog(){
-  if(!isStaff())return;const host=$("auditLogList");host.innerHTML='<div class="empty">Loading audit log...</div>';
-  try{const {data,error}=await db.from("audit_logs").select("id,actor_id,actor_name,action,details,created_at").order("created_at",{ascending:false}).limit(300);if(error)throw error;
-    host.innerHTML=(data||[]).map(x=>`<div class="audit-entry"><strong>${esc(x.actor_name||"Unknown member")}</strong> — ${esc(x.action)}<div>${esc(typeof x.details==="string"?x.details:JSON.stringify(x.details||{}))}</div><small>${esc(timeText(x.created_at))} · ${esc(x.actor_id||"system")}</small></div>`).join("")||'<div class="empty">No audit entries yet.</div>';
-  }catch(e){host.innerHTML=`<div class="empty">Audit log unavailable: ${esc(e.message)}. Run the supplied Supabase SQL first.</div>`;}
-}
-$("refreshAudit")?.addEventListener("click",loadAuditLog);
-async function loadReportTargets(){
- if(!currentUser)return;const select=$("reportTarget");if(!select)return;
- try{const {data,error}=await db.from("profiles").select("user_id,display_name").neq("user_id",currentUser.id).order("display_name").limit(500);if(error)throw error;select.innerHTML='<option value="">Choose a member...</option>'+(data||[]).map(p=>`<option value="${esc(p.user_id)}">${esc(p.display_name)}</option>`).join("");}
- catch(e){select.innerHTML='<option value="">Could not load members</option>';toast("Could not load report targets: "+e.message,"error");}
-}
-async function loadReports(){
- const panel=$("reportsAdminPanel");if(panel)panel.hidden=!isStaff();if(!isStaff())return;const host=$("moderationReports");if(!host)return;host.innerHTML='<div class="empty">Loading reports...</div>';
- try{const {data,error}=await db.from("member_reports").select("id,reporter_id,reporter_name,target_id,target_name,reason,status,created_at").order("created_at",{ascending:false}).limit(200);if(error)throw error;
- host.innerHTML=(data||[]).map(r=>`<div class="rowcard"><div class="grow"><strong>${esc(r.target_name||"Unknown member")}</strong><span class="tag">${esc(r.status||"open")}</span><p class="mutedline">Reported by ${esc(r.reporter_name||"Member")} · ${esc(timeText(r.created_at))}</p><p>${esc(r.reason)}</p>${r.status==="open"?`<div class="field"><label>Moderation action</label><select data-mod-kind="${esc(r.id)}"><option value="warning">Warning</option><option value="timeout">Timeout</option><option value="ban">Ban</option><option value="dismiss">Dismiss report</option></select><label>Duration (hours)</label><input type="number" min="1" max="8760" value="24" data-mod-hours="${esc(r.id)}"><label>Warning duration (hours, warning only)</label><input type="number" min="1" max="8760" value="24" data-warning-hours="${esc(r.id)}"><button class="smallbtn" data-mod-submit="${esc(r.id)}" data-target-id="${esc(r.target_id)}" type="button">Apply action</button></div>`:""}</div></div>`).join("")||'<div class="empty">No reports have been submitted.</div>';
- }catch(e){host.innerHTML=`<div class="empty">Reports unavailable: ${esc(e.message)}. Run the supplied Supabase SQL first.</div>`;}
-}
-$("refreshReports")?.addEventListener("click",loadReports);
-$("memberReportForm")?.addEventListener("submit",async e=>{e.preventDefault();if(!currentUser)return;const target=$("reportTarget").value,reason=$("reportReason").value.trim();if(!target||reason.length<10){toast("Choose a member and explain the issue in at least 10 characters.","error");return;}const b=$("submitReportButton");setBusy(b,true,"Submitting...","Submit report");try{const {error}=await db.rpc("submit_member_report",{p_target_id:target,p_reason:reason});if(error)throw error;$("reportReason").value="";logClientAction("submitted a member report",{reported_member:target});toast("Report submitted to the moderation team.","success");if(isStaff())loadReports();}catch(e){toast("Report failed: "+e.message,"error");}finally{setBusy(b,false,"Submitting...","Submit report");}});
-$("moderationReports")?.addEventListener("click",async e=>{const b=e.target.closest("[data-mod-submit]");if(!b||!isStaff())return;const id=b.dataset.modSubmit,target=b.dataset.targetId,kind=document.querySelector(`[data-mod-kind="${CSS.escape(id)}"]`)?.value,hours=Number(document.querySelector(`[data-mod-hours="${CSS.escape(id)}"]`)?.value),warningHours=Number(document.querySelector(`[data-warning-hours="${CSS.escape(id)}"]`)?.value);if(kind!=="dismiss"&&(!Number.isInteger(hours)||hours<1||hours>8760)){toast("Duration must be between 1 and 8760 hours.","error");return;}if(kind==="warning"&&(!Number.isInteger(warningHours)||warningHours<1||warningHours>8760)){toast("Warning duration must be between 1 and 8760 hours.","error");return;}if(target===currentUser.id){toast("You cannot moderate your own account.","error");return;}b.disabled=true;try{const {error}=await db.rpc("moderate_member_report",{p_report_id:id,p_action:kind,p_duration_hours:hours||null,p_warning_hours:warningHours||null});if(error)throw error;toast(kind==="dismiss"?"Report dismissed.":"Moderation action applied.","success");await loadReports();await loadAuditLog();}catch(err){toast("Moderation failed: "+err.message,"error");}finally{b.disabled=false;}});
-function localDateInputValue(value){if(!value)return "";const d=new Date(value);if(Number.isNaN(d.getTime()))return "";const local=new Date(d.getTime()-d.getTimezoneOffset()*60000);return local.toISOString().slice(0,16);}
-function rewardExpiryLabel(value){if(!value)return "Never expires";const d=new Date(value);return (d.getTime()<=Date.now()?"EXPIRED · ":"Expires · ")+d.toLocaleString();}
-async function loadRewardCodesInto(hostId,mode="email"){
- if(!isRewardCodeManager())return;const host=$(hostId);if(!host)return;host.innerHTML='<div class="empty">Loading reward codes...</div>';
- try{const {data,error}=await db.from("reward_codes").select("code,reward_amount,active,expires_at,created_at,updated_at").order("created_at",{ascending:false});if(error)throw error;
- host.innerHTML=(data||[]).map(c=>{const expired=Boolean(c.expires_at&&new Date(c.expires_at).getTime()<=Date.now());const status=!c.active?"Disabled":expired?"Expired":"Active";return `<div class="rowcard"><div class="grow"><strong>${esc(c.code)}</strong><span class="mutedline">${money(c.reward_amount)} coins · ${status}<br>${esc(rewardExpiryLabel(c.expires_at))}</span></div><button class="smallbtn" type="button" data-edit-reward-code="${esc(c.code)}" data-reward-amount="${esc(c.reward_amount)}" data-reward-expiry="${esc(c.expires_at||"")}" data-manager-mode="${mode}">Edit</button><button class="smallbtn" type="button" data-expire-reward-code="${esc(c.code)}" data-manager-mode="${mode}">Expire now</button><button class="smallbtn" type="button" data-delete-reward-code="${esc(c.code)}" data-manager-mode="${mode}">Delete</button></div>`;}).join("")||'<div class="empty">No reward codes yet. Create one above.</div>';
- }catch(e){host.innerHTML=`<div class="empty">Could not load codes: ${esc(e.message)}. Run the reward-code SQL in Supabase first.</div>`;}
-}
-async function loadOwnerRewardCodes(){if(isRewardCodeManager())await loadRewardCodesInto("ownerRewardCodesList","owner");}
-async function saveRewardCodeFromForm(e,mode){e.preventDefault();if(!isRewardCodeManager()){toast("Only the owner or noahlangedu@gmail.com can manage reward codes.","error");return;}
- const prefix=mode==="owner"?"ownerReward":"emailManager";const code=$(prefix+"Code").value.trim().toUpperCase(),amount=Number($(prefix+"Amount").value),expiryValue=$(prefix+(mode==="owner"?"Expiry":"Expiry")).value;
- if(!code||code.length>64||!/^[A-Z0-9_-]+$/.test(code)){toast("Use only letters, numbers, underscores, and hyphens for the code.","error");return;}
- if(!Number.isSafeInteger(amount)||amount<1||amount>1000000000){toast("Reward must be between 1 and 1,000,000,000 coins.","error");return;}
-    let expiresAt=null;if(expiryValue){const parsed=new Date(expiryValue);if(Number.isNaN(parsed.getTime())){toast("Choose a valid expiration date and time.","error");return;}expiresAt=parsed.toISOString();if(new Date(expiresAt).getTime()<=Date.now()){toast("Expiration must be in the future. Use Expire now to expire an existing code.","error");return;}}
- const b=$(mode==="owner"?"saveRewardCodeButton":"emailManagerSaveButton");setBusy(b,true,"Saving code...","Create / update code");try{const {error}=await db.rpc("owner_save_reward_code",{p_code:code,p_reward_amount:amount,p_expires_at:expiresAt});if(error)throw error;$(prefix+"Code").value="";$(prefix+"Expiry").value="";await loadRewardCodesInto(mode==="owner"?"ownerRewardCodesList":"emailManagerCodesList",mode);toast("Reward code saved.","success");logClientAction("saved reward code",{code,reward_amount:amount,expires_at:expiresAt});}catch(err){toast("Could not save reward code: "+err.message,"error");}finally{setBusy(b,false,"Saving code...","Create / update code");}}
-$("rewardCodeOwnerForm")?.addEventListener("submit",e=>saveRewardCodeFromForm(e,"owner"));
-$("emailRewardManagerForm")?.addEventListener("submit",e=>saveRewardCodeFromForm(e,"email"));
-$("refreshRewardCodes")?.addEventListener("click",loadOwnerRewardCodes);
-$("emailManagerRefresh")?.addEventListener("click",()=>loadRewardCodesInto("emailManagerCodesList","email"));
-async function handleRewardManagerListClick(e,hostId,mode){if(!isRewardCodeManager())return;const edit=e.target.closest("[data-edit-reward-code]");if(edit){const prefix=mode==="owner"?"ownerReward":"emailManager";$(prefix+"Code").value=edit.dataset.editRewardCode;$(prefix+"Amount").value=edit.dataset.rewardAmount;$(prefix+"Expiry").value=localDateInputValue(edit.dataset.rewardExpiry);$(prefix+"Code").focus();return;}
- const expire=e.target.closest("[data-expire-reward-code]");if(expire){if(!confirm(`Expire reward code ${expire.dataset.expireRewardCode} now? Members will no longer be able to redeem it.`))return;try{const {error}=await db.rpc("owner_expire_reward_code",{p_code:expire.dataset.expireRewardCode});if(error)throw error;await loadRewardCodesInto(hostId,mode);toast("Reward code expired.","success");}catch(err){toast("Could not expire code: "+err.message,"error");}return;}
- const del=e.target.closest("[data-delete-reward-code]");if(!del)return;if(!confirm(`Delete reward code ${del.dataset.deleteRewardCode}? Members will no longer be able to redeem it.`))return;try{const {error}=await db.rpc("owner_delete_reward_code",{p_code:del.dataset.deleteRewardCode});if(error)throw error;await loadRewardCodesInto(hostId,mode);toast("Reward code deleted.","success");}catch(err){toast("Could not delete code: "+err.message,"error");}}
-$("ownerRewardCodesList")?.addEventListener("click",e=>handleRewardManagerListClick(e,"ownerRewardCodesList","owner"));
-$("emailManagerCodesList")?.addEventListener("click",e=>handleRewardManagerListClick(e,"emailManagerCodesList","email"));
-$("redeemCodeForm")?.addEventListener("submit",async e=>{e.preventDefault();if(!currentUser)return;const code=$("redeemCodeInput").value.trim().toUpperCase();if(!code){toast("Enter a reward code.","error");return;}const b=$("redeemCodeButton"),status=$("redeemCodeStatus");status.hidden=true;setBusy(b,true,"Redeeming...","Redeem code");try{const {data,error}=await db.rpc("redeem_reward_code",{p_code:code});if(error)throw error;const reward=Number(data?.reward_amount??data?.coins_awarded??data);await refreshMyProfile();await loadLeaderboard();$("redeemCodeInput").value="";status.textContent=`Success! You received ${money(Number.isFinite(reward)?reward:0)} virtual coins.`;status.className="notice sectiongap success";status.hidden=false;toast("Reward code redeemed!","success");logClientAction("redeemed reward code",{code,coins_awarded:reward});}catch(err){status.textContent=err.message||"That code could not be redeemed.";status.className="notice sectiongap error";status.hidden=false;}finally{setBusy(b,false,"Redeeming...","Redeem code");}});
-
-async function loadCredits(){
- const host=$("creditsList");if(!host)return;host.innerHTML='<div class="empty">Loading credits...</div>';
- try{const {data,error}=await db.from("site_credits").select("id,name,contribution,created_at").order("created_at",{ascending:true});if(error)throw error;host.innerHTML=(data||[]).map(c=>`<div class="rowcard"><div class="grow"><strong>${esc(c.name)}</strong><p class="mutedline">${esc(c.contribution)}</p></div>${isOwner()?`<button class="smallbtn" data-credit-delete="${esc(c.id)}" type="button">Remove</button>`:""}</div>`).join("")||'<div class="empty">Credits have not been added yet.</div>';$("creditsEditor").hidden=!isOwner();if(isOwner())$("creditsManageList").innerHTML=host.innerHTML;
- }catch(e){host.innerHTML=`<div class="empty">Credits unavailable: ${esc(e.message)}. Run the supplied Supabase SQL first.</div>`;}
-}
-$("creditsForm")?.addEventListener("submit",async e=>{e.preventDefault();if(!isOwner()){toast("Only the owner can edit credits.","error");return;}const name=$("creditName").value.trim(),contribution=$("creditContribution").value.trim();if(!name||!contribution)return;try{const {error}=await db.rpc("owner_add_credit",{p_name:name,p_contribution:contribution});if(error)throw error;$("creditName").value="";$("creditContribution").value="";logClientAction("added a website credit",{name});await loadCredits();toast("Credit added.","success");}catch(e){toast("Could not add credit: "+e.message,"error");}});
-$("creditsManageList")?.addEventListener("click",async e=>{const b=e.target.closest("[data-credit-delete]");if(!b||!isOwner())return;if(!confirm("Remove this credit?"))return;try{const {error}=await db.rpc("owner_delete_credit",{p_credit_id:b.dataset.creditDelete});if(error)throw error;await loadCredits();toast("Credit removed.","success");}catch(e){toast("Could not remove credit: "+e.message,"error");}});
-$("refreshCredits")?.addEventListener("click",loadCredits);
-$("openDeleteAccount")?.addEventListener("click",()=>{$("deleteAccountConfirm").hidden=false;$("deleteAccountText").value="";$("deleteAccountText").focus();});
-$("cancelDeleteAccount")?.addEventListener("click",()=>{$("deleteAccountConfirm").hidden=true;$("deleteAccountText").value="";});
-$("confirmDeleteAccount")?.addEventListener("click",async()=>{if($("deleteAccountText").value!=="DELETE"){toast('Type exactly DELETE to confirm.','error');return;}if(!confirm("FINAL CONFIRMATION: permanently delete your account? This cannot be undone."))return;const b=$("confirmDeleteAccount");setBusy(b,true,"Deleting account...","Permanently delete account");try{const {error}=await db.rpc("delete_my_account_permanently");if(error)throw error;await db.auth.signOut();toast("Account deletion request completed.","success");}catch(e){toast("Account could not be deleted: "+e.message,"error");}finally{setBusy(b,false,"Deleting account...","Permanently delete account");}});
-// Open the report form with a member preselected from their public chat message.
-$("chatMessages")?.addEventListener("click",async e=>{const b=e.target.closest("[data-report-user]");if(!b)return;await loadReportTargets();$("reportTarget").value=b.dataset.reportUser;navigate("reports");$("reportTarget").value=b.dataset.reportUser;$("reportReason").focus();});
-// Warning notices and temporary bans/timeouts are read from the server, not local storage.
-async function refreshMyModerationStatus(){if(!currentUser||!db)return;try{const {data,error}=await db.rpc("get_my_moderation_status");if(error)throw error;const active=data?.[0]||data;if(active?.banned){toast("Your account is currently banned until "+timeText(active.ends_at)+".","error");await db.auth.signOut();return;}const banner=$("memberWarningBanner");if(active?.warning_text){banner.textContent="⚠ Website warning: "+active.warning_text+" · Expires "+timeText(active.warning_ends_at);banner.hidden=false;}else{banner.hidden=true;banner.textContent="";}const timedOut=Boolean(active?.timed_out);document.querySelectorAll("#chatForm button,#chatText,#dmForm button,#dmText").forEach(el=>{if(el.dataset.moderationDisabled==="1")delete el.dataset.moderationDisabled;if(timedOut){el.dataset.moderationDisabled="1";el.disabled=true;}else if(el.dataset.moderationDisabled==="1"){el.disabled=false;delete el.dataset.moderationDisabled;}});if(timedOut)toast("Your account is timed out until "+timeText(active.ends_at)+".","error");}catch(e){console.warn("Moderation status could not be checked:",e.message);}}
-let moderationPollTimer=null;
-const priorHandleSession=handleSession;
-handleSession=async function(session){await priorHandleSession(session);if(session?.user&&currentUser){try{await refreshMyModerationStatus();await loadCredits();if(moderationPollTimer)clearInterval(moderationPollTimer);moderationPollTimer=setInterval(()=>{if(currentUser)refreshMyModerationStatus();},60000);}catch(e){console.warn(e);}}};
-// Broad action trail: record button/form actions without collecting password fields or private-message text. Public chat body is logged by the database trigger.
-document.addEventListener("click",event=>{const el=event.target.closest("button,[role=button]");if(!el||!currentUser)return;const label=(el.innerText||el.getAttribute("aria-label")||el.id||"button action").trim().replace(/\s+/g," ").slice(0,100);if(label)logClientAction("clicked control",{label,page:activePage});},true);
-document.addEventListener("submit",event=>{if(!currentUser)return;const id=event.target?.id;if(id&&id!=="loginForm"&&id!=="signupForm")logClientAction("submitted form",{form:id,page:activePage});},true);
-// Record navigation and the public-chat message content only. Private messages and credentials are deliberately excluded.
-const priorNavigate=navigate;
-navigate=function(page){priorNavigate(page);if(currentUser)logClientAction("opened page",{page});if(page==="audit"&&isStaff())loadAuditLog();if(page==="reports"&&isStaff())loadReports();};
+$("musicPlayButton")?.addEventListener("click",async()=>{
+  const audio=$("siteMusicAudio"),raw=$("musicUrlInput").value.trim();
+  if(raw&&audio.dataset.savedUrl!==raw){$("musicSaveButton").click();if(!audio.src){return;}}
+  if(!audio.src){$("musicStatus").textContent="Add a direct HTTPS audio file URL and click Save link first.";$("musicStatus").className="notice sectiongap error";return;}
+  try{await audio.play();$("musicStatus").textContent="Music is playing. Use Pause to stop it.";$("musicStatus").className="notice sectiongap success";}catch(e){$("musicStatus").textContent="Could not play this link. Check that it points directly to an audio file and allows playback.";$("musicStatus").className="notice sectiongap error";}
+});
+$("musicPauseButton")?.addEventListener("click",()=>{$("siteMusicAudio").pause();$("musicStatus").textContent="Music is paused.";$("musicStatus").className="notice sectiongap";});
+$("menuAppearancePage")?.addEventListener("change",loadMenuAppearanceEditor);
+$("menuAppearanceColor")?.addEventListener("input",()=>setMenuPreview($("menuAppearancePreview"),$("menuAppearanceColor").value,$("menuAppearanceImage").value,menuPageLabel($("menuAppearancePage").value)));
+$("menuAppearanceImage")?.addEventListener("input",()=>setMenuPreview($("menuAppearancePreview"),$("menuAppearanceColor").value,$("menuAppearanceImage").value,menuPageLabel($("menuAppearancePage").value)));
+$("menuAppearanceForm")?.addEventListener("submit",async e=>{
+  e.preventDefault();if(!canManageMenuAppearance()){toast("Only the owner can change shared menu appearance.","error");return;}
+  const key=$("menuAppearancePage").value,color=$("menuAppearanceColor").value,imageRaw=$("menuAppearanceImage").value.trim(),image=imageRaw?safeMenuImage(imageRaw):"";
+  if(imageRaw&&!image){toast("Use a valid HTTPS image URL.","error");return;}
+  const b=$("saveMenuAppearanceButton");setBusy(b,true,"Saving...","Save menu button");
+  try{const {error}=await db.rpc("owner_save_menu_appearance",{p_page_key:key,p_button_color:color,p_image_url:image||null});if(error)throw error;menuAppearanceCache[key]={button_color:color,image_url:image};applyMenuAppearance();loadMenuAppearanceEditor();$("menuAppearanceStatus").hidden=false;$("menuAppearanceStatus").textContent="Saved. This menu button appearance is shared with signed-in visitors.";$("menuAppearanceStatus").className="notice success";toast("Menu button appearance saved.","success");}
+  catch(err){$("menuAppearanceStatus").hidden=false;$("menuAppearanceStatus").textContent="Could not save: "+err.message+". Make sure you ran the menu appearance SQL upgrade.";$("menuAppearanceStatus").className="notice error";}
+  finally{setBusy(b,false,"Saving...","Save menu button");}
+});
+$("resetMenuAppearanceButton")?.addEventListener("click",async()=>{
+  if(!canManageMenuAppearance())return;const key=$("menuAppearancePage").value;
+  try{const {error}=await db.rpc("owner_save_menu_appearance",{p_page_key:key,p_button_color:null,p_image_url:null});if(error)throw error;delete menuAppearanceCache[key];applyMenuAppearance();loadMenuAppearanceEditor();$("menuAppearanceStatus").hidden=false;$("menuAppearanceStatus").textContent="This button was reset to the default style.";$("menuAppearanceStatus").className="notice success";}
+  catch(err){toast("Could not reset button: "+err.message,"error");}
+});
+const priorHandleSessionForSettings=handleSession;
+handleSession=async function(session){await priorHandleSessionForSettings(session);if(session?.user&&currentUser){loadPersonalSettingsUI();await loadMenuAppearance();}else{menuAppearanceCache={};applyMenuAppearance();}};
+// Apply opacity immediately, including before authentication finishes.
+applyMenuAppearance();
 
 </script>
 </body>
