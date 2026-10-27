@@ -239,7 +239,13 @@ input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 
 .terminal-topbar{display:flex;align-items:center;gap:7px;padding:11px 14px;background:#0c1711;border-bottom:1px solid #1e6246;color:#a7f3c4;font-weight:800}
 .terminal-dot{width:9px;height:9px;border-radius:50%;background:#fb7185}.terminal-dot:nth-child(2){background:#fbbf24}.terminal-dot:nth-child(3){background:#4ade80}
 .terminal-output{height:300px;overflow:auto;padding:16px;color:#9af7b4;font:13px/1.65 ui-monospace,SFMono-Regular,Consolas,monospace;white-space:pre-wrap;overflow-wrap:anywhere}
-.terminal-form{display:flex;gap:8px;padding:12px;border-top:1px solid #1e6246;background:#08110b}.terminal-prompt{align-self:center;color:#4ade80;font-family:monospace}.terminal-input{flex:1;min-width:0;background:#030704!important;color:#b7ffc8!important;border-color:#24583a!important;font-family:ui-monospace,SFMono-Regular,Consolas,monospace!important}
+.terminal-form{display:flex;gap:8px;padding:12px;border-top:1px solid #1e6246;background:#08110b;align-items:center}
+.terminal-prompt{align-self:center;color:#4ade80;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;white-space:nowrap}
+#ownerTerminalInput.terminal-input{display:block;flex:1 1 auto;min-width:0;width:100%;height:42px;padding:10px 12px;background:#030704!important;background-color:#030704!important;color:#b7ffc8!important;-webkit-text-fill-color:#b7ffc8!important;caret-color:#4ade80!important;border:1px solid #39a96b!important;border-radius:8px;font-family:ui-monospace,SFMono-Regular,Consolas,monospace!important;font-size:14px!important;font-weight:600;opacity:1!important;visibility:visible!important;text-shadow:0 0 1px #b7ffc8;box-shadow:inset 0 0 0 1px #0b1c11}
+#ownerTerminalInput.terminal-input::placeholder{color:#679778!important;-webkit-text-fill-color:#679778!important;opacity:1}
+#ownerTerminalInput.terminal-input:focus{outline:2px solid #4ade80!important;outline-offset:1px;background:#030704!important;color:#d4ffe0!important;-webkit-text-fill-color:#d4ffe0!important}
+#ownerTerminalInput.terminal-input::selection{background:#166534!important;color:#ffffff!important}
+@media(max-width:600px){.terminal-form{flex-wrap:wrap}.terminal-prompt{width:100%}#ownerTerminalInput.terminal-input{flex-basis:65%}}
 </style>
 </head>
 <body>
@@ -808,25 +814,56 @@ function terminalWrite(line=""){
   ownerTerminalOutput.textContent+=(ownerTerminalOutput.textContent.endsWith("\n")?"":"\n")+line;
   ownerTerminalOutput.scrollTop=ownerTerminalOutput.scrollHeight;
 }
-$("ownerTerminalForm")?.addEventListener("submit",event=>{
+async function runOwnerNetworkDiagnostics(){
+  terminalWrite("NETWORK DIAGNOSTICS");
+  terminalWrite("Browser online flag: "+(navigator.onLine?"ONLINE":"OFFLINE"));
+  terminalWrite("Page origin: "+window.location.origin);
+  terminalWrite("Connection API: "+(navigator.connection?"available":"not supported by this browser"));
+  if(navigator.connection){
+    terminalWrite("Connection type: "+(navigator.connection.type||"not reported"));
+    terminalWrite("Effective type: "+(navigator.connection.effectiveType||"not reported"));
+    terminalWrite("Downlink estimate: "+(Number.isFinite(navigator.connection.downlink)?navigator.connection.downlink+" Mbps":"not reported"));
+    terminalWrite("RTT estimate: "+(Number.isFinite(navigator.connection.rtt)?navigator.connection.rtt+" ms":"not reported"));
+  }
+  terminalWrite("Browser: "+navigator.userAgent);
+  terminalWrite("Local timezone: "+(Intl.DateTimeFormat().resolvedOptions().timeZone||"not reported"));
+  terminalWrite("Testing this website response...");
+  const started=performance.now();
+  try{
+    const response=await fetch(window.location.href,{method:"HEAD",cache:"no-store",credentials:"same-origin"});
+    const elapsed=Math.round(performance.now()-started);
+    terminalWrite("Website request: HTTP "+response.status+" "+response.statusText);
+    terminalWrite("Website response time: "+elapsed+" ms (browser-to-site request; not a full internet speed test)");
+  }catch(error){
+    terminalWrite("Website request failed: "+(error?.message||"network error"));
+    terminalWrite("Response time: unavailable");
+  }
+  terminalWrite("Privacy: no visitor IP or private LAN details are collected by this command.");
+}
+$("ownerTerminalForm")?.addEventListener("submit",async event=>{
   event.preventDefault();
   if(!isTerminalOwner()){toast("Owner access required.","error");navigate("dashboard");return;}
   const input=$("ownerTerminalInput"),command=input.value.trim();if(!command)return;input.value="";
   terminalWrite("owner@piltae:~$ "+command);
   const cmd=command.toLowerCase();
-  if(cmd==="clear"){ownerTerminalOutput.textContent="PILTAE CHATTER OWNER CONSOLE\n";return;}
+  if(cmd==="clear"){ownerTerminalOutput.textContent="PILTAE CHATTER OWNER CONSOLE\n";input.focus();return;}
   if(cmd==="help"){
-    terminalWrite("Available commands:");terminalWrite("  help       Show this command list");terminalWrite("  whoami     Show the signed-in owner account");terminalWrite("  site       Show website and session status");terminalWrite("  network    Explain available browser network diagnostics");terminalWrite("  clear      Clear this terminal");
+    terminalWrite("Available commands:");terminalWrite("  help       Show this command list");terminalWrite("  whoami     Show the signed-in owner account");terminalWrite("  site       Show website and session status");terminalWrite("  network    Run browser and website response diagnostics");terminalWrite("  clear      Clear this terminal");
   }else if(cmd==="whoami"){
     terminalWrite("Authenticated account: "+(currentUser?.email||"unknown"));terminalWrite("Owner console access: "+(isTerminalOwner()?"GRANTED":"DENIED"));
   }else if(cmd==="site"){
-    terminalWrite("Website: PILTAE CHATTER");terminalWrite("Session: "+(currentUser?"signed in":"signed out"));terminalWrite("Profile role: "+(myProfile?.role||"unknown"));terminalWrite("Console: browser-side diagnostics only");
+    terminalWrite("Website: PILTAE CHATTER");terminalWrite("Session: "+(currentUser?"signed in":"signed out"));terminalWrite("Profile role: "+(myProfile?.role||"unknown"));terminalWrite("Console: owner-only browser diagnostics; no operating-system shell");
   }else if(cmd==="network"){
-    terminalWrite("Browser network diagnostics are limited for privacy and security.");terminalWrite("This page cannot run ipconfig on a visitor's device or read their private LAN configuration.");terminalWrite("No hidden visitor terminal or covert IP collection is running.");
+    await runOwnerNetworkDiagnostics();
   }else{
     terminalWrite("Command not found: "+command+". Type help.");
   }
+  input.focus();
 });
+// Keep typed text, cursor, and placeholder readable even when site-wide theme styles change.
+const ownerTerminalInput=$("ownerTerminalInput");
+if(ownerTerminalInput){ownerTerminalInput.style.setProperty("color","#b7ffc8","important");ownerTerminalInput.style.setProperty("-webkit-text-fill-color","#b7ffc8","important");ownerTerminalInput.style.setProperty("caret-color","#4ade80","important");ownerTerminalInput.addEventListener("input",()=>{ownerTerminalInput.style.setProperty("color","#b7ffc8","important");ownerTerminalInput.style.setProperty("-webkit-text-fill-color","#b7ffc8","important");});}
+
 
 $("signupForm").addEventListener("submit",async event=>{
   event.preventDefault();const name=$("signupName").value.trim(),email=$("signupEmail").value.trim(),password=$("signupPassword").value;
