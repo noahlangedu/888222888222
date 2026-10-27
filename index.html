@@ -372,17 +372,27 @@ input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 
 </section>
 
 <section class="page" id="page-shop" hidden>
-  <div class="pagehead"><div><h2>UI & HUD Skin Shop</h2><p class="muted">Buy themes that recolor the website, chat, panels, buttons, and Mines HUD using virtual coins.</p></div><button class="smallbtn" id="reloadShop" type="button">Refresh</button></div>
+  <div class="pagehead"><div><h2>PILTAE Shop</h2><p class="muted">Buy UI themes, menu button images, and website background images with virtual coins. Each item can only be purchased once while it is in your Inventory.</p></div><button class="smallbtn" id="reloadShop" type="button">Refresh</button></div>
   <div class="card theme-banner sectiongap"><div id="currentThemePreview"></div><div class="theme-banner-copy"><div class="eyebrow">CURRENT LOOK</div><h3 id="currentThemeName">Midnight Default</h3><p class="muted" id="currentThemeDescription">The original PILTAE look.</p><button class="smallbtn" id="resetThemeButton" type="button">Use Midnight Default</button></div></div>
   <div id="shopItems" class="itemsgrid"><div class="empty">Loading skins...</div></div>
+    <div class="card sectiongap" id="shopPublishItemCard" hidden><h3>Add an item to the Shop</h3><p class="muted">Publish a theme, website background image, or menu button image. Set its virtual-coin price; members must buy image items before equipping them.</p><form id="createItemForm" class="twoform">
+      <div class="field wide"><label for="itemSkinType">SHOP ITEM TYPE</label><select id="itemSkinType" required><option value="theme">Preset UI / HUD theme</option><option value="image">Website background image</option><option value="menu_button">Menu button image</option></select><p class="muted">Background images change the website background. Menu button images are individual items that buyers equip to a chosen sidebar button.</p></div>
+      <div class="field wide" id="itemTargetPageField" hidden><label for="itemTargetPage">BUTTON TO CUSTOMIZE</label><select id="itemTargetPage"><option value="dashboard">Dashboard</option><option value="profile">Profile</option><option value="chat">Community chat</option><option value="suggestions">Suggestions</option><option value="redeem">Redeem code</option><option value="friends">Friends</option><option value="dm">Private messages</option><option value="shop">Shop</option><option value="inventory">Inventory</option><option value="mines">Mines</option><option value="tower">Tower</option><option value="arcade">Arcade Games</option><option value="events">Fake-coin events</option><option value="terms">Terms of Service</option><option value="reports">Report a member</option><option value="credits">Credits</option><option value="settings">Settings</option></select></div>
+      <div class="field"><label for="itemName">Skin name</label><input id="itemName" maxlength="60" required placeholder="Example: Emerald Operator"></div>
+      <div class="field"><label for="itemPrice">Price in coins</label><input id="itemPrice" type="number" min="1" max="1000000000" required value="1500"></div>
+      <div class="field wide" id="itemThemeField"><label for="itemThemeKey">THEME PRESET</label><select id="itemThemeKey" required></select><p class="muted">Members can equip any preset theme they own from Inventory.</p></div>
+      <div class="field wide"><label for="itemDescription">Description</label><textarea id="itemDescription" maxlength="300" placeholder="Describe the skin."></textarea></div>
+      <div class="field wide"><label id="itemImageUrlLabel" for="itemImageFile">Choose image from your computer or phone</label><input id="itemImageFile" type="file" accept="image/png,image/jpeg,image/webp,image/gif"><p class="muted" id="itemImageUrlHint">Choose a PNG, JPG, WEBP, or GIF from your files/gallery. The image will be uploaded so other members can see it.</p><div id="itemImageLocalPreview" class="sectiongap" hidden></div></div>
+      <button class="btn wide" id="createItemButton" type="submit">Publish UI / HUD skin</button>
+    </form></div>
   <div class="card sectiongap"><h3>Your purchases</h3><div id="purchasesList"><div class="empty">Loading purchases...</div></div></div>
   <div class="card sectiongap" id="ownerMenuAppearanceCard" hidden>
-    <h3>Custom menu button designs (owner)</h3>
-    <p class="muted">Choose a menu button, customize its color, and optionally add a background image URL. These designs are shared with signed-in visitors. This owner tool is now located in the Shop.</p>
+    <h3>Shared menu button colors (owner)</h3>
+    <p class="muted">Use this only for shared button colors. Menu button images are separate Shop items that members must buy and equip from Inventory.</p>
     <form id="menuAppearanceForm" class="twoform">
       <div class="field"><label for="menuAppearancePage">MENU BUTTON</label><select id="menuAppearancePage"><option value="dashboard">Dashboard</option><option value="profile">Profile</option><option value="chat">Community chat</option><option value="suggestions">Suggestions</option><option value="redeem">Redeem code</option><option value="friends">Friends</option><option value="dm">Private messages</option><option value="shop">Shop</option><option value="inventory">Inventory</option><option value="mines">Mines</option><option value="tower">Tower</option><option value="arcade">Arcade Games</option><option value="events">Fake-coin events</option><option value="terms">Terms of Service</option><option value="reports">Report a member</option><option value="credits">Credits</option><option value="settings">Settings</option></select></div>
       <div class="field"><label for="menuAppearanceColor">BUTTON COLOR</label><input id="menuAppearanceColor" type="color" value="#111521"></div>
-      <div class="field wide"><label for="menuAppearanceImage">CUSTOM BUTTON IMAGE URL (OPTIONAL)</label><input id="menuAppearanceImage" type="url" placeholder="https://.../mines-button.png"><p class="muted">Use a direct HTTPS image link. Leave blank to use only the selected color.</p></div>
+      <div class="field wide"><p class="muted">Menu button images are sold as separate Shop items. Members must buy them and equip them from Inventory; this shared editor only changes the default button color.</p></div>
       <div class="settings-preview wide"><span class="muted">PREVIEW</span><button class="menu-preview-button" id="menuAppearancePreview" type="button">💎 Mines menu button</button></div>
       <button class="btn" id="saveMenuAppearanceButton" type="submit">Save menu button</button><button class="smallbtn" id="resetMenuAppearanceButton" type="button">Reset this button</button>
     </form>
@@ -499,15 +509,6 @@ input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 
   <div id="adminForbidden" class="notice error" hidden>This area is only available to admins and the owner.</div>
   <div id="adminTools" class="stack">
     <div class="card sectiongap" id="rewardCodesOwnerPanel" hidden><h3>Reward codes (owner only)</h3><p class="muted">Create a code or enter an existing code to change its coin reward. Members can redeem each code once per account.</p><form id="rewardCodeOwnerForm" class="twoform"><div class="field"><label for="ownerRewardCode">Code</label><input id="ownerRewardCode" maxlength="64" required placeholder="HALLOWEEN2026"></div><div class="field"><label for="ownerRewardAmount">Coins rewarded</label><input id="ownerRewardAmount" type="number" min="1" max="1000000000" required value="500"></div><div class="field wide"><label for="ownerRewardExpiry">Expiration (optional)</label><input id="ownerRewardExpiry" type="datetime-local"><p class="muted">Leave blank for no expiration.</p></div><button class="btn wide" id="saveRewardCodeButton" type="submit">Create / update code</button></form><div class="inlineform sectiongap"><button class="smallbtn" id="refreshRewardCodes" type="button">Refresh codes</button></div><div id="ownerRewardCodesList" class="stack sectiongap"><div class="empty">Loading reward codes...</div></div></div>
-    <div class="card staffonly"><h3>Publish a UI / HUD skin</h3><p class="muted">List a built-in color theme or a custom image background. Set a virtual-coin price; members can buy and save it to Inventory.</p><form id="createItemForm" class="twoform">
-      <div class="field wide"><label for="itemSkinType">SKIN TYPE</label><select id="itemSkinType" required><option value="theme">Preset UI / HUD theme</option><option value="image">Custom image background</option></select><p class="muted">Preset themes recolor the website. Custom image skins use your chosen image behind the website panels.</p></div>
-      <div class="field"><label for="itemName">Skin name</label><input id="itemName" maxlength="60" required placeholder="Example: Emerald Operator"></div>
-      <div class="field"><label for="itemPrice">Price in coins</label><input id="itemPrice" type="number" min="1" max="1000000000" required value="1500"></div>
-      <div class="field wide" id="itemThemeField"><label for="itemThemeKey">THEME PRESET</label><select id="itemThemeKey" required></select><p class="muted">Members can equip any preset theme they own from Inventory.</p></div>
-      <div class="field wide"><label for="itemDescription">Description</label><textarea id="itemDescription" maxlength="300" placeholder="Describe the skin."></textarea></div>
-      <div class="field wide"><label id="itemImageUrlLabel" for="itemImageFile">Choose image from your computer or phone</label><input id="itemImageFile" type="file" accept="image/png,image/jpeg,image/webp,image/gif"><p class="muted" id="itemImageUrlHint">Choose a PNG, JPG, WEBP, or GIF from your files/gallery. The image will be uploaded so other members can see it.</p><div id="itemImageLocalPreview" class="sectiongap" hidden></div></div>
-      <button class="btn wide" id="createItemButton" type="submit">Publish UI / HUD skin</button>
-    </form></div>
     <div class="card staffonly sectiongap"><h3>Host a coin-flip event</h3><form id="createEventForm"><div class="field"><label for="eventTitle">Event title</label><input id="eventTitle" maxlength="80" required placeholder="Friday Night Coin Flip"></div><div class="field"><label for="eventDescription">Rules / description</label><textarea id="eventDescription" maxlength="300" placeholder="Pick heads or tails. Winners receive 2x their wager."></textarea></div><button class="btn" type="submit">Open event</button></form></div>
     <div class="card staffonly sectiongap"><h3>TOWER controls</h3><p class="muted">Enable or pause Tower and set the maximum virtual-coin wager. All results and payouts are validated by Supabase.</p><form id="towerAdminForm" class="twoform"><div class="field"><label for="towerAdminEnabled">TOWER STATUS</label><select id="towerAdminEnabled"><option value="true">Enabled</option><option value="false">Paused</option></select></div><div class="field"><label for="towerAdminMaxWager">MAXIMUM WAGER</label><input id="towerAdminMaxWager" type="number" min="1" max="1000000000" value="1000000" required></div><button class="btn wide" type="submit">Save Tower settings</button></form><div id="towerAdminStatus" class="notice" hidden></div><h3 class="sectiongap">Recent Tower runs (admin)</h3><button class="smallbtn" id="towerAdminRefreshButton" type="button">Refresh Tower history</button><div id="towerAdminHistory" class="tower-history-list sectiongap"><div class="empty">Loading...</div></div></div>
 
@@ -676,13 +677,14 @@ function populateThemeSelect(){
   select.value=THEME_BY_KEY[previous]&&previous!=="midnight"?previous:"cyber_violet";
 }
 function syncSkinTypeFields(){
-  const isImage=$("itemSkinType")?.value==="image",themeField=$("itemThemeField"),themeSelect=$("itemThemeKey"),file=$("itemImageFile"),label=$("itemImageUrlLabel"),hint=$("itemImageUrlHint"),submit=$("createItemButton");
-  if(themeField)themeField.hidden=isImage;
-  if(themeSelect)themeSelect.required=!isImage;
+  const type=$("itemSkinType")?.value||"theme",isTheme=type==="theme",isImage=type==="image"||type==="menu_button",isMenu=type==="menu_button",themeField=$("itemThemeField"),themeSelect=$("itemThemeKey"),file=$("itemImageFile"),label=$("itemImageUrlLabel"),hint=$("itemImageUrlHint"),submit=$("createItemButton"),target=$("itemTargetPageField");
+  if(themeField)themeField.hidden=!isTheme;
+  if(themeSelect)themeSelect.required=isTheme;
   if(file)file.required=isImage;
-  if(label)label.textContent=isImage?"BACKGROUND IMAGE (REQUIRED)":"SHOP PREVIEW IMAGE (OPTIONAL)";
-  if(hint)hint.textContent=isImage?"Choose an image from your computer or phone gallery. PNG, JPG, WEBP, or GIF; maximum 8 MB.":"Optionally choose an image file to display as the preset theme's shop preview.";
-  if(submit)submit.textContent=isImage?"Publish custom image skin":"Publish UI / HUD skin";
+  if(target)target.hidden=!isMenu;
+  if(label)label.textContent=isImage?(isMenu?"MENU BUTTON IMAGE (REQUIRED)":"WEBSITE BACKGROUND IMAGE (REQUIRED)"):"SHOP PREVIEW IMAGE (OPTIONAL)";
+  if(hint)hint.textContent=isImage?"Choose a PNG, JPG, WEBP, or GIF from your computer or phone. Maximum 8 MB.":"Optionally choose an image file to display as the preset theme's shop preview.";
+  if(submit)submit.textContent=isMenu?"Publish menu button image":isImage?"Publish background image":"Publish UI / HUD theme";
 }
 $("itemImageFile").addEventListener("change",()=>{
   const file=$("itemImageFile").files?.[0],preview=$("itemImageLocalPreview");
@@ -720,7 +722,7 @@ function navigate(page){
   if(page==="redeem"){$("redeemCodeStatus").hidden=true;$("redeemCodeInput").focus();if(isRewardCodeManager())loadRewardCodesInto("emailManagerCodesList","email");}
   if(page==="friends")loadFriends();
   if(page==="dm")loadDmFriendChoices();
-  if(page==="shop"){loadShop();loadPurchases();$("ownerMenuAppearanceCard").hidden=!canManageMenuAppearance();if(canManageMenuAppearance())loadMenuAppearanceEditor();}
+  if(page==="shop"){$("shopPublishItemCard").hidden=!isStaff();loadShop();loadPurchases();$("ownerMenuAppearanceCard").hidden=!canManageMenuAppearance();if(canManageMenuAppearance())loadMenuAppearanceEditor();}
   if(page==="inventory"){loadInventory();updateInventoryThemeBanner();}
   if(page==="mines")loadActiveMinesGame();
   if(page==="tower")loadTowerPage();
@@ -752,7 +754,7 @@ async function refreshMyProfile(){
   data.active_theme=THEME_BY_KEY[data.active_theme]?data.active_theme:"midnight";
   data.active_image_skin_item_id=data.active_image_skin_item_id||null;data.active_image_skin=null;
   if(data.active_image_skin_item_id){
-    try{const imageResult=await db.from("inventory").select("item_id,item_name,image_url,skin_type").eq("user_id",currentUser.id).eq("item_id",data.active_image_skin_item_id).maybeSingle();if(!imageResult.error&&imageResult.data?.skin_type==="image"&&safeHttpsUrl(imageResult.data.image_url))data.active_image_skin=imageResult.data;}catch(e){console.warn("Active custom image could not be loaded:",e);}
+    try{const imageResult=await db.from("inventory").select("item_id,item_name,image_url,skin_type,appearance_type").eq("user_id",currentUser.id).eq("item_id",data.active_image_skin_item_id).maybeSingle();if(!imageResult.error&&imageResult.data?.skin_type==="image"&&imageResult.data?.appearance_type!=="menu_button"&&safeHttpsUrl(imageResult.data.image_url))data.active_image_skin=imageResult.data;}catch(e){console.warn("Active custom image could not be loaded:",e);}
   }
   myProfile=data;populateThemeSelect();syncSkinTypeFields();applyTheme(myProfile.active_theme);
   $("topCoins").textContent=money(data.coins);$("dashCoins").textContent=money(data.coins);if($("arcadeWalletCoins"))$("arcadeWalletCoins").textContent=money(data.coins);
@@ -976,31 +978,44 @@ $("dmForm").addEventListener("submit",async event=>{
 });
 
 async function loadShop(){
-  if(!currentUser)return;const host=$("shopItems");host.innerHTML='<div class="empty">Loading skins...</div>';
+  if(!currentUser)return;const host=$("shopItems");host.innerHTML='<div class="empty">Loading shop items...</div>';
   try{
-    const {data,error}=await db.from("shop_items").select("id,name,description,price,active,image_url,theme_key,skin_type,created_at").order("created_at",{ascending:false}).limit(200);
-    if(error)throw error;
-    const items=(data||[]).filter(i=>i.skin_type==="image"?Boolean(safeHttpsUrl(i.image_url)):Boolean(THEME_BY_KEY[i.theme_key]&&i.theme_key!=="midnight"));
-    if(!items.length){host.innerHTML='<div class="empty">No skins are listed yet. Staff can publish a preset theme or a custom image skin from Admin.</div>';applyTheme(myProfile?.active_theme||"midnight");return;}
+    const [{data,error},{data:ownedData,error:ownedError}]=await Promise.all([
+      db.from("shop_items").select("id,name,description,price,active,image_url,theme_key,skin_type,appearance_type,target_page_key,created_at").order("created_at",{ascending:false}).limit(200),
+      db.from("inventory").select("item_id").eq("user_id",currentUser.id).limit(500)
+    ]);
+    if(error)throw error;if(ownedError)throw ownedError;
+    const ownedIds=new Set((ownedData||[]).map(i=>i.item_id));
+    const items=(data||[]).filter(i=>i.appearance_type==="menu_button"?Boolean(safeHttpsUrl(i.image_url)&&i.target_page_key):i.skin_type==="image"?Boolean(safeHttpsUrl(i.image_url)):Boolean(THEME_BY_KEY[i.theme_key]&&i.theme_key!=="midnight"));
+    if(!items.length){host.innerHTML='<div class="empty">No items are listed yet. Staff can publish themes, menu button images, or website background images from Admin.</div>';return;}
     host.innerHTML=items.map(item=>{
-      const isImage=item.skin_type==="image",t=THEME_BY_KEY[item.theme_key],preview=isImage?customImagePreviewMarkup(item.image_url,item.name):(item.image_url&&safeHttpsUrl(item.image_url)?`<img class="shop-image" src="${esc(safeHttpsUrl(item.image_url))}" alt="${esc(item.name)} preview image" loading="lazy" referrerpolicy="no-referrer">`:themePreviewMarkup(item.theme_key));
-      const tag=isImage?"Custom Image Skin":(t?.name||"UI / HUD Theme"),fallback=isImage?"Custom image background skin. Buy it, then equip it from your Inventory.":(t?.description||"UI theme skin.");
-      return `<article class="itemcard shop-skin-card">${preview}<div class="theme-meta"><strong>${esc(item.name)}</strong><span class="tag">${esc(tag)}</span></div><p class="skin-description">${esc(item.description||fallback)}</p><div class="coin">🪙 ${money(item.price)} coins</div>${item.active?`<button class="btn" data-buy-item="${esc(item.id)}">Buy ${isImage?"image skin":"theme"}</button>`:'<p class="muted">Currently unavailable</p>'}${isStaff()?`<button class="smallbtn" style="margin-top:7px" data-toggle-item="${esc(item.id)}" data-active="${item.active?"false":"true"}">${item.active?"Disable listing":"Enable listing"}</button>`:""}</article>`;
-    }).join("");applyTheme(myProfile?.active_theme||"midnight");
-  }catch(error){host.innerHTML=`<div class="empty">Skin shop failed to load: ${esc(error.message)}. If the error mentions skin_type, run the custom image skin SQL upgrade.</div>`;}
+      const isMenu=item.appearance_type==="menu_button",isImage=item.skin_type==="image"&&!isMenu,t=THEME_BY_KEY[item.theme_key];
+      const preview=(item.image_url&&safeHttpsUrl(item.image_url))?`<img class="shop-image" src="${esc(safeHttpsUrl(item.image_url))}" alt="${esc(item.name)} preview" loading="lazy" referrerpolicy="no-referrer">`:themePreviewMarkup(item.theme_key);
+      const tag=isMenu?`Menu Button Image · ${menuPageLabel(item.target_page_key)}`:isImage?"Website Background Image":(t?.name||"UI / HUD Theme");
+      const fallback=isMenu?`Image for the ${menuPageLabel(item.target_page_key)} menu button. Buy it, then equip it from Inventory.`:isImage?"Website background image. Buy it, then equip it from Inventory.":(t?.description||"UI theme skin.");
+      const buyLabel=ownedIds.has(item.id)?"You already have this.":`Buy · ${money(item.price)} coins`;
+      return `<article class="itemcard shop-skin-card">${preview}<div class="theme-meta"><strong>${esc(item.name)}</strong><span class="tag">${esc(tag)}</span></div><p class="skin-description">${esc(item.description||fallback)}</p><div class="coin">🪙 ${money(item.price)} coins</div>${ownedIds.has(item.id)?'<button class="btn secondary" disabled>You already have this.</button>':item.active?`<button class="btn" data-buy-item="${esc(item.id)}">${buyLabel}</button>`:'<p class="muted">Currently unavailable</p>'}${isStaff()?`<button class="smallbtn" style="margin-top:7px" data-toggle-item="${esc(item.id)}" data-active="${item.active?"false":"true"}">${item.active?"Disable listing":"Enable listing"}</button>`:""}</article>`;
+    }).join("");
+  }catch(error){host.innerHTML=`<div class="empty">Shop failed to load: ${esc(error.message)}. Run the PILTAE shop appearance upgrade SQL if the error mentions appearance_type or target_page_key.</div>`;}
 }
 async function loadInventory(){
   if(!currentUser)return;const host=$("inventoryList");host.innerHTML='<div class="empty">Loading inventory...</div>';
   try{
-    const {data,error}=await db.from("inventory").select("id,item_id,item_name,image_url,theme_key,skin_type,quantity,first_purchased_at,last_purchased_at").eq("user_id",currentUser.id).order("last_purchased_at",{ascending:false}).limit(200);
+    const {data,error}=await db.from("inventory").select("id,item_id,item_name,image_url,theme_key,skin_type,appearance_type,target_page_key,quantity,first_purchased_at,last_purchased_at").eq("user_id",currentUser.id).order("last_purchased_at",{ascending:false}).limit(200);
     if(error)throw error;
-    const items=(data||[]).filter(i=>i.skin_type==="image"?Boolean(i.item_id&&safeHttpsUrl(i.image_url)):Boolean(THEME_BY_KEY[i.theme_key]&&i.theme_key!=="midnight")),current=THEME_BY_KEY[myProfile?.active_theme]?myProfile.active_theme:"midnight",activeImageId=myProfile?.active_image_skin_item_id||null;
-    const hasActiveImage=Boolean(activeImageId&&items.some(i=>i.skin_type==="image"&&i.item_id===activeImageId));
+    const items=(data||[]).filter(i=>i.appearance_type==="menu_button"?Boolean(i.item_id&&i.target_page_key&&safeHttpsUrl(i.image_url)):i.skin_type==="image"?Boolean(i.item_id&&safeHttpsUrl(i.image_url)):Boolean(THEME_BY_KEY[i.theme_key]&&i.theme_key!=="midnight")),current=THEME_BY_KEY[myProfile?.active_theme]?myProfile.active_theme:"midnight",activeImageId=myProfile?.active_image_skin_item_id||null;
+    ownedMenuImageCache=items.filter(i=>i.appearance_type==="menu_button");applyMenuAppearance();
+    const equippedMenu=readEquippedMenuImages();for(const page of Object.keys(equippedMenu)){if(!ownedMenuImageCache.some(i=>i.item_id===equippedMenu[page]&&i.target_page_key===page))delete equippedMenu[page];}writeEquippedMenuImages(equippedMenu);applyMenuAppearance();
+    const hasActiveImage=Boolean(activeImageId&&items.some(i=>i.skin_type==="image"&&i.appearance_type!=="menu_button"&&i.item_id===activeImageId));
     const defaultCard=`<article class="itemcard shop-skin-card">${themePreviewMarkup("midnight")}<div class="theme-meta"><strong>Midnight Default</strong><span class="tag">Free</span></div><p class="skin-description">The original PILTAE look. Always available, even without a purchase.</p>${current==="midnight"&&!hasActiveImage?'<span class="theme-current-label">Currently equipped</span>':'<button class="btn secondary" data-equip-theme="midnight" type="button">Equip default</button>'}</article>`;
     const cards=items.map(item=>{
+      if(item.appearance_type==="menu_button"){
+        const selected=readEquippedMenuImages()[item.target_page_key]===item.item_id,preview=customImagePreviewMarkup(item.image_url,item.item_name),pageName=menuPageLabel(item.target_page_key);
+        return `<article class="itemcard shop-skin-card">${preview}<div class="theme-meta"><strong>${esc(item.item_name)}</strong><span class="inventory-quantity">Owned</span></div><p class="skin-description">Menu button image for ${esc(pageName)}.</p><p class="mutedline">Added ${esc(timeText(item.first_purchased_at))}</p>${selected?'<span class="theme-current-label">Equipped</span>':`<button class="btn" data-equip-menu-image="${esc(item.item_id)}" data-target-page="${esc(item.target_page_key)}" type="button">Equip to ${esc(pageName)}</button>`}${selected?`<button class="smallbtn" data-clear-menu-image="${esc(item.target_page_key)}" type="button">Unequip image</button>`:""}</article>`;
+      }
       if(item.skin_type==="image"){
         const isCurrent=activeImageId===item.item_id,preview=customImagePreviewMarkup(item.image_url,item.item_name);
-        return `<article class="itemcard shop-skin-card">${preview}<div class="theme-meta"><strong>${esc(item.item_name)}</strong><span class="inventory-quantity">Owned ×${money(item.quantity)}</span></div><p class="skin-description">Custom image background skin.</p><p class="mutedline">Added ${esc(timeText(item.first_purchased_at))}</p>${isCurrent?'<span class="theme-current-label">Currently equipped</span>':`<button class="btn" data-equip-image-skin="${esc(item.item_id)}" type="button">Equip image skin</button>`}</article>`;
+        return `<article class="itemcard shop-skin-card">${preview}<div class="theme-meta"><strong>${esc(item.item_name)}</strong><span class="inventory-quantity">Owned ×${money(item.quantity)}</span></div><p class="skin-description">Website background image.</p><p class="mutedline">Added ${esc(timeText(item.first_purchased_at))}</p>${isCurrent?'<span class="theme-current-label">Currently equipped</span>':`<button class="btn" data-equip-image-skin="${esc(item.item_id)}" type="button">Equip image skin</button>`}</article>`;
       }
       const t=THEME_BY_KEY[item.theme_key],isCurrent=!hasActiveImage&&current===item.theme_key,preview=item.image_url&&safeHttpsUrl(item.image_url)?`<img class="shop-image" src="${esc(safeHttpsUrl(item.image_url))}" alt="${esc(item.item_name)} preview image" loading="lazy" referrerpolicy="no-referrer">`:themePreviewMarkup(item.theme_key);
       return `<article class="itemcard shop-skin-card">${preview}<div class="theme-meta"><strong>${esc(item.item_name)}</strong><span class="inventory-quantity">Owned ×${money(item.quantity)}</span></div><p class="skin-description">${esc(t?.description||"UI / HUD theme.")}</p><p class="mutedline">Added ${esc(timeText(item.first_purchased_at))}</p>${isCurrent?'<span class="theme-current-label">Currently equipped</span>':`<button class="btn" data-equip-theme="${esc(item.theme_key)}" type="button">Equip theme</button>`}</article>`;
@@ -1017,8 +1032,8 @@ $("reloadShop").addEventListener("click",()=>{loadShop();loadPurchases();});
 $("refreshInventoryButton").addEventListener("click",()=>{loadInventory();updateInventoryThemeBanner();});
 $("shopItems").addEventListener("click",async event=>{
   const buy=event.target.closest("[data-buy-item]"),toggle=event.target.closest("[data-toggle-item]");
-  if(buy){buy.disabled=true;try{const {error}=await db.rpc("buy_shop_item",{p_item_id:buy.dataset.buyItem});if(error)throw error;await refreshMyProfile();await loadShop();await loadInventory();await loadPurchases();await loadLeaderboard();toast("Skin purchased! Open your skin inventory to equip it.","success");}
-    catch(error){toast("Skin purchase failed: "+error.message,"error");}finally{buy.disabled=false;}}
+  if(buy){buy.disabled=true;try{const {error}=await db.rpc("buy_shop_item",{p_item_id:buy.dataset.buyItem});if(error)throw error;await refreshMyProfile();await loadShop();await loadInventory();await loadPurchases();await loadLeaderboard();toast("Purchased! Open Inventory to equip your item.","success");}
+    catch(error){const message=String(error.message||error);if(/already have|already own|already in your inventory/i.test(message))toast("You already have this.","error");else toast("Purchase failed: "+message,"error");}finally{buy.disabled=false;}}
   if(toggle){try{const {error}=await db.rpc("set_shop_item_active",{p_item_id:toggle.dataset.toggleItem,p_active:toggle.dataset.active==="true"});if(error)throw error;await loadShop();toast("Skin listing updated.","success");}
     catch(error){toast("Couldn't update skin listing: "+error.message,"error");}}
 });
@@ -1037,8 +1052,13 @@ async function equipImageSkin(itemId){
   }catch(error){toast("Couldn't equip image skin: "+error.message,"error");}
 }
 $("inventoryList").addEventListener("click",async event=>{
-  const themeButton=event.target.closest("[data-equip-theme]"),imageButton=event.target.closest("[data-equip-image-skin]"),button=themeButton||imageButton;if(!button)return;button.disabled=true;
-  try{if(themeButton)await equipTheme(themeButton.dataset.equipTheme);else await equipImageSkin(imageButton.dataset.equipImageSkin);}finally{button.disabled=false;}
+  const themeButton=event.target.closest("[data-equip-theme]"),imageButton=event.target.closest("[data-equip-image-skin]"),menuButton=event.target.closest("[data-equip-menu-image]"),clearMenu=event.target.closest("[data-clear-menu-image]"),button=themeButton||imageButton||menuButton||clearMenu;if(!button)return;button.disabled=true;
+  try{
+    if(themeButton)await equipTheme(themeButton.dataset.equipTheme);
+    else if(imageButton)await equipImageSkin(imageButton.dataset.equipImageSkin);
+    else if(menuButton){const item=ownedMenuImageCache.find(i=>i.item_id===menuButton.dataset.equipMenuImage&&i.target_page_key===menuButton.dataset.targetPage);if(!item)throw new Error("You must own this menu image before equipping it.");const selected=readEquippedMenuImages();selected[item.target_page_key]=item.item_id;writeEquippedMenuImages(selected);applyMenuAppearance();await loadInventory();toast("Menu button image equipped!","success");}
+    else if(clearMenu){const selected=readEquippedMenuImages();delete selected[clearMenu.dataset.clearMenuImage];writeEquippedMenuImages(selected);applyMenuAppearance();await loadInventory();toast("Menu button image unequipped.","success");}
+  }catch(error){toast("Could not equip item: "+error.message,"error");}finally{button.disabled=false;}
 });
 $("resetThemeButton").addEventListener("click",()=>equipTheme("midnight"));
 $("inventoryResetThemeButton").addEventListener("click",()=>equipTheme("midnight"));
@@ -1075,7 +1095,7 @@ syncSkinTypeFields();
 $("createItemForm").addEventListener("submit",async event=>{
   event.preventDefault();
   const name=$("itemName").value.trim(),description=$("itemDescription").value.trim(),price=Number($("itemPrice").value),button=event.submitter||$("createItemButton"),skinType=$("itemSkinType").value,file=$("itemImageFile").files?.[0];
-  setBusy(button,true,"Publishing...",skinType==="image"?"Publish custom image skin":"Publish UI / HUD skin");
+  setBusy(button,true,"Publishing...",skinType==="menu_button"?"Publish menu button image":skinType==="image"?"Publish background image":"Publish UI / HUD theme");
   try{
     if(!name||name.length>60)throw new Error("Skin name must be 1–60 characters.");
     if(!Number.isSafeInteger(price)||price<1||price>1000000000)throw new Error("Price must be between 1 and 1,000,000,000 coins.");
@@ -1090,16 +1110,20 @@ $("createItemForm").addEventListener("submit",async event=>{
       if(uploadError)throw new Error("Image upload failed. Set up the skin-images bucket in Supabase. "+uploadError.message);
       imageUrl=db.storage.from("skin-images").getPublicUrl(path).data.publicUrl;
     }
-    if(skinType==="image"){
-      if(!file||!imageUrl)throw new Error("Choose the background image from your files/gallery first.");
-      const {error}=await db.rpc("create_custom_image_skin",{p_name:name,p_description:description,p_price:price,p_image_url:imageUrl});if(error)throw error;
+    if(skinType==="image"||skinType==="menu_button"){
+      if(!file||!imageUrl)throw new Error("Choose the image from your files/gallery first.");
+      if(skinType==="menu_button"){
+        const {error}=await db.rpc("create_shop_appearance_item",{p_name:name,p_description:description,p_price:price,p_image_url:imageUrl,p_appearance_type:"menu_button",p_target_page_key:$("itemTargetPage").value});if(error)throw error;
+      }else{
+        const {error}=await db.rpc("create_custom_image_skin",{p_name:name,p_description:description,p_price:price,p_image_url:imageUrl});if(error)throw error;
+      }
     }else{
       const themeKey=$("itemThemeKey").value;if(!THEME_BY_KEY[themeKey]||themeKey==="midnight")throw new Error("Choose a purchasable theme preset.");
       const {error}=await db.rpc("create_shop_item",{p_name:name,p_description:description,p_price:price,p_image_url:imageUrl,p_theme_key:themeKey});if(error)throw error;
     }
-    event.target.reset();$("itemImageLocalPreview").replaceChildren();$("itemImageLocalPreview").hidden=true;populateThemeSelect();syncSkinTypeFields();await loadShop();toast(skinType==="image"?"Custom image skin published in the shop.":"UI/HUD skin published.","success");
+    event.target.reset();$("itemImageLocalPreview").replaceChildren();$("itemImageLocalPreview").hidden=true;populateThemeSelect();syncSkinTypeFields();await loadShop();toast(skinType==="menu_button"?"Menu button image published to the Shop.":skinType==="image"?"Website background image published to the Shop.":"UI/HUD theme published.","success");
   }catch(error){toast("Couldn't publish skin: "+error.message,"error");}
-  finally{setBusy(button,false,"Publishing...",$("itemSkinType").value==="image"?"Publish custom image skin":"Publish UI / HUD skin");}
+  finally{setBusy(button,false,"Publishing...",$("itemSkinType").value==="menu_button"?"Publish menu button image":$("itemSkinType").value==="image"?"Publish background image":"Publish UI / HUD theme");}
 });
 $("createEventForm").addEventListener("submit",async event=>{
   event.preventDefault();const title=$("eventTitle").value.trim(),description=$("eventDescription").value.trim(),button=event.submitter;setBusy(button,true,"Opening event...","Open event");
@@ -1518,6 +1542,10 @@ navigate=function(page){priorNavigate(page);if(currentUser)logClientAction("open
 // ===== PILTAE menu appearance, member opacity, and optional background music =====
 const MENU_APPEARANCE_DEFAULTS = {};
 let menuAppearanceCache = {};
+let ownedMenuImageCache = [];
+function menuImageEquipKey(){return "piltae_equipped_menu_images_"+(currentUser?.id||"guest");}
+function readEquippedMenuImages(){try{return JSON.parse(localStorage.getItem(menuImageEquipKey())||"{}");}catch{return {};}}
+function writeEquippedMenuImages(value){try{localStorage.setItem(menuImageEquipKey(),JSON.stringify(value));}catch(e){console.warn("Menu image selection could not be saved",e);}}
 function canManageMenuAppearance(){return isOwner()||String(currentUser?.email||"").toLowerCase()==="noahlangedu@gmail.com";}
 function memberSettingsStorageKey(){return "piltae_member_settings_"+(currentUser?.id||"guest");}
 function readMemberSettings(){try{return JSON.parse(localStorage.getItem(memberSettingsStorageKey())||"{}");}catch{return {};}}
@@ -1527,13 +1555,12 @@ function menuPageLabel(key){const b=document.querySelector('.sidebar .navbtn[dat
 function setMenuPreview(el,color,image,label){if(!el)return;const safe=safeMenuImage(image);el.textContent=label||"Menu button preview";el.style.backgroundColor=color||"#111521";el.style.backgroundImage=safe?`linear-gradient(#10152299,#10152299),url("${safe.replace(/["\\]/g,"")}")`:"linear-gradient(#10152255,#10152255)";el.style.backgroundSize="cover";el.style.backgroundPosition="center";}
 function applyMenuAppearance(){
   document.querySelectorAll('.sidebar .navbtn[data-page]').forEach(btn=>{
-    const key=btn.dataset.page,setting=menuAppearanceCache[key];
-    btn.style.backgroundColor="";btn.style.backgroundImage="";btn.style.backgroundSize="";btn.style.backgroundPosition="";
-    if(!setting)return;
-    const color=/^#[0-9a-f]{6}$/i.test(setting.button_color||"")?setting.button_color:"#111521",image=safeMenuImage(setting.image_url);
+    const key=btn.dataset.page,setting=menuAppearanceCache[key]||{},equipped=readEquippedMenuImages()[key],owned=ownedMenuImageCache.find(i=>i.item_id===equipped&&i.target_page_key===key),personalImage=owned?safeMenuImage(owned.image_url):"";
+    const color=/^#[0-9a-f]{6}$/i.test(setting.button_color||"")?setting.button_color:"";
+    const image=personalImage;
     btn.style.backgroundColor=color;
-    btn.style.backgroundImage=image?`linear-gradient(#090d18a8,#090d18a8),url("${image.replace(/["\\]/g,"")}")`:"linear-gradient(#090d1822,#090d1822)";
-    btn.style.backgroundSize="cover";btn.style.backgroundPosition="center";btn.style.borderColor=color;
+    btn.style.backgroundImage=image?`linear-gradient(#090d1880,#090d1880),url("${image.replace(/["\\]/g,"")}")`:"";
+    btn.style.backgroundSize=image?"cover":"";btn.style.backgroundPosition=image?"center":"";if(color)btn.style.borderColor=color;
   });
   const opacity=Number(readMemberSettings().menuOpacity??100);
   document.documentElement.style.setProperty("--member-menu-opacity",String(Math.max(.25,Math.min(1,opacity/100))));
@@ -1551,8 +1578,7 @@ async function loadMenuAppearance(){
 function loadMenuAppearanceEditor(){
   const key=$("menuAppearancePage")?.value||"mines",item=menuAppearanceCache[key]||{};
   $("menuAppearanceColor").value=/^#[0-9a-f]{6}$/i.test(item.button_color||"")?item.button_color:"#111521";
-  $("menuAppearanceImage").value=item.image_url||"";
-  setMenuPreview($("menuAppearancePreview"),$("menuAppearanceColor").value,$("menuAppearanceImage").value,menuPageLabel(key));
+  setMenuPreview($("menuAppearancePreview"),$("menuAppearanceColor").value,"",menuPageLabel(key));
 }
 function loadPersonalSettingsUI(){
   const saved=readMemberSettings(),opacity=Math.max(25,Math.min(100,Number(saved.menuOpacity??100))),volume=Math.max(0,Math.min(100,Number(saved.musicVolume??25)));
@@ -1618,14 +1644,12 @@ $("musicVolumeRange")?.addEventListener("input",()=>{
 $("musicPlayButton")?.addEventListener("click",startBuiltInMusic);
 $("musicPauseButton")?.addEventListener("click",pauseBuiltInMusic);
 $("menuAppearancePage")?.addEventListener("change",loadMenuAppearanceEditor);
-$("menuAppearanceColor")?.addEventListener("input",()=>setMenuPreview($("menuAppearancePreview"),$("menuAppearanceColor").value,$("menuAppearanceImage").value,menuPageLabel($("menuAppearancePage").value)));
-$("menuAppearanceImage")?.addEventListener("input",()=>setMenuPreview($("menuAppearancePreview"),$("menuAppearanceColor").value,$("menuAppearanceImage").value,menuPageLabel($("menuAppearancePage").value)));
+$("menuAppearanceColor")?.addEventListener("input",()=>setMenuPreview($("menuAppearancePreview"),$("menuAppearanceColor").value,"",menuPageLabel($("menuAppearancePage").value)));
 $("menuAppearanceForm")?.addEventListener("submit",async e=>{
   e.preventDefault();if(!canManageMenuAppearance()){toast("Only the owner can change shared menu appearance.","error");return;}
-  const key=$("menuAppearancePage").value,color=$("menuAppearanceColor").value,imageRaw=$("menuAppearanceImage").value.trim(),image=imageRaw?safeMenuImage(imageRaw):"";
-  if(imageRaw&&!image){toast("Use a valid HTTPS image URL.","error");return;}
+  const key=$("menuAppearancePage").value,color=$("menuAppearanceColor").value;
   const b=$("saveMenuAppearanceButton");setBusy(b,true,"Saving...","Save menu button");
-  try{const {error}=await db.rpc("owner_save_menu_appearance",{p_page_key:key,p_button_color:color,p_image_url:image||null});if(error)throw error;menuAppearanceCache[key]={button_color:color,image_url:image};applyMenuAppearance();loadMenuAppearanceEditor();$("menuAppearanceStatus").hidden=false;$("menuAppearanceStatus").textContent="Saved. This menu button appearance is shared with signed-in visitors.";$("menuAppearanceStatus").className="notice success";toast("Menu button appearance saved.","success");}
+  try{const {error}=await db.rpc("owner_save_menu_appearance",{p_page_key:key,p_button_color:color,p_image_url:null});if(error)throw error;menuAppearanceCache[key]={button_color:color,image_url:null};applyMenuAppearance();loadMenuAppearanceEditor();$("menuAppearanceStatus").hidden=false;$("menuAppearanceStatus").textContent="Saved. This menu button appearance is shared with signed-in visitors.";$("menuAppearanceStatus").className="notice success";toast("Menu button appearance saved.","success");}
   catch(err){$("menuAppearanceStatus").hidden=false;$("menuAppearanceStatus").textContent="Could not save: "+err.message+". Make sure you ran the menu appearance SQL upgrade.";$("menuAppearanceStatus").className="notice error";}
   finally{setBusy(b,false,"Saving...","Save menu button");}
 });
