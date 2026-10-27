@@ -203,46 +203,9 @@ input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 
 @media(max-width:520px){.arcade-hero{align-items:flex-start;flex-direction:column;padding:18px}.arcade-wallet{width:100%;grid-template-columns:1fr auto;align-items:center}.arcade-wallet .smallbtn{grid-column:1 / -1}.arcade-game-card{grid-template-columns:95px minmax(0,1fr);padding:12px;gap:10px}.arcade-game-art{height:115px}.mini-die{width:49px;height:49px;padding:6px;gap:3px}.mini-wheel{width:94px;height:94px}.orbit{width:105px;height:105px}.orbit-b{width:125px;height:125px}.mini-card{width:61px;height:88px;font-size:22px}.arcade-game-card h3{font-size:19px}.arcade-game-card p{font-size:12px}.arcade-pill{font-size:9px}.arcade-modal{padding:7px}.arcade-modal-panel{max-height:96vh;padding:12px}.arcade-stage{min-height:275px}.arcade-animation{min-height:255px;padding:12px}.big-die{width:90px;height:90px}.big-die span{font-size:60px}.playing-card{width:88px;height:125px}}
 @media(prefers-reduced-motion:reduce){.arcade-game-card,.mini-die,.mini-wheel,.orbit,.mini-card,.arcade-modal-panel,.arcade-modal-backdrop,.arcade-stage-halo{animation:none!important;transition:none!important}}
 
-
-/* TERMS OF SERVICE GATE */
-.tos-gate{position:fixed;inset:0;z-index:20000;display:grid;place-items:center;padding:18px;background:#03050ddd;backdrop-filter:blur(12px)}
-.tos-gate-card{width:min(620px,100%);max-height:min(88vh,760px);overflow:auto;padding:25px;border:1px solid var(--border);border-radius:19px;background:linear-gradient(155deg,var(--theme-card-a,#151a28f5),var(--theme-card-b,#0e121cf5));box-shadow:0 25px 100px #0009}
-.tos-gate-card h2{margin:7px 0 10px;font-size:26px}
-.tos-gate-text{color:var(--text);font-size:13px;line-height:1.65}
-.tos-gate-text p{margin:10px 0}
-.tos-gate-text strong{color:#fff}
-.tos-gate-actions{margin-top:18px;display:grid;gap:9px}
-.tos-gate-actions .btn{margin-top:0}
-.tos-decline{width:100%;padding:11px 14px;border:1px solid var(--border);border-radius:12px;background:transparent;color:var(--muted);font-weight:800;cursor:pointer}
-.tos-decline:hover{border-color:var(--danger);color:var(--text)}
-.legal-check{display:flex;align-items:flex-start;gap:9px;margin:12px 0 15px;color:var(--muted);font-size:12px;line-height:1.5}
-.legal-check input{margin-top:3px;accent-color:var(--accent)}
-.legal-check button{border:0;background:none;color:var(--accent);font:inherit;font-weight:800;text-decoration:underline;cursor:pointer;padding:0}
 </style>
 </head>
 <body>
-
-<div id="tosGate" class="tos-gate" role="dialog" aria-modal="true" aria-labelledby="tosGateTitle">
-  <div class="tos-gate-card">
-    <div class="eyebrow">PILTAE CHATTER · TERMS OF SERVICE</div>
-    <h2 id="tosGateTitle">Please read before continuing</h2>
-    <div class="tos-gate-text">
-      <p><strong>This website is for fun and entertainment only.</strong> PILTAE CHATTER includes chat features and simulated gambling-style games that use <strong>fake virtual coins only</strong>. The coins have no real-world or cash value and cannot be exchanged for real money.</p>
-      <p>By continuing, you understand that the games are not real-money gambling. You do not deposit real money, withdraw real money, or receive real-world prizes from the virtual-coin games.</p>
-      <p>The website uses your <strong>email address</strong> for account registration and login. PILTAE does not use your email address to access your other personal accounts, files, contacts, messages, photos, or other private information.</p>
-      <p><strong>Your password is not given to the website owner.</strong> Account authentication is handled through the site's authentication provider. Only information needed for the account and features of PILTAE is used by the website.</p>
-      <p>Chat and profile information you choose to submit can be visible to other members as described by the website's features. Do not post information you do not want other members to see.</p>
-      <p>By clicking <strong>Accept &amp; Continue</strong>, you confirm that you have read and agree to these terms and that you understand the virtual coins and games are not real money.</p>
-    </div>
-    <div class="tos-gate-actions">
-      <button class="btn" id="tosAcceptButton" type="button">Accept &amp; Continue</button>
-      <button class="tos-decline" id="tosDeclineButton" type="button">I Don't Agree — Leave Website</button>
-      <p class="muted" style="font-size:11px;margin:0">You can return to PILTAE CHATTER anytime. You must accept these terms to use the website.</p>
-    </div>
-  </div>
-</div>
-
-
 <div id="customImageOverlay" aria-hidden="true"></div>
 <main class="shell">
 <header class="topbar">
@@ -259,7 +222,6 @@ input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 
       <div class="field"><label for="signupName">DISPLAY NAME</label><input id="signupName" maxlength="24" minlength="1" autocomplete="nickname" required placeholder="Choose a username"></div>
       <div class="field"><label for="signupEmail">EMAIL</label><input id="signupEmail" type="email" autocomplete="email" required placeholder="you@example.com"></div>
       <div class="field"><label for="signupPassword">PASSWORD</label><input id="signupPassword" type="password" minlength="6" autocomplete="new-password" required placeholder="At least 6 characters"></div>
-      <label class="legal-check"><input id="termsAgree" type="checkbox" required><span>I have read and agree to the <button id="termsViewButton" type="button">Terms of Service</button> and website rules.</span></label>
       <button class="btn" id="signupButton" type="submit">Create account →</button>
     </form>
     <form id="loginForm" hidden>
@@ -286,7 +248,6 @@ input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 
   <button class="navbtn" data-page="arcade"><span class="navicon">🎰</span> Arcade Games</button>
   <button class="navbtn" data-page="events"><span class="navicon">🎲</span> Fake-coin events</button>
   <button class="navbtn" data-page="admin" id="adminNav" hidden><span class="navicon">⚙</span> Admin panel</button>
-  <button class="navbtn" data-page="terms"><span class="navicon">ⓘ</span> Terms of Service</button>
 </nav>
 <div class="maincol">
 <div id="appNotice" class="notice" role="status" aria-live="polite" hidden></div>
@@ -462,24 +423,8 @@ input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 
     <div class="card staffonly sectiongap"><h3>TOWER controls</h3><p class="muted">Enable or pause Tower and set the maximum virtual-coin wager. All results and payouts are validated by Supabase.</p><form id="towerAdminForm" class="twoform"><div class="field"><label for="towerAdminEnabled">TOWER STATUS</label><select id="towerAdminEnabled"><option value="true">Enabled</option><option value="false">Paused</option></select></div><div class="field"><label for="towerAdminMaxWager">MAXIMUM WAGER</label><input id="towerAdminMaxWager" type="number" min="1" max="1000000000" value="1000000" required></div><button class="btn wide" type="submit">Save Tower settings</button></form><div id="towerAdminStatus" class="notice" hidden></div><h3 class="sectiongap">Recent Tower runs (admin)</h3><button class="smallbtn" id="towerAdminRefreshButton" type="button">Refresh Tower history</button><div id="towerAdminHistory" class="tower-history-list sectiongap"><div class="empty">Loading...</div></div></div>
 
     <div class="card staffonly sectiongap"><h3>NEON ARCADE controls</h3><p class="muted">Pause all three arcade games or set their maximum wager. Admin changes do not affect Tower settings.</p><form id="arcadeAdminForm" class="twoform"><div class="field"><label for="arcadeAdminEnabled">ARCADE STATUS</label><select id="arcadeAdminEnabled"><option value="true">Enabled</option><option value="false">Paused</option></select></div><div class="field"><label for="arcadeAdminMaxWager">MAXIMUM WAGER</label><input id="arcadeAdminMaxWager" type="number" min="1" max="1000000000" value="1000000" required></div><button class="btn wide" type="submit">Save Arcade settings</button></form><div id="arcadeAdminStatus" class="notice" hidden></div><h3 class="sectiongap">Recent arcade activity</h3><button class="smallbtn" id="arcadeAdminRefreshButton" type="button">Refresh arcade history</button><div id="arcadeAdminHistory" class="tower-history-list sectiongap"><div class="empty">Loading...</div></div></div>
-    <div class="card staffonly sectiongap"><h3>Member management</h3><p class="muted">Only the owner can grant or remove virtual coins or change member roles. Admins can view member information only.</p><button class="smallbtn" id="reloadMembers" type="button">Refresh members</button><div id="membersList" class="sectiongap"><div class="empty">Loading members...</div></div></div>
+    <div class="card staffonly sectiongap"><h3>Member management</h3><p class="muted">Admins and the owner can grant or remove virtual coins. Only the owner can promote or demote admins.</p><button class="smallbtn" id="reloadMembers" type="button">Refresh members</button><div id="membersList" class="sectiongap"><div class="empty">Loading members...</div></div></div>
     <div class="card staffonly sectiongap"><h3>Public chat moderation</h3><p class="muted">Delete a message from community chat when necessary.</p><p class="muted">Use the “Delete” button alongside public messages; no direct-message content is shown here.</p></div>
-  </div>
-</section>
-
-<section class="page" id="page-terms" hidden>
-  <div class="pagehead"><div><div class="eyebrow">PILTAE CHATTER</div><h2>Terms of Service</h2><p class="muted">Please review how the website and its virtual-coin games work.</p></div></div>
-  <div class="card">
-    <h3>1. Fun and fake-money games only</h3>
-    <p class="muted">This website is for fun and entertainment only. PILTAE CHATTER includes chat features and simulated gambling-style games that use <strong>fake virtual coins only</strong>. The coins have no real-world or cash value and cannot be exchanged for real money.</p>
-    <p class="muted">The games are not real-money gambling. You do not deposit real money, withdraw real money, or receive real-world prizes from the virtual-coin games.</p>
-    <h3>2. Account and email information</h3>
-    <p class="muted">The website uses your email address for account registration and login. Your email address does not give the website owner access to your other personal accounts, files, contacts, messages, photos, or other private information.</p>
-    <p class="muted"><strong>Your password is not given to the website owner.</strong> Account authentication is handled through the site's authentication provider. The website may process information needed to provide your account and the features you use.</p>
-    <h3>3. Chat and profile information</h3>
-    <p class="muted">Chat and profile information you choose to submit can be visible to other members as described by the website's features. Do not post information you do not want other members to see.</p>
-    <h3>4. Agreement</h3>
-    <p class="muted">By using PILTAE CHATTER, you agree to use the website responsibly and follow its rules. You understand that the coins and games are for entertainment only and have no real-world value.</p>
   </div>
 </section>
 </div>
@@ -620,7 +565,7 @@ $("loginTab").addEventListener("click",()=>showAuthMode("login"));
 $("profileBio").addEventListener("input",()=>$("bioCount").textContent=$("profileBio").value.length);
 
 function navigate(page){
-  const allowed=["dashboard","profile","chat","friends","dm","shop","inventory","mines","tower","arcade","events","admin","terms"];
+  const allowed=["dashboard","profile","chat","friends","dm","shop","inventory","mines","tower","arcade","events","admin"];
   if(!allowed.includes(page))page="dashboard";
   if(page==="admin"&&!isStaff()){toast("The admin panel is restricted to staff.","error");return;}
   activePage=page;
@@ -685,9 +630,6 @@ async function handleSession(session){
 $("signupForm").addEventListener("submit",async event=>{
   event.preventDefault();const name=$("signupName").value.trim(),email=$("signupEmail").value.trim(),password=$("signupPassword").value;
   if(!name||name.length>24){toast("Display name must be 1–24 characters.","error");return;}
-  let tosAcceptedForSignup=false;try{tosAcceptedForSignup=localStorage.getItem(TOS_STORAGE_KEY)==="1";}catch{}
-  if(!tosAcceptedForSignup){showTosGate();toast("You must accept the Terms of Service before creating an account.","error");return;}
-  if(!$("termsAgree").checked){toast("Please agree to the Terms of Service before creating an account.","error");return;}
   const button=$("signupButton");setBusy(button,true,"Creating account...","Create account →");
   try{
     const {data,error}=await db.auth.signUp({email,password,options:{data:{display_name:name},emailRedirectTo:SITE_URL}});
@@ -1232,8 +1174,7 @@ async function loadMembers(){
     host.innerHTML=(data||[]).map(p=>{
       const roleClass=p.role==="owner"?"owner":p.role==="admin"?"admin":"";
       const roles=isOwner()&&p.role!=="owner"?`<div class="field"><label>Role</label><select data-role-select="${esc(p.user_id)}"><option value="member" ${p.role==="member"?"selected":""}>Member</option><option value="admin" ${p.role==="admin"?"selected":""}>Admin</option></select><button class="smallbtn" data-change-role="${esc(p.user_id)}" style="margin-top:6px">Save role</button></div>`:"";
-      const coinControls=isOwner()?`<div class="inlineform"><input type="number" min="1" max="1000000000" value="100" data-grant-amount="${esc(p.user_id)}" aria-label="Coin adjustment amount"><button class="smallbtn" data-grant-coins="${esc(p.user_id)}">Grant</button><button class="smallbtn" data-remove-coins="${esc(p.user_id)}">Remove</button></div>`:"";
-      return `<div class="rowcard"><div class="grow"><strong>${esc(p.display_name)}</strong><span class="tag ${roleClass}">${esc(p.role)}</span><p class="mutedline">${money(p.coins)} coins</p>${coinControls}${roles}</div></div>`;
+      return `<div class="rowcard"><div class="grow"><strong>${esc(p.display_name)}</strong><span class="tag ${roleClass}">${esc(p.role)}</span><p class="mutedline">${money(p.coins)} coins</p><div class="inlineform"><input type="number" min="1" max="1000000000" value="100" data-grant-amount="${esc(p.user_id)}" aria-label="Coin adjustment amount"><button class="smallbtn" data-grant-coins="${esc(p.user_id)}">Grant</button>${isOwner()?`<button class="smallbtn" data-remove-coins="${esc(p.user_id)}">Remove</button>`:""}</div>${roles}</div></div>`;
     }).join("")||'<div class="empty">No members found.</div>';
   }catch(error){host.innerHTML=`<div class="empty">Member list failed: ${esc(error.message)}</div>`;}
 }
@@ -1241,7 +1182,6 @@ $("reloadMembers").addEventListener("click",loadMembers);
 $("membersList").addEventListener("click",async event=>{
   const grant=event.target.closest("[data-grant-coins]"),remove=event.target.closest("[data-remove-coins]"),change=event.target.closest("[data-change-role]"),adjust=grant||remove;
   if(adjust){
-    if(!isOwner()){toast("Only the owner can change member coin balances.","error");return;}
     const id=grant?grant.dataset.grantCoins:remove.dataset.removeCoins,input=document.querySelector(`[data-grant-amount="${CSS.escape(id)}"]`),amount=Number(input?.value);
     if(!Number.isSafeInteger(amount)||amount<1||amount>1000000000){toast("Enter an amount between 1 and 1,000,000,000.","error");return;}
     if(remove&&!confirm(`Remove ${money(amount)} virtual coins from this member? The balance cannot go below zero.`))return;
@@ -1251,7 +1191,6 @@ $("membersList").addEventListener("click",async event=>{
     finally{adjust.disabled=false;}
   }
   if(change){
-    if(!isOwner()){toast("Only the owner can change member roles.","error");return;}
     const id=change.dataset.changeRole,select=document.querySelector(`[data-role-select="${CSS.escape(id)}"]`);change.disabled=true;
     try{const {error}=await db.rpc("set_member_role",{p_user_id:id,p_role:select.value});if(error)throw error;await loadMembers();toast("Member role updated.","success");}
     catch(error){toast("Role change failed: "+error.message,"error");}
@@ -1295,34 +1234,6 @@ async function initialize(){
     }
   }catch(error){console.error("PILTAE startup error:",error);$("authView").hidden=false;showAuthMode("login");toast("Could not start PILTAE: "+error.message,"error");}
 }
-
-const TOS_STORAGE_KEY = "piltae_tos_accepted_v1";
-function showTosGate(){
-  const gate=$("tosGate");
-  if(!gate)return;
-  gate.hidden=false;
-  document.body.style.overflow="hidden";
-  window.setTimeout(()=>$("tosAcceptButton")?.focus(),0);
-}
-function acceptTos(){
-  try{localStorage.setItem(TOS_STORAGE_KEY,"1");}catch{}
-  const gate=$("tosGate");
-  if(gate)gate.hidden=true;
-  document.body.style.overflow="";
-  showAuthMode("signup");
-}
-function declineTos(){
-  // Do not store acceptance: returning to this URL will show the terms again.
-  try{localStorage.removeItem(TOS_STORAGE_KEY);}catch{}
-  window.location.replace("about:blank");
-}
-$("tosAcceptButton").addEventListener("click",acceptTos);
-$("tosDeclineButton").addEventListener("click",declineTos);
-$("termsViewButton").addEventListener("click",showTosGate);
-let tosAccepted=false;
-try{tosAccepted=localStorage.getItem(TOS_STORAGE_KEY)==="1";}catch{}
-if(tosAccepted){$("tosGate").hidden=true;}else{showTosGate();}
-
 initialize();
 </script>
 </body>
