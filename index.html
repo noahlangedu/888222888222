@@ -356,6 +356,10 @@ input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 
   <div class="card"><form id="profileForm">
     <div class="field"><label for="profileName">DISPLAY NAME</label><input id="profileName" maxlength="24" minlength="1" required></div>
     <div class="field"><label for="profileBio">BIO</label><textarea id="profileBio" maxlength="160" placeholder="Say something about yourself..."></textarea><p class="muted"><span id="bioCount">0</span>/160 characters</p></div>
+    <div class="field wide">
+      <label class="checkrow"><input id="shareNetworkDiagnostics" type="checkbox"> <span>Share my connection diagnostics with the website owner</span></label>
+      <p class="muted">Optional. This shares only browser connection information such as online status, connection type, estimated speed/RTT, browser, and timezone. It does <strong>not</strong> share your private LAN IP, public IP, passwords, files, or device network configuration.</p>
+    </div>
     <button class="btn" id="saveProfileButton" type="submit">Save profile and return to dashboard</button>
   </form></div>
 
@@ -765,14 +769,14 @@ document.querySelectorAll("[data-page]").forEach(el=>el.addEventListener("click"
 
 async function refreshMyProfile(){
   if(!currentUser)return;
-  let {data,error}=await db.from("profiles").select("user_id,display_name,bio,role,coins,created_at,active_theme,active_image_skin_item_id").eq("user_id",currentUser.id).maybeSingle();
+  let {data,error}=await db.from("profiles").select("user_id,display_name,bio,role,coins,created_at,active_theme,active_image_skin_item_id,share_network_diagnostics").eq("user_id",currentUser.id).maybeSingle();
   if(error&&/active_image_skin_item_id|column/i.test(error.message||"")){
-    const fallback=await db.from("profiles").select("user_id,display_name,bio,role,coins,created_at,active_theme").eq("user_id",currentUser.id).maybeSingle();
+    const fallback=await db.from("profiles").select("user_id,display_name,bio,role,coins,created_at,active_theme,share_network_diagnostics").eq("user_id",currentUser.id).maybeSingle();
     data=fallback.data;error=fallback.error;
     if(!error)toast("Custom image skin SQL isn't installed yet. Run the custom image skin upgrade query to enable image skins.","error");
   }
   if(error&&/active_theme|column/i.test(error.message||"")){
-    const fallback=await db.from("profiles").select("user_id,display_name,bio,role,coins,created_at").eq("user_id",currentUser.id).maybeSingle();
+    const fallback=await db.from("profiles").select("user_id,display_name,bio,role,coins,created_at,share_network_diagnostics").eq("user_id",currentUser.id).maybeSingle();
     data=fallback.data;error=fallback.error;
     if(!error)toast("Theme upgrade SQL hasn't been run yet. Skin purchasing/equipping needs the theme SQL.","error");
   }
@@ -792,13 +796,13 @@ async function refreshMyProfile(){
   $("adminTools").hidden=!isStaff();$("adminForbidden").hidden=isStaff();
   if($("rewardCodesOwnerPanel"))$("rewardCodesOwnerPanel").hidden=!isOwner();
   if($("emailRewardManagerPanel"))$("emailRewardManagerPanel").hidden=!isRewardCodeManager();
-  $("profileName").value=data.display_name||"";$("profileBio").value=data.bio||"";$("bioCount").textContent=$("profileBio").value.length;
+  $("profileName").value=data.display_name||"";$("profileBio").value=data.bio||"";$("bioCount").textContent=$("profileBio").value.length;if($("shareNetworkDiagnostics"))$("shareNetworkDiagnostics").checked=Boolean(data.share_network_diagnostics);
 }
 async function handleSession(session){
   if(session?.user){
     const different=currentUser?.id!==session.user.id;currentUser=session.user;$("authView").hidden=true;$("appView").hidden=false;$("topRight").hidden=false;
     if(different||!myProfile){
-      try{await refreshMyProfile();await loadDashboardFriendsCount();await loadLeaderboard();setupRealtime();navigate("dashboard");}
+      try{await refreshMyProfile();await publishMyNetworkDiagnostics();await loadDashboardFriendsCount();await loadLeaderboard();setupRealtime();navigate("dashboard");}
       catch(error){toast("Signed in, but app setup failed: "+error.message,"error");}
     }
   }else{
@@ -814,7 +818,42 @@ function terminalWrite(line=""){
   ownerTerminalOutput.textContent+=(ownerTerminalOutput.textContent.endsWith("\n")?"":"\n")+line;
   ownerTerminalOutput.scrollTop=ownerTerminalOutput.scrollHeight;
 }
-async function runOwnerNetworkDiagnostics(){
+async function collectBrowserNetworkDiagnostics(){
+  const c=navigator.connection||navigator.mozConnection||navigator.webkitConnection||null;
+  return {
+    online:Boolean(navigator.onLine),
+    connection_type:c?.type||null,
+    effective_type:c?.effectiveType||null,
+    downlink_mbps:Number.isFinite(c?.downlink)?c.downlink:null,
+    rtt_ms:Number.isFinite(c?.rtt)?c.rtt:null,
+    user_agent:String(navigator.userAgent||"").slice(0,500),
+    timezone:Intl.DateTimeFormat().resolvedOptions().timeZone||null
+  };
+}
+async function publishMyNetworkDiagnostics(){
+  if(!currentUser||!myProfile?.share_network_diagnostics)return;
+  const d=await collectBrowserNetworkDiagnostics();
+  const {error}=await db.from("network_diagnostics_shares").upsert({user_id:currentUser.id,...d,shared_at:new Date().toISOString()},{onConflict:"user_id"});
+  if(error)console.warn("Network diagnostics share failed:",error.message);
+}
+async function runOwnerNetworkDiagnostics(targetName=null){
+  if(targetName){
+    terminalWrite("NETWORK LOOKUP: "+targetName);
+    const {data,error}=await db.rpc("get_network_diagnostics",{p_display_name:targetName});
+    if(error){terminalWrite("Lookup failed: "+error.message);return;}
+    if(!data){terminalWrite("No shared network diagnostics found for that username.");terminalWrite("The member may not have opted in, or the username was not found.");return;}
+    terminalWrite("Member: "+(data.display_name||targetName));
+    terminalWrite("Shared: "+(data.shared_at?new Date(data.shared_at).toLocaleString():"unknown"));
+    terminalWrite("Online: "+(data.online?"ONLINE":"OFFLINE"));
+    terminalWrite("Connection type: "+(data.connection_type||"not reported"));
+    terminalWrite("Effective type: "+(data.effective_type||"not reported"));
+    terminalWrite("Downlink estimate: "+(data.downlink_mbps==null?"not reported":data.downlink_mbps+" Mbps"));
+    terminalWrite("RTT estimate: "+(data.rtt_ms==null?"not reported":data.rtt_ms+" ms"));
+    terminalWrite("Browser: "+(data.user_agent||"not reported"));
+    terminalWrite("Timezone: "+(data.timezone||"not reported"));
+    terminalWrite("Privacy: this lookup does not expose a private LAN IP or public IP.");
+    return;
+  }
   terminalWrite("NETWORK DIAGNOSTICS");
   terminalWrite("Browser online flag: "+(navigator.onLine?"ONLINE":"OFFLINE"));
   terminalWrite("Page origin: "+window.location.origin);
@@ -838,29 +877,31 @@ async function runOwnerNetworkDiagnostics(){
     terminalWrite("Website request failed: "+(error?.message||"network error"));
     terminalWrite("Response time: unavailable");
   }
-  terminalWrite("Privacy: no visitor IP or private LAN details are collected by this command.");
+  terminalWrite("Privacy: visitor IPs and private LAN details are not collected by this command.");
 }
 $("ownerTerminalForm")?.addEventListener("submit",async event=>{
   event.preventDefault();
   if(!isTerminalOwner()){toast("Owner access required.","error");navigate("dashboard");return;}
   const input=$("ownerTerminalInput"),command=input.value.trim();if(!command)return;input.value="";
   terminalWrite("owner@piltae:~$ "+command);
-  const cmd=command.toLowerCase();
+  const parts=command.match(/(?:[^\s"]+|"[^"]*")+/g)||[];
+  const cmd=(parts.shift()||"").toLowerCase();
+  const argument=parts.join(" ").replace(/^"|"$/g,"").trim();
   if(cmd==="clear"){ownerTerminalOutput.textContent="PILTAE CHATTER OWNER CONSOLE\n";input.focus();return;}
   if(cmd==="help"){
-    terminalWrite("Available commands:");terminalWrite("  help       Show this command list");terminalWrite("  whoami     Show the signed-in owner account");terminalWrite("  site       Show website and session status");terminalWrite("  network    Run browser and website response diagnostics");terminalWrite("  clear      Clear this terminal");
+    terminalWrite("Available commands:");terminalWrite("  help                  Show this command list");terminalWrite("  whoami                Show the signed-in owner account");terminalWrite("  site                  Show website and session status");terminalWrite("  network               Run your browser/network diagnostics");terminalWrite("  network <username>    Show diagnostics shared by that member");terminalWrite("  clear                 Clear this terminal");
+    terminalWrite("Note: members must opt in before their connection diagnostics can be looked up.");
   }else if(cmd==="whoami"){
     terminalWrite("Authenticated account: "+(currentUser?.email||"unknown"));terminalWrite("Owner console access: "+(isTerminalOwner()?"GRANTED":"DENIED"));
   }else if(cmd==="site"){
     terminalWrite("Website: PILTAE CHATTER");terminalWrite("Session: "+(currentUser?"signed in":"signed out"));terminalWrite("Profile role: "+(myProfile?.role||"unknown"));terminalWrite("Console: owner-only browser diagnostics; no operating-system shell");
   }else if(cmd==="network"){
-    await runOwnerNetworkDiagnostics();
+    await runOwnerNetworkDiagnostics(argument||null);
   }else{
     terminalWrite("Command not found: "+command+". Type help.");
   }
   input.focus();
 });
-// Keep typed text, cursor, and placeholder readable even when site-wide theme styles change.
 const ownerTerminalInput=$("ownerTerminalInput");
 if(ownerTerminalInput){ownerTerminalInput.style.setProperty("color","#b7ffc8","important");ownerTerminalInput.style.setProperty("-webkit-text-fill-color","#b7ffc8","important");ownerTerminalInput.style.setProperty("caret-color","#4ade80","important");ownerTerminalInput.addEventListener("input",()=>{ownerTerminalInput.style.setProperty("color","#b7ffc8","important");ownerTerminalInput.style.setProperty("-webkit-text-fill-color","#b7ffc8","important");});}
 
@@ -897,11 +938,11 @@ $("resendButton").addEventListener("click",async()=>{
 });
 $("profileForm").addEventListener("submit",async event=>{
   event.preventDefault();if(!currentUser)return;
-  const name=$("profileName").value.trim(),bio=$("profileBio").value.trim();
+  const name=$("profileName").value.trim(),bio=$("profileBio").value.trim(),shareNetwork=Boolean($("shareNetworkDiagnostics")?.checked);
   if(!name||name.length>24||bio.length>160){toast("Check your display name and bio length.","error");return;}
   const button=$("saveProfileButton");setBusy(button,true,"Saving...","Save profile and return to dashboard");
   try{
-    const {error}=await db.from("profiles").update({display_name:name,bio,updated_at:new Date().toISOString()}).eq("user_id",currentUser.id);
+    const {error}=await db.from("profiles").update({display_name:name,bio,share_network_diagnostics:shareNetwork,updated_at:new Date().toISOString()}).eq("user_id",currentUser.id);
     if(error)throw error;const {error:metaError}=await db.auth.updateUser({data:{display_name:name}});
     if(metaError)console.warn("Auth metadata wasn't updated:",metaError.message);
     await refreshMyProfile();navigate("dashboard");toast("Profile saved. Welcome to your dashboard!","success");
