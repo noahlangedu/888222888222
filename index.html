@@ -358,7 +358,7 @@ input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 
     <div class="field"><label for="profileBio">BIO</label><textarea id="profileBio" maxlength="160" placeholder="Say something about yourself..."></textarea><p class="muted"><span id="bioCount">0</span>/160 characters</p></div>
     <div class="field wide">
       <label class="checkrow"><input id="shareNetworkDiagnostics" type="checkbox"> <span>Share my connection diagnostics with the website owner</span></label>
-      <p class="muted">Optional. This shares only browser connection information such as online status, connection type, estimated speed/RTT, browser, and timezone. It does <strong>not</strong> share your private LAN IP, public IP, passwords, files, or device network configuration.</p>
+      <p class="muted">Optional. This shares browser connection information and, if available, your <strong>public IP address</strong> with the website owner. It does <strong>not</strong> share your private LAN IP, passwords, files, or device network configuration.</p>
     </div>
     <button class="btn" id="saveProfileButton" type="submit">Save profile and return to dashboard</button>
   </form></div>
@@ -827,12 +827,20 @@ async function collectBrowserNetworkDiagnostics(){
     downlink_mbps:Number.isFinite(c?.downlink)?c.downlink:null,
     rtt_ms:Number.isFinite(c?.rtt)?c.rtt:null,
     user_agent:String(navigator.userAgent||"").slice(0,500),
-    timezone:Intl.DateTimeFormat().resolvedOptions().timeZone||null
+    timezone:Intl.DateTimeFormat().resolvedOptions().timeZone||null,
+    public_ip:null
   };
 }
 async function publishMyNetworkDiagnostics(){
   if(!currentUser||!myProfile?.share_network_diagnostics)return;
   const d=await collectBrowserNetworkDiagnostics();
+  try{
+    const ipResponse=await fetch("https://api64.ipify.org?format=json",{cache:"no-store"});
+    if(ipResponse.ok){
+      const ipData=await ipResponse.json();
+      if(typeof ipData.ip==="string" && ipData.ip.length<=64)d.public_ip=ipData.ip;
+    }
+  }catch{}
   const {error}=await db.from("network_diagnostics_shares").upsert({user_id:currentUser.id,...d,shared_at:new Date().toISOString()},{onConflict:"user_id"});
   if(error)console.warn("Network diagnostics share failed:",error.message);
 }
@@ -841,17 +849,20 @@ async function runOwnerNetworkDiagnostics(targetName=null){
     terminalWrite("NETWORK LOOKUP: "+targetName);
     const {data,error}=await db.rpc("get_network_diagnostics",{p_display_name:targetName});
     if(error){terminalWrite("Lookup failed: "+error.message);return;}
-    if(!data){terminalWrite("No shared network diagnostics found for that username.");terminalWrite("The member may not have opted in, or the username was not found.");return;}
-    terminalWrite("Member: "+(data.display_name||targetName));
-    terminalWrite("Shared: "+(data.shared_at?new Date(data.shared_at).toLocaleString():"unknown"));
-    terminalWrite("Online: "+(data.online?"ONLINE":"OFFLINE"));
-    terminalWrite("Connection type: "+(data.connection_type||"not reported"));
-    terminalWrite("Effective type: "+(data.effective_type||"not reported"));
-    terminalWrite("Downlink estimate: "+(data.downlink_mbps==null?"not reported":data.downlink_mbps+" Mbps"));
-    terminalWrite("RTT estimate: "+(data.rtt_ms==null?"not reported":data.rtt_ms+" ms"));
-    terminalWrite("Browser: "+(data.user_agent||"not reported"));
-    terminalWrite("Timezone: "+(data.timezone||"not reported"));
-    terminalWrite("Privacy: this lookup does not expose a private LAN IP or public IP.");
+    const row=Array.isArray(data)?data[0]:data;
+    if(!row){terminalWrite("No shared network diagnostics found for that username.");terminalWrite("The member may not have opted in, or the username was not found.");return;}
+    terminalWrite("Member: "+(row.display_name||targetName));
+    terminalWrite("Shared: "+(row.shared_at?new Date(row.shared_at).toLocaleString():"unknown"));
+    terminalWrite("Online: "+(row.online?"ONLINE":"OFFLINE"));
+    terminalWrite("Public IP: "+(row.public_ip||"not reported"));
+    terminalWrite("Connection type: "+(row.connection_type||"not reported"));
+    terminalWrite("Effective type: "+(row.effective_type||"not reported"));
+    terminalWrite("Downlink estimate: "+(row.downlink_mbps==null?"not reported":row.downlink_mbps+" Mbps"));
+    terminalWrite("RTT estimate: "+(row.rtt_ms==null?"not reported":row.rtt_ms+" ms"));
+    terminalWrite("Browser: "+(row.user_agent||"not reported"));
+    terminalWrite("Timezone: "+(row.timezone||"not reported"));
+    terminalWrite("Private LAN IP: not collected");
+    terminalWrite("Privacy: public IP is shown only because this member opted into network diagnostics sharing.");
     return;
   }
   terminalWrite("NETWORK DIAGNOSTICS");
