@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#090b12">
-<title>PILTAE CHATTER</title>
+<title>RIVEN</title>
 <style>
 :root{color-scheme:dark;--bg:#090b12;--panel:#111521;--panel2:#171d2b;--border:#293146;--text:#f1f4ff;--muted:#929bb3;--accent:#8b5cf6;--mint:#5eead4;--danger:#fb7185;--good:#34d399}
 *{box-sizing:border-box}
@@ -21,6 +21,19 @@ button:disabled{opacity:.55;cursor:wait}
 .brand{display:flex;align-items:center;gap:11px;font-size:16px;font-weight:900;letter-spacing:1.4px}
 .logo{display:grid;place-items:center;width:42px;height:42px;border-radius:13px;background:linear-gradient(135deg,#a78bfa,#4338ca);box-shadow:0 8px 30px #8b5cf633;font-size:20px}
 .topright{display:flex;align-items:center;gap:10px}
+.member-roster{position:relative;width:230px;max-width:42vw;border:1px solid var(--border);border-radius:12px;background:#111521;box-shadow:0 8px 28px #0003;overflow:hidden}
+.member-roster-head{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:9px 11px;background:#171d2b;font-size:12px;font-weight:850}
+.member-roster-count{padding:3px 7px;border-radius:999px;background:#12372e;color:#99f6e4;font-size:10px;white-space:nowrap}
+.member-roster-list{max-height:190px;overflow:auto;padding:5px 8px}
+.member-roster-person{display:flex;align-items:center;gap:8px;padding:6px 3px;font-size:12px;min-width:0}
+.member-roster-person strong{font-weight:700;overflow-wrap:anywhere;min-width:0;flex:1}
+.member-roster-person .status-label{font-size:10px;color:var(--muted)}
+.presence-dot{width:8px;height:8px;flex:0 0 8px;border-radius:50%;background:#64748b;box-shadow:0 0 0 2px #64748b22}
+.presence-dot.online{background:#34d399;box-shadow:0 0 0 3px #34d39920}
+.member-roster-empty{padding:12px 5px;color:var(--muted);font-size:11px}
+@media(max-width:800px){.topbar{align-items:flex-start}.topright{flex-wrap:wrap;justify-content:flex-end}.member-roster{order:3;width:min(320px,100%);max-width:100%}}
+@media(max-width:520px){.topbar{flex-wrap:wrap}.topright{width:100%;flex-direction:row;align-items:flex-start;justify-content:space-between}.member-roster{width:min(62%,320px)}.wallet{font-size:11px}}
+
 .wallet{padding:9px 12px;border:1px solid #3e365e;border-radius:999px;background:#1b1730;color:#ddd6fe;font-weight:800;font-size:13px}
 .smallbtn,.navbtn,.btn{border:1px solid var(--border);border-radius:11px;padding:10px 13px;background:#202637;color:var(--text);font-weight:750}
 .smallbtn:hover,.navbtn:hover,.btn:hover{filter:brightness(1.15)}
@@ -204,6 +217,15 @@ input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 
 @media(prefers-reduced-motion:reduce){.arcade-game-card,.mini-die,.mini-wheel,.orbit,.mini-card,.arcade-modal-panel,.arcade-modal-backdrop,.arcade-stage-halo{animation:none!important;transition:none!important}}
 
 
+
+/* BATTLESHIP 1v1 */
+.battleship-hero{display:flex;justify-content:space-between;gap:18px;align-items:center;padding:24px;border:1px solid var(--border);border-radius:20px;background:radial-gradient(ellipse at 85% 10%,color-mix(in srgb,#38bdf8 22%,transparent),transparent 45%),linear-gradient(135deg,var(--panel),var(--panel2));margin-bottom:16px}
+.battleship-hero h2{font-size:clamp(28px,4vw,42px);margin:5px 0 7px;letter-spacing:1px}.battleship-prize{padding:13px 16px;border:1px solid color-mix(in srgb,var(--mint) 45%,var(--border));border-radius:14px;background:color-mix(in srgb,var(--mint) 8%,var(--panel));text-align:center;min-width:170px}.battleship-prize span{display:block;font-size:10px;letter-spacing:1.4px;color:var(--muted);font-weight:850}.battleship-prize strong{display:block;font-size:22px;margin-top:3px;color:var(--mint)}
+.battleship-layout{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(280px,.9fr);gap:14px}.battleship-panel{padding:17px;border:1px solid var(--border);border-radius:17px;background:linear-gradient(155deg,var(--panel),var(--panel2));min-width:0}.battleship-panel h3{margin:0 0 6px}.battleship-toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:12px 0}.battleship-timer{font-variant-numeric:tabular-nums;font-size:25px;font-weight:950;letter-spacing:1px;padding:8px 12px;border:1px solid var(--border);border-radius:12px;background:var(--theme-surface)}.battleship-timer.urgent{color:#fb7185;border-color:#fb7185}.battleship-board-wrap{overflow:auto;padding-bottom:3px}.battleship-board{display:grid;grid-template-columns:repeat(10,minmax(30px,1fr));width:min(100%,570px);aspect-ratio:1;margin:13px auto 4px;gap:3px}.battleship-cell{position:relative;display:grid;place-items:center;min-width:0;aspect-ratio:1;border:1px solid color-mix(in srgb,#38bdf8 35%,var(--border));border-radius:5px;background:linear-gradient(145deg,#09243a,var(--theme-input));color:#b8e9ff;font-size:clamp(10px,1.7vw,15px);font-weight:900;cursor:pointer;user-select:none;transition:transform .12s,border-color .12s,background .12s}.battleship-cell:hover{transform:translateY(-1px);border-color:#38bdf8}.battleship-cell.ship{background:linear-gradient(145deg,#334155,#1e293b);border-color:#94a3b8;color:#fff}.battleship-cell.hit{background:radial-gradient(circle at 50% 45%,#fb7185,#7f1d1d);border-color:#fecdd3;color:#fff}.battleship-cell.miss{background:radial-gradient(circle,#67e8f9,#0e7490);border-color:#a5f3fc;color:#fff}.battleship-cell.sunk{background:radial-gradient(circle,#f97316,#7c2d12);border-color:#fdba74;color:#fff}.battleship-cell.disabled{cursor:default;opacity:.9}.battleship-legend{display:flex;flex-wrap:wrap;gap:8px;margin-top:9px;color:var(--muted);font-size:11px}.battleship-legend span{display:inline-flex;align-items:center;gap:5px}.battle-dot{width:10px;height:10px;border-radius:3px;background:#1e293b;border:1px solid #94a3b8}.battle-dot.hit{background:#7f1d1d;border-color:#fecdd3}.battle-dot.miss{background:#0e7490;border-color:#a5f3fc}
+.battleship-ships{display:grid;gap:8px;margin-top:13px}.battle-ship-row{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:9px 10px;border:1px solid var(--border);border-radius:10px;background:var(--theme-surface)}.battle-ship-row.active{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}.battle-ship-row small{color:var(--muted)}.battle-status{min-height:42px}.battle-reward{font-size:20px;font-weight:950;color:var(--mint)}.battle-match-list{display:grid;gap:8px;margin-top:10px}.battle-info-row{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:11px;border:1px solid var(--border);border-radius:11px;background:var(--theme-surface)}
+@media(max-width:800px){.battleship-layout{grid-template-columns:1fr}.battleship-hero{align-items:flex-start;flex-direction:column}.battleship-prize{width:100%;text-align:left}.battleship-board{width:min(100%,520px)}}
+@media(prefers-reduced-motion:reduce){.battleship-cell{transition:none!important}}
+
 /* TERMS OF SERVICE GATE */
 .tos-gate{position:fixed;inset:0;z-index:20000;display:grid;place-items:center;padding:18px;background:#03050ddd;backdrop-filter:blur(12px)}
 .tos-gate-card{width:min(620px,100%);max-height:min(88vh,760px);overflow:auto;padding:25px;border:1px solid var(--border);border-radius:19px;background:linear-gradient(155deg,var(--theme-card-a,#151a28f5),var(--theme-card-b,#0e121cf5));box-shadow:0 25px 100px #0009}
@@ -235,51 +257,71 @@ input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 
 @media(max-width:650px){.settings-grid{grid-template-columns:1fr}.music-controls{grid-template-columns:1fr 1fr}.music-controls .field{grid-column:1/-1}}
 
 
-.terminal-window{background:#050908;border:1px solid #1e6246;border-radius:14px;overflow:hidden;box-shadow:0 0 28px #00ff7720}
-.terminal-topbar{display:flex;align-items:center;gap:7px;padding:11px 14px;background:#0c1711;border-bottom:1px solid #1e6246;color:#a7f3c4;font-weight:800}
-.terminal-dot{width:9px;height:9px;border-radius:50%;background:#fb7185}.terminal-dot:nth-child(2){background:#fbbf24}.terminal-dot:nth-child(3){background:#4ade80}
-.terminal-output{height:300px;overflow:auto;padding:16px;color:#9af7b4;font:13px/1.65 ui-monospace,SFMono-Regular,Consolas,monospace;white-space:pre-wrap;overflow-wrap:anywhere}
-.terminal-form{display:flex;gap:8px;padding:12px;border-top:1px solid #1e6246;background:#08110b;align-items:center}
-.terminal-prompt{align-self:center;color:#4ade80;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;white-space:nowrap}
-#ownerTerminalInput.terminal-input{display:block;flex:1 1 auto;min-width:0;width:100%;height:42px;padding:10px 12px;background:#030704!important;background-color:#030704!important;color:#b7ffc8!important;-webkit-text-fill-color:#b7ffc8!important;caret-color:#4ade80!important;border:1px solid #39a96b!important;border-radius:8px;font-family:ui-monospace,SFMono-Regular,Consolas,monospace!important;font-size:14px!important;font-weight:600;opacity:1!important;visibility:visible!important;text-shadow:0 0 1px #b7ffc8;box-shadow:inset 0 0 0 1px #0b1c11}
-#ownerTerminalInput.terminal-input::placeholder{color:#679778!important;-webkit-text-fill-color:#679778!important;opacity:1}
-#ownerTerminalInput.terminal-input:focus{outline:2px solid #4ade80!important;outline-offset:1px;background:#030704!important;color:#d4ffe0!important;-webkit-text-fill-color:#d4ffe0!important}
-#ownerTerminalInput.terminal-input::selection{background:#166534!important;color:#ffffff!important}
-@media(max-width:600px){.terminal-form{flex-wrap:wrap}.terminal-prompt{width:100%}#ownerTerminalInput.terminal-input{flex-basis:65%}}
+/* RIVEN Christmas login atmosphere */
+.halloween-decor{display:none;position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;isolation:isolate;background:radial-gradient(ellipse at 50% 8%,#123b2a33,transparent 43%),linear-gradient(180deg,#07131b22,#07131b00 55%,#02060b99)}
+body:has(#authView:not([hidden])) .halloween-decor{display:block}
+.halloween-decor:before{content:"";position:absolute;width:clamp(130px,19vw,245px);aspect-ratio:1;right:8%;top:5%;border-radius:50%;background:radial-gradient(circle at 35% 32%,#fff,#dbeafe 58%,#93c5fd 72%);box-shadow:0 0 35px #bfdbfe66,0 0 100px #60a5fa22;opacity:.82}
+.halloween-decor:after{content:"";position:absolute;inset:0;background-image:radial-gradient(2px 2px at 8% 18%,#fff 45%,transparent 55%),radial-gradient(2px 2px at 21% 34%,#dbeafe 45%,transparent 55%),radial-gradient(1.5px 1.5px at 37% 12%,#fff 45%,transparent 55%),radial-gradient(2px 2px at 70% 26%,#fff 45%,transparent 55%),radial-gradient(1.5px 1.5px at 84% 42%,#dbeafe 45%,transparent 55%),radial-gradient(2px 2px at 91% 17%,#fff 45%,transparent 55%),radial-gradient(1.5px 1.5px at 56% 8%,#fff 45%,transparent 55%);opacity:.72}
+.halloween-pumpkin,.halloween-bat,.halloween-ghost,.halloween-web{position:absolute;user-select:none;filter:drop-shadow(0 10px 22px #0008);animation:halloweenFloat 6s ease-in-out infinite}
+.halloween-pumpkin{font-size:clamp(34px,5vw,68px);opacity:.9}.halloween-pumpkin.pumpkin-one{left:4%;bottom:8%;animation-delay:-1.3s}.halloween-pumpkin.pumpkin-two{right:5%;bottom:12%;font-size:clamp(44px,6vw,82px);animation-delay:-3.4s}.halloween-pumpkin.pumpkin-three{left:13%;top:18%;font-size:clamp(24px,3vw,42px);opacity:.65;animation-delay:-2.2s}
+.halloween-bat{font-size:clamp(24px,3vw,40px);opacity:.78}.bat-one{left:15%;top:9%;animation:halloweenFly 10s ease-in-out infinite}.bat-two{right:22%;top:31%;animation-delay:-4s}.halloween-ghost{left:7%;top:48%;font-size:clamp(28px,4vw,50px);opacity:.55;animation-delay:-2s}.halloween-web{right:0;top:0;font-size:clamp(58px,10vw,130px);opacity:.35;transform:rotate(5deg)}
+/* Christmas decorations */
+.halloween-decor .snowflake{position:absolute;color:#fff;font-size:clamp(18px,3vw,34px);opacity:.78;filter:drop-shadow(0 0 8px #bfdbfe);animation:snowFall 8s linear infinite}
+.halloween-decor .snowflake.s1{left:8%;top:-5%;animation-delay:-1s}.halloween-decor .snowflake.s2{left:28%;top:-8%;animation-delay:-4s}.halloween-decor .snowflake.s3{left:53%;top:-10%;animation-delay:-2s}.halloween-decor .snowflake.s4{left:76%;top:-6%;animation-delay:-6s}.halloween-decor .snowflake.s5{left:91%;top:-12%;animation-delay:-3s}
+.halloween-decor .tree{position:absolute;font-size:clamp(70px,10vw,145px);filter:drop-shadow(0 12px 24px #0009);animation:halloweenFloat 7s ease-in-out infinite}.halloween-decor .tree-one{left:2%;bottom:2%;animation-delay:-2s}.halloween-decor .tree-two{right:1%;bottom:0;font-size:clamp(85px,12vw,170px);animation-delay:-4s}
+.halloween-decor .gift{position:absolute;font-size:clamp(30px,4vw,54px);filter:drop-shadow(0 9px 18px #0009);animation:halloweenFloat 5s ease-in-out infinite}.halloween-decor .gift-one{left:18%;bottom:5%;animation-delay:-1s}.halloween-decor .gift-two{right:18%;bottom:4%;animation-delay:-3s}
+.halloween-decor .lights{position:absolute;left:0;right:0;top:0;height:58px;background:repeating-linear-gradient(90deg,transparent 0 48px,#ef4444 49px 57px,transparent 58px 92px);opacity:.45;filter:blur(.2px)}
+.auth-wrap{position:relative;z-index:2;width:min(590px,100%);margin:26px auto 48px}
+.auth-brandline{display:flex;align-items:center;justify-content:center;gap:10px;margin:0 auto 18px;color:#f8fafc;font-size:12px;font-weight:900;letter-spacing:3px;text-transform:uppercase}
+.auth-brandmark{display:grid;place-items:center;width:37px;height:37px;border:1px solid #ef444499;border-radius:12px;background:linear-gradient(145deg,#dc2626,#166534);box-shadow:0 0 28px #ef444440;color:#fff;font-size:20px;letter-spacing:0}
+.halloween-badge{display:inline-flex;align-items:center;gap:8px;padding:7px 11px;border:1px solid #ef444455;border-radius:999px;background:#14532d38;color:#dcfce7;font-size:10px;font-weight:900;letter-spacing:1.8px;text-transform:uppercase;box-shadow:0 6px 24px #16a34a18}
+.halloween-badge .badge-dot{width:7px;height:7px;border-radius:50%;background:#ef4444;box-shadow:0 0 12px #ef4444}
+.auth-hero{text-align:center;margin:0 auto 24px;max-width:560px}.auth-hero h1{font-size:clamp(39px,7vw,64px);margin:15px 0 12px;letter-spacing:-2.6px;text-shadow:0 8px 35px #0009}.auth-hero .gradient{background:linear-gradient(90deg,#fca5a5,#f87171 38%,#86efac 78%,#bfdbfe);background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent}.auth-hero .muted{max-width:450px;margin:0 auto;font-size:14px}.auth-feature-row{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:19px}.auth-feature{padding:7px 10px;border:1px solid #22c55e30;border-radius:999px;background:#071a13ba;color:#e8e6f0;font-size:11px;font-weight:750;backdrop-filter:blur(8px)}
+.auth-wrap>.card{border-color:#22c55e45;background:linear-gradient(155deg,#111b18f5,#090e13f5);box-shadow:0 24px 90px #0007,0 0 0 1px #22c55e0a,inset 0 1px #ffffff08;backdrop-filter:blur(15px)}.auth-wrap>.card h2{font-size:22px;letter-spacing:-.4px}.auth-wrap .tabs{border-color:#1f4936;background:#08120f}.auth-wrap .tab.active{background:linear-gradient(100deg,#b91c1c,#166534);box-shadow:0 5px 20px #16653438}.auth-wrap .btn:not(.secondary){background:linear-gradient(100deg,#dc2626,#166534);box-shadow:0 9px 24px #16a34a24}.auth-wrap input:focus{border-color:#22c55e;box-shadow:0 0 0 3px #22c55e24}.auth-footnote{margin:15px 0 0;text-align:center;color:#a6a0b7;font-size:11px;line-height:1.6}
+@keyframes halloweenFloat{0%,100%{translate:0 0;rotate:-3deg}50%{translate:0 -12px;rotate:3deg}}@keyframes halloweenFly{0%,100%{translate:0 0;rotate:-7deg}50%{translate:24px -10px;rotate:7deg}}@keyframes snowFall{0%{translate:0 -10vh;rotate:0}100%{translate:35px 115vh;rotate:360deg}}
+@media(prefers-reduced-motion:reduce){.halloween-pumpkin,.halloween-bat,.halloween-ghost,.snowflake,.tree,.gift{animation:none!important}}@media(max-width:600px){.halloween-decor:before{right:-32px;top:5%;opacity:.5}.halloween-pumpkin.pumpkin-one{left:1%;bottom:3%}.halloween-pumpkin.pumpkin-two{right:1%;bottom:5%}.halloween-ghost{left:1%;top:38%}.auth-wrap{margin-top:12px}.auth-hero h1{letter-spacing:-1.8px}}
+
 </style>
 </head>
 <body>
 
 <div id="tosGate" class="tos-gate" role="dialog" aria-modal="true" aria-labelledby="tosGateTitle">
   <div class="tos-gate-card">
-    <div class="eyebrow">PILTAE CHATTER · TERMS OF SERVICE</div>
+    <div class="eyebrow">RIVEN · TERMS OF SERVICE</div>
     <h2 id="tosGateTitle">Please read before continuing</h2>
     <div class="tos-gate-text">
-      <p><strong>This website is for fun and entertainment only.</strong> PILTAE CHATTER includes chat features and simulated gambling-style games that use <strong>fake virtual coins only</strong>. The coins have no real-world or cash value and cannot be exchanged for real money.</p>
+      <p><strong>This website is for fun and entertainment only.</strong> RIVEN includes chat features and simulated gambling-style games that use <strong>fake virtual coins only</strong>. The coins have no real-world or cash value and cannot be exchanged for real money.</p>
       <p>By continuing, you understand that the games are not real-money gambling. You do not deposit real money, withdraw real money, or receive real-world prizes from the virtual-coin games.</p>
-      <p>The website uses your <strong>email address</strong> for account registration and login. PILTAE does not use your email address to access your other personal accounts, files, contacts, messages, photos, or other private information.</p>
-      <p><strong>Your password is not given to the website owner.</strong> Account authentication is handled through the site's authentication provider. Only information needed for the account and features of PILTAE is used by the website.</p>
+      <p>The website uses your <strong>email address</strong> for account registration and login. RIVEN does not use your email address to access your other personal accounts, files, contacts, messages, photos, or other private information.</p>
+      <p><strong>Your password is not given to the website owner.</strong> Account authentication is handled through the site's authentication provider. Only information needed for the account and features of RIVEN is used by the website.</p>
       <p>Chat and profile information you choose to submit can be visible to other members as described by the website's features. Do not post information you do not want other members to see.</p>
       <p>By clicking <strong>Accept &amp; Continue</strong>, you confirm that you have read and agree to these terms and that you understand the virtual coins and games are not real money.</p>
     </div>
     <div class="tos-gate-actions">
       <button class="btn" id="tosAcceptButton" type="button">Accept &amp; Continue</button>
       <button class="tos-decline" id="tosDeclineButton" type="button">I Don't Agree — Leave Website</button>
-      <p class="muted" style="font-size:11px;margin:0">You can return to PILTAE CHATTER anytime. You must accept these terms to use the website.</p>
+      <p class="muted" style="font-size:11px;margin:0">You can return to RIVEN anytime. You must accept these terms to use the website.</p>
     </div>
   </div>
 </div>
 
 
 <div id="customImageOverlay" aria-hidden="true"></div>
+<div class="halloween-decor" aria-hidden="true">
+  <span class="lights"></span>
+  <span class="snowflake s1">❄</span><span class="snowflake s2">❅</span><span class="snowflake s3">❄</span><span class="snowflake s4">❅</span><span class="snowflake s5">❄</span>
+  <span class="tree tree-one">🎄</span><span class="tree tree-two">🎄</span>
+  <span class="gift gift-one">🎁</span><span class="gift gift-two">🎁</span>
+</div>
 <main class="shell">
 <header class="topbar">
-  <div class="brand"><div class="logo">P</div><span>PILTAE CHATTER</span></div>
-  <div class="topright" id="topRight" hidden><div class="wallet">🪙 <span id="topCoins">0</span> coins</div><button class="smallbtn" id="topLogout" type="button">Log out</button></div>
+  <div class="brand"><div class="logo">R</div><span>RIVEN</span></div>
+  <div class="topright" id="topRight" hidden><div class="member-roster" id="memberRoster" aria-label="Community member online status"><div class="member-roster-head"><span>👥 MEMBERS</span><span class="member-roster-count" id="rosterOnlineCount">0 online</span></div><div class="member-roster-list" id="memberRosterList" aria-live="polite"><div class="member-roster-empty">Loading members…</div></div></div><div class="wallet">🪙 <span id="topCoins">0</span> coins</div><button class="smallbtn" id="topLogout" type="button">Log out</button></div>
 </header>
 
 <section id="authView" class="auth-wrap">
-  <div class="hero"><div class="eyebrow">YOUR COMMUNITY STARTS HERE</div><h1>Welcome to <span class="gradient">PILTAE.</span></h1><p class="muted">Chat with people, make friends, shop, join fake-coin events, and build your profile.</p></div>
+  <div class="auth-brandline"><span class="auth-brandmark">R</span><span>RIVEN COMMUNITY</span></div>
+  <div class="hero auth-hero"><div class="halloween-badge"><span class="badge-dot"></span> Christmas season · 2026 <span aria-hidden="true">🎄</span></div><h1>Enter the <span class="gradient">RIVEN</span><br>after-dark.</h1><p class="muted">Your corner of the internet for conversations, friends, games, and a little Christmas spirit.</p><div class="auth-feature-row"><span class="auth-feature">💬 Community chat</span><span class="auth-feature">👻 Meet members</span><span class="auth-feature">🕹️ Arcade &amp; games</span><span class="auth-feature">🎄 Christmas season</span></div></div>
   <div class="card">
     <h2 id="authTitle">Create your account</h2><p class="muted" id="authDescription">Create an account, then confirm your email to join.</p>
     <div class="tabs"><button class="tab active" id="signupTab" type="button">Create account</button><button class="tab" id="loginTab" type="button">Log in</button></div>
@@ -297,6 +339,7 @@ input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 
     </form>
     <div id="authNotice" class="notice" role="status" aria-live="polite" hidden></div>
   </div>
+  <p class="auth-footnote">🧡 Stay spooky, be kind, and keep your account details private. <span aria-hidden="true">✦</span></p>
 </section>
 
 <section id="appView" hidden>
@@ -314,9 +357,9 @@ input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 
   <button class="navbtn" data-page="mines"><span class="navicon">💎</span> Mines</button>
   <button class="navbtn" data-page="tower"><span class="navicon">🏰</span> TOWER</button>
   <button class="navbtn" data-page="arcade"><span class="navicon">🎰</span> Arcade Games</button>
+  <button class="navbtn" data-page="battleship"><span class="navicon">🚢</span> BATTLESHIP 1v1</button>
   <button class="navbtn" data-page="events"><span class="navicon">🎲</span> Fake-coin events</button>
   <button class="navbtn" data-page="admin" id="adminNav" hidden><span class="navicon">⚙</span> Admin panel</button>
-  <button class="navbtn" data-page="terminal" id="ownerTerminalNav" hidden><span class="navicon">⌘</span> Owner terminal</button>
   <button class="navbtn" data-page="terms"><span class="navicon">ⓘ</span> Terms of Service</button>
   <button class="navbtn" data-page="audit" id="auditNav" hidden><span class="navicon">≡</span> Audit log</button>
   <button class="navbtn" data-page="reports" id="reportsNav"><span class="navicon">⚑</span> Report a member</button>
@@ -328,7 +371,7 @@ input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 
 <div id="memberWarningBanner" class="warn-banner" role="alert" hidden></div>
 
 <section class="page" id="page-dashboard">
-  <div class="pagehead"><div><div class="eyebrow">PILTAE NETWORK</div><h2>Dashboard</h2><p class="muted">Welcome back, <strong id="welcomeName">Player</strong>.</p></div><span id="roleBadge" class="tag">Member</span></div>
+  <div class="pagehead"><div><div class="eyebrow">RIVEN NETWORK</div><h2>Dashboard</h2><p class="muted">Welcome back, <strong id="welcomeName">Player</strong>.</p></div><span id="roleBadge" class="tag">Member</span></div>
   <div class="stats"><div class="stat"><small>Your coins</small><strong id="dashCoins">0</strong></div><div class="stat"><small>Your role</small><strong id="dashRole">Member</strong></div><div class="stat"><small>Friends</small><strong id="dashFriends">0</strong></div></div>
   <div class="card"><h2>Choose your next move</h2><p class="muted">Everything is now in one place. Saving your profile returns you here.</p><div class="quickgrid sectiongap">
     <button class="quickcard navbtn" data-page="chat">💬 <strong>Open community chat</strong><span class="muted">Talk with everyone online.</span></button>
@@ -340,7 +383,7 @@ input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 
 </section>
 
 <section class="page" id="page-suggestions" hidden>
- <div class="pagehead"><div><h2>Website suggestions</h2><p class="muted">Got an idea for PILTAE CHATTER? Share it here so everyone can see suggestions.</p></div><button class="smallbtn" id="refreshSuggestions" type="button">Refresh</button></div>
+ <div class="pagehead"><div><h2>Website suggestions</h2><p class="muted">Got an idea for RIVEN? Share it here so everyone can see suggestions.</p></div><button class="smallbtn" id="refreshSuggestions" type="button">Refresh</button></div>
  <div class="card"><form id="suggestionForm"><div class="field"><label for="suggestionText">Your suggestion</label><textarea id="suggestionText" minlength="3" maxlength="1000" required placeholder="What would you like added to the website?"></textarea></div><button class="btn" id="sendSuggestionButton" type="submit">Post suggestion</button></form><p class="muted">Keep suggestions respectful and specific. Do not share private information.</p></div>
  <div class="card sectiongap"><h3>Community suggestions</h3><div id="suggestionMessages" class="stack"><div class="empty">Loading suggestions...</div></div></div>
 </section>
@@ -356,10 +399,6 @@ input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 
   <div class="card"><form id="profileForm">
     <div class="field"><label for="profileName">DISPLAY NAME</label><input id="profileName" maxlength="24" minlength="1" required></div>
     <div class="field"><label for="profileBio">BIO</label><textarea id="profileBio" maxlength="160" placeholder="Say something about yourself..."></textarea><p class="muted"><span id="bioCount">0</span>/160 characters</p></div>
-    <div class="field wide">
-      <label class="checkrow"><input id="shareNetworkDiagnostics" type="checkbox"> <span>Share my connection diagnostics with the website owner</span></label>
-      <p class="muted">Optional. This shares browser connection information and, if available, your <strong>public IP address</strong> with the website owner. It does <strong>not</strong> share your private LAN IP, passwords, files, or device network configuration.</p>
-    </div>
     <button class="btn" id="saveProfileButton" type="submit">Save profile and return to dashboard</button>
   </form></div>
 
@@ -389,8 +428,8 @@ input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 
 </section>
 
 <section class="page" id="page-shop" hidden>
-  <div class="pagehead"><div><h2>PILTAE Shop</h2><p class="muted">Buy UI themes, menu button images, and website background images with virtual coins. Each item can only be purchased once while it is in your Inventory.</p></div><button class="smallbtn" id="reloadShop" type="button">Refresh</button></div>
-  <div class="card theme-banner sectiongap"><div id="currentThemePreview"></div><div class="theme-banner-copy"><div class="eyebrow">CURRENT LOOK</div><h3 id="currentThemeName">Midnight Default</h3><p class="muted" id="currentThemeDescription">The original PILTAE look.</p><button class="smallbtn" id="resetThemeButton" type="button">Use Midnight Default</button></div></div>
+  <div class="pagehead"><div><h2>RIVEN Shop</h2><p class="muted">Buy UI themes, menu button images, and website background images with virtual coins. Each item can only be purchased once while it is in your Inventory.</p></div><button class="smallbtn" id="reloadShop" type="button">Refresh</button></div>
+  <div class="card theme-banner sectiongap"><div id="currentThemePreview"></div><div class="theme-banner-copy"><div class="eyebrow">CURRENT LOOK</div><h3 id="currentThemeName">Midnight Default</h3><p class="muted" id="currentThemeDescription">The original RIVEN look.</p><button class="smallbtn" id="resetThemeButton" type="button">Use Midnight Default</button></div></div>
   <div id="shopItems" class="itemsgrid"><div class="empty">Loading skins...</div></div>
     <div class="card sectiongap" id="shopPublishItemCard" hidden><h3>Add an item to the Shop</h3><p class="muted">Publish a theme, website background image, or menu button image. Set its virtual-coin price; members must buy image items before equipping them.</p><form id="createItemForm" class="twoform">
       <div class="field wide"><label for="itemSkinType">SHOP ITEM TYPE</label><select id="itemSkinType" required><option value="theme">Preset UI / HUD theme</option><option value="image">Website background image</option><option value="menu_button">Menu button image</option></select><p class="muted">Background images change the website background. Menu button images are individual items that buyers equip to a chosen sidebar button.</p></div>
@@ -419,7 +458,7 @@ input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 
 
 <section class="page" id="page-inventory" hidden>
   <div class="pagehead"><div><h2>Your Inventory</h2><p class="muted">Every skin you own lives here. Select <strong>Equip skin</strong> to change the look of your entire UI and HUD. Your choice is saved to your account.</p></div><button class="smallbtn" id="refreshInventoryButton" type="button">Refresh inventory</button></div>
-  <div class="card theme-banner sectiongap"><div id="inventoryCurrentThemePreview"></div><div class="theme-banner-copy"><div class="eyebrow">CURRENTLY EQUIPPED</div><h3 id="inventoryCurrentThemeName">Midnight Default</h3><p class="muted" id="inventoryCurrentThemeDescription">The original PILTAE look.</p><button class="smallbtn" id="inventoryResetThemeButton" type="button">Equip Midnight Default</button></div></div>
+  <div class="card theme-banner sectiongap"><div id="inventoryCurrentThemePreview"></div><div class="theme-banner-copy"><div class="eyebrow">CURRENTLY EQUIPPED</div><h3 id="inventoryCurrentThemeName">Midnight Default</h3><p class="muted" id="inventoryCurrentThemeDescription">The original RIVEN look.</p><button class="smallbtn" id="inventoryResetThemeButton" type="button">Equip Midnight Default</button></div></div>
   <div class="card sectiongap"><h3>Owned skins</h3><p class="muted">Only purchased skins can be equipped. Midnight Default is always free.</p><div id="inventoryList" class="itemsgrid"><div class="empty">Loading inventory...</div></div></div>
 </section>
 
@@ -445,7 +484,7 @@ input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 
 
 <section class="page" id="page-arcade" hidden>
   <div class="arcade-hero">
-    <div><div class="eyebrow">PILTAE AFTER DARK · VIRTUAL COINS</div><h2>NEON ARCADE</h2><p class="muted">Pick your game. Place your wager. Watch the moment unfold.</p></div>
+    <div><div class="eyebrow">RIVEN AFTER DARK · VIRTUAL COINS</div><h2>NEON ARCADE</h2><p class="muted">Pick your game. Place your wager. Watch the moment unfold.</p></div>
     <div class="arcade-wallet"><span>YOUR WALLET</span><strong>🪙 <b id="arcadeWalletCoins">0</b></strong><button class="smallbtn" id="arcadeRefreshButton" type="button">↻ Refresh</button></div>
   </div>
   <div class="arcade-game-grid">
@@ -477,6 +516,30 @@ input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 
           <div class="arcade-safety-note">🔒 Outcomes and coin changes are processed by Supabase. Animation never changes the result.</div>
         </div>
       </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="page" id="page-battleship" hidden>
+  <div class="battleship-hero">
+    <div><div class="eyebrow">RIVEN DUELS · 1V1</div><h2>🚢 BATTLESHIP</h2><p class="muted">Place your fleet, find another member, and sink every ship before the 10-minute clock runs out.</p></div>
+    <div class="battleship-prize"><span>WINNER REWARD</span><strong>85,000–100,000 🪙</strong><span>Faster wins pay more</span></div>
+  </div>
+  <div class="battleship-panel battle-status" id="battleshipStatus">Press <strong>Find Opponent</strong> to enter the 1v1 queue.</div>
+  <div class="battleship-layout sectiongap">
+    <div class="battleship-panel">
+      <div class="pagehead"><div><div class="eyebrow">YOUR FLEET</div><h3 id="battleshipMyTitle">Place your ships</h3><p class="muted" id="battleshipPlacementHint">Select a ship, choose horizontal/vertical, then click a starting square. Ships cannot overlap or leave the board.</p></div><div class="battleship-timer" id="battleshipTimer">10:00</div></div>
+      <div class="battleship-toolbar"><button class="btn" id="battleshipQueueButton" type="button">⚓ Find Opponent</button><button class="smallbtn" id="battleshipRotateButton" type="button">↻ Vertical</button><button class="smallbtn" id="battleshipReadyButton" type="button" disabled>Ready Fleet</button><button class="smallbtn" id="battleshipCancelButton" type="button" hidden>Leave Match</button></div>
+      <div class="battleship-board-wrap"><div class="battleship-board" id="battleshipMyBoard" aria-label="Your battleship board"></div></div>
+      <div class="battleship-legend"><span><i class="battle-dot"></i> Ship</span><span><i class="battle-dot hit"></i> Hit</span><span><i class="battle-dot miss"></i> Miss</span></div>
+      <div class="battleship-ships" id="battleshipShipList"></div>
+    </div>
+    <div class="battleship-panel">
+      <div class="eyebrow">ENEMY WATERS</div><h3 id="battleshipOpponentTitle">Waiting for an opponent</h3><p class="muted" id="battleshipOpponentHint">When the match starts, click a square here to fire. You cannot see the enemy's unhit ships.</p>
+      <div class="battleship-board-wrap"><div class="battleship-board" id="battleshipEnemyBoard" aria-label="Enemy battleship board"></div></div>
+      <div class="card" style="margin-top:13px"><strong>How the reward works</strong><p class="muted" style="margin:7px 0 0">A win during the 10-minute match pays from <strong>100,000</strong> coins at the start down to <strong>85,000</strong> coins at the 10-minute mark. The server calculates the reward.</p></div>
+      <div class="battle-match-list" id="battleshipRecentResult"></div>
     </div>
   </div>
 </section>
@@ -536,10 +599,10 @@ input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 
 </section>
 
 <section class="page" id="page-terms" hidden>
-  <div class="pagehead"><div><div class="eyebrow">PILTAE CHATTER</div><h2>Terms of Service</h2><p class="muted">Please review how the website and its virtual-coin games work.</p></div></div>
+  <div class="pagehead"><div><div class="eyebrow">RIVEN</div><h2>Terms of Service</h2><p class="muted">Please review how the website and its virtual-coin games work.</p></div></div>
   <div class="card">
     <h3>1. Fun and fake-money games only</h3>
-    <p class="muted">This website is for fun and entertainment only. PILTAE CHATTER includes chat features and simulated gambling-style games that use <strong>fake virtual coins only</strong>. The coins have no real-world or cash value and cannot be exchanged for real money.</p>
+    <p class="muted">This website is for fun and entertainment only. RIVEN includes chat features and simulated gambling-style games that use <strong>fake virtual coins only</strong>. The coins have no real-world or cash value and cannot be exchanged for real money.</p>
     <p class="muted">The games are not real-money gambling. You do not deposit real money, withdraw real money, or receive real-world prizes from the virtual-coin games.</p>
     <h3>2. Account and email information</h3>
     <p class="muted">The website uses your email address for account registration and login. Your email address does not give the website owner access to your other personal accounts, files, contacts, messages, photos, or other private information.</p>
@@ -547,7 +610,7 @@ input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 
     <h3>3. Chat and profile information</h3>
     <p class="muted">Chat and profile information you choose to submit can be visible to other members as described by the website's features. Do not post information you do not want other members to see.</p>
     <h3>4. Agreement</h3>
-    <p class="muted">By using PILTAE CHATTER, you agree to use the website responsibly and follow its rules. You understand that the coins and games are for entertainment only and have no real-world value.</p>
+    <p class="muted">By using RIVEN, you agree to use the website responsibly and follow its rules. You understand that the coins and games are for entertainment only and have no real-world value.</p>
   </div>
 </section>
 </div>
@@ -573,17 +636,7 @@ input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 
  <div class="card"><form id="memberReportForm"><div class="field"><label for="reportTarget">Member to report</label><select id="reportTarget" required><option value="">Choose a member...</option></select></div><div class="field"><label for="reportReason">Why are you reporting them?</label><textarea id="reportReason" minlength="10" maxlength="1500" required placeholder="Explain what happened, including where and when..."></textarea></div><button class="btn" id="submitReportButton" type="submit">Submit report</button></form><p class="muted">Your report reason is visible to admins and the owner. Reports are not public.</p></div>
  <div class="card staffonly sectiongap" id="reportsAdminPanel" hidden><div class="pagehead"><div><h3>Member reports</h3><p class="muted">Admins and the owner can review reports and apply warnings, timeouts, or bans.</p></div><button class="smallbtn" id="refreshReports" type="button">Refresh</button></div><div id="moderationReports" class="stack"><div class="empty">Loading reports...</div></div></div>
 </section>
-<section class="page" id="page-terminal" hidden>
-  <div class="pagehead"><div><div class="eyebrow">OWNER ACCESS ONLY</div><h2>Owner terminal</h2><p class="muted">A private terminal-style console for PILTAE CHATTER diagnostics. This browser console does not run operating-system commands or collect visitors’ device IP configuration.</p></div><span class="tag owner">OWNER</span></div>
-  <div class="terminal-window">
-    <div class="terminal-topbar"><span class="terminal-dot"></span><span class="terminal-dot"></span><span class="terminal-dot"></span><span style="margin-left:8px">PILTAE // OWNER CONSOLE</span></div>
-    <div id="ownerTerminalOutput" class="terminal-output" role="log" aria-live="polite">PILTAE CHATTER OWNER CONSOLE
-Type `help` to see available commands.
-Access is limited to noahlangedu@gmail.com.
-</div>
-    <form id="ownerTerminalForm" class="terminal-form"><span class="terminal-prompt">owner@piltae:~$</span><input id="ownerTerminalInput" class="terminal-input" autocomplete="off" spellcheck="false" aria-label="Terminal command" placeholder="Type help..." maxlength="120"><button class="btn" type="submit">Run</button></form>
-  </div>
-</section>
+
 
 <section class="page" id="page-settings" hidden>
   <div class="pagehead"><div><h2>Settings</h2><p class="muted">Change your menu button opacity and control the built-in website music. Manage custom menu button designs in the Shop. Personal preferences are saved in this browser.</p></div></div>
@@ -606,12 +659,12 @@ Access is limited to noahlangedu@gmail.com.
 </section>
 
 <section class="page" id="page-credits" hidden>
- <div class="pagehead"><div><h2>Credits</h2><p class="muted">The people who helped make PILTAE CHATTER.</p></div></div>
+ <div class="pagehead"><div><h2>Credits</h2><p class="muted">The people who helped make RIVEN.</p></div></div>
  <div class="card"><div id="creditsList" class="stack"><div class="empty">Loading credits...</div></div></div>
  <div class="card staffonly sectiongap" id="creditsEditor" hidden><h3>Manage credits (owner only)</h3><form id="creditsForm"><div class="field"><label for="creditName">Name / handle</label><input id="creditName" maxlength="60" required></div><div class="field"><label for="creditContribution">Contribution</label><input id="creditContribution" maxlength="160" required placeholder="Website design, coding, art..."></div><div class="inlineform"><button class="btn" type="submit">Add credit</button><button class="btn secondary" id="refreshCredits" type="button">Refresh</button></div></form><div id="creditsManageList" class="stack sectiongap"></div></div>
 </section>
 
-<div class="footer">PILTAE CHATTER · Community coins are simulated and have no real-world value.</div>
+<div class="footer">RIVEN · Community coins are simulated and have no real-world value.</div>
 </main>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -623,7 +676,7 @@ const SITE_URL = "https://noahlangedu.github.io/888222888222/";
 const $ = id => document.getElementById(id);
 
 const THEME_CATALOG = [
-  {key:"midnight",name:"Midnight Default",description:"The original deep-space PILTAE look.",price:0,bg:"#090b12",cardA:"#151a28f5",cardB:"#0e121cf5",surface:"#101521",input:"#090d16",border:"#293146",text:"#f1f4ff",muted:"#929bb3",accent:"#8b5cf6",deep:"#4338ca",mint:"#5eead4",glow:"#31205b66",glow2:"#115e5940",soft:"#292344",nav:"#111521",wallet:"#1b1730",navText:"#bdc5d9"},
+  {key:"midnight",name:"Midnight Default",description:"The original deep-space RIVEN look.",price:0,bg:"#090b12",cardA:"#151a28f5",cardB:"#0e121cf5",surface:"#101521",input:"#090d16",border:"#293146",text:"#f1f4ff",muted:"#929bb3",accent:"#8b5cf6",deep:"#4338ca",mint:"#5eead4",glow:"#31205b66",glow2:"#115e5940",soft:"#292344",nav:"#111521",wallet:"#1b1730",navText:"#bdc5d9"},
   {key:"cyber_violet",name:"Cyber Violet",description:"Electric purple with bright teal highlights.",price:1200,bg:"#0b0715",cardA:"#211337f5",cardB:"#100b1ff5",surface:"#171029",input:"#0b0715",border:"#523077",text:"#f7efff",muted:"#b3a0c9",accent:"#c084fc",deep:"#6d28d9",mint:"#5eead4",glow:"#7e22ce65",glow2:"#0f766e35",soft:"#32134f",nav:"#160d25",wallet:"#29123d",navText:"#e5d5fa"},
   {key:"matrix_green",name:"Matrix Green",description:"Black glass with terminal-green highlights.",price:1500,bg:"#050d08",cardA:"#102117f5",cardB:"#07130cf5",surface:"#0c1b11",input:"#040a06",border:"#205333",text:"#e5ffe9",muted:"#88b99a",accent:"#22c55e",deep:"#15803d",mint:"#86efac",glow:"#16a34a50",glow2:"#14532d35",soft:"#113321",nav:"#08140c",wallet:"#0e2d19",navText:"#c3f5cf"},
   {key:"ocean_blue",name:"Ocean Blue",description:"Deep ocean panels and bright cyan glow.",price:1250,bg:"#04101b",cardA:"#102638f5",cardB:"#071724f5",surface:"#0b2030",input:"#04101a",border:"#20516b",text:"#e8f8ff",muted:"#8eb6ca",accent:"#38bdf8",deep:"#0369a1",mint:"#67e8f9",glow:"#0284c750",glow2:"#0e749035",soft:"#12334a",nav:"#071927",wallet:"#0d2b40",navText:"#c8efff"},
@@ -658,7 +711,6 @@ function roleTitle(role){return role==="owner"?"Owner":role==="admin"?"Admin":"M
 function isStaff(){return myProfile?.role==="owner"||myProfile?.role==="admin";}
 function isOwner(){return myProfile?.role==="owner";}
 function isRewardCodeManager(){return isOwner()||String(currentUser?.email||"").toLowerCase()==="noahlangedu@gmail.com";}
-function isTerminalOwner(){return String(currentUser?.email||"").trim().toLowerCase()==="noahlangedu@gmail.com";}
 
 function safeHttpsUrl(value){
   try{const url=new URL(String(value||""));return url.protocol==="https:"&&Boolean(url.hostname)&&url.href.length<=2000?url.href:"";}catch{return "";}
@@ -739,10 +791,9 @@ $("loginTab").addEventListener("click",()=>showAuthMode("login"));
 $("profileBio").addEventListener("input",()=>$("bioCount").textContent=$("profileBio").value.length);
 
 function navigate(page){
-  const allowed=["dashboard","profile","chat","suggestions","redeem","friends","dm","shop","inventory","mines","tower","arcade","events","admin","terminal","terms","audit","reports","credits"];
+  const allowed=["dashboard","profile","chat","suggestions","redeem","friends","dm","shop","inventory","mines","tower","arcade","battleship","events","admin","terms","audit","reports","credits"];
   allowed.push("settings");
   if(!allowed.includes(page))page="dashboard";
-  if(page==="terminal"&&!isTerminalOwner()){toast("The owner terminal is restricted to noahlangedu@gmail.com.","error");return;}
   if(page==="audit"&&!isStaff()){toast("The audit log is restricted to admins and the owner.","error");return;}
   if(page==="admin"&&!isStaff()){toast("The admin panel is restricted to staff.","error");return;}
   activePage=page;
@@ -758,6 +809,7 @@ function navigate(page){
   if(page==="mines")loadActiveMinesGame();
   if(page==="tower")loadTowerPage();
   if(page==="arcade")loadArcadePage();
+  if(page==="battleship")loadBattleshipPage();
   if(page==="events")loadEvents();
   if(page==="admin"&&isStaff()){loadMembers();loadShop();loadEvents();loadTowerAdmin();loadArcadeAdmin();if(isOwner())loadOwnerRewardCodes();}
   if(page==="audit"&&isStaff())loadAuditLog();
@@ -769,14 +821,14 @@ document.querySelectorAll("[data-page]").forEach(el=>el.addEventListener("click"
 
 async function refreshMyProfile(){
   if(!currentUser)return;
-  let {data,error}=await db.from("profiles").select("user_id,display_name,bio,role,coins,created_at,active_theme,active_image_skin_item_id,share_network_diagnostics").eq("user_id",currentUser.id).maybeSingle();
+  let {data,error}=await db.from("profiles").select("user_id,display_name,bio,role,coins,created_at,active_theme,active_image_skin_item_id").eq("user_id",currentUser.id).maybeSingle();
   if(error&&/active_image_skin_item_id|column/i.test(error.message||"")){
-    const fallback=await db.from("profiles").select("user_id,display_name,bio,role,coins,created_at,active_theme,share_network_diagnostics").eq("user_id",currentUser.id).maybeSingle();
+    const fallback=await db.from("profiles").select("user_id,display_name,bio,role,coins,created_at,active_theme").eq("user_id",currentUser.id).maybeSingle();
     data=fallback.data;error=fallback.error;
     if(!error)toast("Custom image skin SQL isn't installed yet. Run the custom image skin upgrade query to enable image skins.","error");
   }
   if(error&&/active_theme|column/i.test(error.message||"")){
-    const fallback=await db.from("profiles").select("user_id,display_name,bio,role,coins,created_at,share_network_diagnostics").eq("user_id",currentUser.id).maybeSingle();
+    const fallback=await db.from("profiles").select("user_id,display_name,bio,role,coins,created_at").eq("user_id",currentUser.id).maybeSingle();
     data=fallback.data;error=fallback.error;
     if(!error)toast("Theme upgrade SQL hasn't been run yet. Skin purchasing/equipping needs the theme SQL.","error");
   }
@@ -792,174 +844,26 @@ async function refreshMyProfile(){
   $("dashRole").textContent=roleTitle(data.role);$("welcomeName").textContent=data.display_name;
   $("roleBadge").textContent=roleTitle(data.role);
   $("roleBadge").className="tag"+(data.role==="owner"?" owner":data.role==="admin"?" admin":"");
-  $("adminNav").hidden=!isStaff();if($("auditNav"))$("auditNav").hidden=!isStaff();if($("ownerTerminalNav"))$("ownerTerminalNav").hidden=!isTerminalOwner();$("adminRoleBadge").textContent=roleTitle(data.role);
+  $("adminNav").hidden=!isStaff();if($("auditNav"))$("auditNav").hidden=!isStaff();$("adminRoleBadge").textContent=roleTitle(data.role);
   $("adminTools").hidden=!isStaff();$("adminForbidden").hidden=isStaff();
   if($("rewardCodesOwnerPanel"))$("rewardCodesOwnerPanel").hidden=!isOwner();
   if($("emailRewardManagerPanel"))$("emailRewardManagerPanel").hidden=!isRewardCodeManager();
-  $("profileName").value=data.display_name||"";$("profileBio").value=data.bio||"";$("bioCount").textContent=$("profileBio").value.length;if($("shareNetworkDiagnostics"))$("shareNetworkDiagnostics").checked=Boolean(data.share_network_diagnostics);
+  $("profileName").value=data.display_name||"";$("profileBio").value=data.bio||"";$("bioCount").textContent=$("profileBio").value.length;
 }
 async function handleSession(session){
   if(session?.user){
     const different=currentUser?.id!==session.user.id;currentUser=session.user;$("authView").hidden=true;$("appView").hidden=false;$("topRight").hidden=false;
     if(different||!myProfile){
-      try{await refreshMyProfile();await publishMyNetworkDiagnostics();await loadDashboardFriendsCount();await loadLeaderboard();setupRealtime();navigate("dashboard");}
+      try{await refreshMyProfile();await loadDashboardFriendsCount();await loadLeaderboard();setupRealtime();navigate("dashboard");}
       catch(error){toast("Signed in, but app setup failed: "+error.message,"error");}
     }
   }else{
-    currentUser=null;myProfile=null;activeMinesGame=null;stopMinesSpectating();selectedDmId=null;
-    $("authView").hidden=false;$("appView").hidden=true;$("topRight").hidden=true;if($("ownerTerminalNav"))$("ownerTerminalNav").hidden=true;
+    currentUser=null;myProfile=null;activeMinesGame=null;stopMinesSpectating();selectedDmId=null;memberRosterOnline=new Set();memberRosterProfiles=[];if(memberRosterRefreshTimer){clearInterval(memberRosterRefreshTimer);memberRosterRefreshTimer=null;}if(memberRosterChannel){db?.removeChannel(memberRosterChannel);memberRosterChannel=null;}
+    $("authView").hidden=false;$("appView").hidden=true;$("topRight").hidden=true;
     realtimeChannels.forEach(ch=>db?.removeChannel(ch));realtimeChannels=[];applyTheme("midnight");showAuthMode("signup");
   }
 }
 
-const ownerTerminalOutput=$("ownerTerminalOutput");
-function terminalWrite(line=""){
-  if(!ownerTerminalOutput)return;
-  ownerTerminalOutput.textContent+=(ownerTerminalOutput.textContent.endsWith("\n")?"":"\n")+line;
-  ownerTerminalOutput.scrollTop=ownerTerminalOutput.scrollHeight;
-}
-async function collectBrowserNetworkDiagnostics(){
-  const c=navigator.connection||navigator.mozConnection||navigator.webkitConnection||null;
-  return {
-    online:Boolean(navigator.onLine),
-    connection_type:c?.type||null,
-    effective_type:c?.effectiveType||null,
-    downlink_mbps:Number.isFinite(c?.downlink)?c.downlink:null,
-    rtt_ms:Number.isFinite(c?.rtt)?c.rtt:null,
-    user_agent:String(navigator.userAgent||"").slice(0,500),
-    timezone:Intl.DateTimeFormat().resolvedOptions().timeZone||null,
-    public_ip:null
-  };
-}
-async function publishMyNetworkDiagnostics(){
-  if(!currentUser||!myProfile?.share_network_diagnostics)return;
-  const d=await collectBrowserNetworkDiagnostics();
-  try{
-    const ipResponse=await fetch("https://api64.ipify.org?format=json",{cache:"no-store"});
-    if(ipResponse.ok){
-      const ipData=await ipResponse.json();
-      if(typeof ipData.ip==="string" && ipData.ip.length<=64)d.public_ip=ipData.ip;
-    }
-  }catch{}
-  const {error}=await db.from("network_diagnostics_shares").upsert({user_id:currentUser.id,...d,shared_at:new Date().toISOString()},{onConflict:"user_id"});
-  if(error)console.warn("Network diagnostics share failed:",error.message);
-}
-async function runOwnerNetworkDiagnostics(targetName=null){
-  if(targetName){
-    terminalWrite("NETWORK LOOKUP: "+targetName);
-    const {data,error}=await db.rpc("get_network_diagnostics",{p_display_name:targetName});
-    if(error){terminalWrite("Lookup failed: "+error.message);return;}
-    const row=Array.isArray(data)?data[0]:data;
-    if(!row){terminalWrite("No shared network diagnostics found for that username.");terminalWrite("The member may not have opted in, or the username was not found.");return;}
-    terminalWrite("Member: "+(row.display_name||targetName));
-    terminalWrite("Shared: "+(row.shared_at?new Date(row.shared_at).toLocaleString():"unknown"));
-    terminalWrite("Online: "+(row.online?"ONLINE":"OFFLINE"));
-    terminalWrite("Public IP: "+(row.public_ip||"not reported"));
-    terminalWrite("Connection type: "+(row.connection_type||"not reported"));
-    terminalWrite("Effective type: "+(row.effective_type||"not reported"));
-    terminalWrite("Downlink estimate: "+(row.downlink_mbps==null?"not reported":row.downlink_mbps+" Mbps"));
-    terminalWrite("RTT estimate: "+(row.rtt_ms==null?"not reported":row.rtt_ms+" ms"));
-    terminalWrite("Browser: "+(row.user_agent||"not reported"));
-    terminalWrite("Timezone: "+(row.timezone||"not reported"));
-    terminalWrite("Private LAN IP: not collected");
-    terminalWrite("Privacy: public IP is shown only because this member opted into network diagnostics sharing.");
-    return;
-  }
-  terminalWrite("NETWORK DIAGNOSTICS");
-  terminalWrite("Browser online flag: "+(navigator.onLine?"ONLINE":"OFFLINE"));
-  terminalWrite("Page origin: "+window.location.origin);
-  terminalWrite("Connection API: "+(navigator.connection?"available":"not supported by this browser"));
-  if(navigator.connection){
-    terminalWrite("Connection type: "+(navigator.connection.type||"not reported"));
-    terminalWrite("Effective type: "+(navigator.connection.effectiveType||"not reported"));
-    terminalWrite("Downlink estimate: "+(Number.isFinite(navigator.connection.downlink)?navigator.connection.downlink+" Mbps":"not reported"));
-    terminalWrite("RTT estimate: "+(Number.isFinite(navigator.connection.rtt)?navigator.connection.rtt+" ms":"not reported"));
-  }
-  terminalWrite("Browser: "+navigator.userAgent);
-  terminalWrite("Local timezone: "+(Intl.DateTimeFormat().resolvedOptions().timeZone||"not reported"));
-  terminalWrite("Testing this website response...");
-  const started=performance.now();
-  try{
-    const response=await fetch(window.location.href,{method:"HEAD",cache:"no-store",credentials:"same-origin"});
-    const elapsed=Math.round(performance.now()-started);
-    terminalWrite("Website request: HTTP "+response.status+" "+response.statusText);
-    terminalWrite("Website response time: "+elapsed+" ms (browser-to-site request; not a full internet speed test)");
-  }catch(error){
-    terminalWrite("Website request failed: "+(error?.message||"network error"));
-    terminalWrite("Response time: unavailable");
-  }
-  terminalWrite("Privacy: visitor IPs and private LAN details are not collected by this command.");
-}
-$("ownerTerminalForm")?.addEventListener("submit",async event=>{
-  event.preventDefault();
-  if(!isTerminalOwner()){toast("Owner access required.","error");navigate("dashboard");return;}
-  const input=$("ownerTerminalInput"),command=input.value.trim();if(!command)return;input.value="";
-  terminalWrite("owner@piltae:~$ "+command);
-  const parts=command.match(/(?:[^\s"]+|"[^"]*")+/g)||[];
-  const cmd=(parts.shift()||"").toLowerCase();
-  const argument=parts.join(" ").replace(/^"|"$/g,"").trim();
-  if(cmd==="clear"){ownerTerminalOutput.textContent="PILTAE CHATTER OWNER CONSOLE\n";input.focus();return;}
-  if(cmd==="help"){
-    terminalWrite("Available commands:");terminalWrite("  help                  Show this command list");terminalWrite("  whoami                Show the signed-in owner account");terminalWrite("  site                  Show website and session status");terminalWrite("  network               Run your browser/network diagnostics");terminalWrite("  network <username>    Show diagnostics shared by that member");terminalWrite("  clear                 Clear this terminal");
-    terminalWrite("Note: members must opt in before their connection diagnostics can be looked up.");
-  }else if(cmd==="whoami"){
-    terminalWrite("Authenticated account: "+(currentUser?.email||"unknown"));terminalWrite("Owner console access: "+(isTerminalOwner()?"GRANTED":"DENIED"));
-  }else if(cmd==="site"){
-    terminalWrite("Website: PILTAE CHATTER");terminalWrite("Session: "+(currentUser?"signed in":"signed out"));terminalWrite("Profile role: "+(myProfile?.role||"unknown"));terminalWrite("Console: owner-only browser diagnostics; no operating-system shell");
-  }else if(cmd==="network"){
-    await runOwnerNetworkDiagnostics(argument||null);
-  }else{
-    terminalWrite("Command not found: "+command+". Type help.");
-  }
-  input.focus();
-});
-const ownerTerminalInput=$("ownerTerminalInput");
-if(ownerTerminalInput){ownerTerminalInput.style.setProperty("color","#b7ffc8","important");ownerTerminalInput.style.setProperty("-webkit-text-fill-color","#b7ffc8","important");ownerTerminalInput.style.setProperty("caret-color","#4ade80","important");ownerTerminalInput.addEventListener("input",()=>{ownerTerminalInput.style.setProperty("color","#b7ffc8","important");ownerTerminalInput.style.setProperty("-webkit-text-fill-color","#b7ffc8","important");});}
-
-
-$("signupForm").addEventListener("submit",async event=>{
-  event.preventDefault();const name=$("signupName").value.trim(),email=$("signupEmail").value.trim(),password=$("signupPassword").value;
-  if(!name||name.length>24){toast("Display name must be 1–24 characters.","error");return;}
-  let tosAcceptedForSignup=false;try{tosAcceptedForSignup=localStorage.getItem(TOS_STORAGE_KEY)==="1";}catch{}
-  if(!tosAcceptedForSignup){showTosGate();toast("You must accept the Terms of Service before creating an account.","error");return;}
-  if(!$("termsAgree").checked){toast("Please agree to the Terms of Service before creating an account.","error");return;}
-  const button=$("signupButton");setBusy(button,true,"Creating account...","Create account →");
-  try{
-    const {data,error}=await db.auth.signUp({email,password,options:{data:{display_name:name},emailRedirectTo:SITE_URL}});
-    if(error)throw error;$("signupPassword").value="";
-    if(data.session?.user){await handleSession(data.session);toast("Account created. Welcome to PILTAE!","success");}
-    else{showAuthMode("login");$("loginEmail").value=email;toast("Account created. Confirm your email using the new link we sent, then log in. Your link returns to PILTAE CHATTER.","success");}
-  }catch(error){console.error(error);toast("Signup failed: "+error.message,"error");}
-  finally{setBusy(button,false,"Creating account...","Create account →");}
-});
-$("loginForm").addEventListener("submit",async event=>{
-  event.preventDefault();const button=$("loginButton");setBusy(button,true,"Logging in...","Log in →");
-  try{
-    const {data,error}=await db.auth.signInWithPassword({email:$("loginEmail").value.trim(),password:$("loginPassword").value});
-    if(error)throw error;$("loginPassword").value="";await handleSession(data.session);toast("Welcome back!","success");
-  }catch(error){toast("Login failed: "+error.message,"error");}
-  finally{setBusy(button,false,"Logging in...","Log in →");}
-});
-$("resendButton").addEventListener("click",async()=>{
-  const email=$("loginEmail").value.trim();if(!email){toast("Enter your email address first.","error");return;}
-  const button=$("resendButton");setBusy(button,true,"Sending...","Resend confirmation email");
-  try{const {error}=await db.auth.resend({type:"signup",email,options:{emailRedirectTo:SITE_URL}});if(error)throw error;toast("If a new confirmation email is available, it should arrive shortly. Check your spam folder too.","success");}
-  catch(error){toast("Could not resend email: "+error.message,"error");}
-  finally{setBusy(button,false,"Sending...","Resend confirmation email");}
-});
-$("profileForm").addEventListener("submit",async event=>{
-  event.preventDefault();if(!currentUser)return;
-  const name=$("profileName").value.trim(),bio=$("profileBio").value.trim(),shareNetwork=Boolean($("shareNetworkDiagnostics")?.checked);
-  if(!name||name.length>24||bio.length>160){toast("Check your display name and bio length.","error");return;}
-  const button=$("saveProfileButton");setBusy(button,true,"Saving...","Save profile and return to dashboard");
-  try{
-    const {error}=await db.from("profiles").update({display_name:name,bio,share_network_diagnostics:shareNetwork,updated_at:new Date().toISOString()}).eq("user_id",currentUser.id);
-    if(error)throw error;const {error:metaError}=await db.auth.updateUser({data:{display_name:name}});
-    if(metaError)console.warn("Auth metadata wasn't updated:",metaError.message);
-    await refreshMyProfile();navigate("dashboard");toast("Profile saved. Welcome to your dashboard!","success");
-  }catch(error){toast("Profile could not be saved: "+error.message,"error");}
-  finally{setBusy(button,false,"Saving...","Save profile and return to dashboard");}
-});
 async function logout(){const {error}=await db.auth.signOut();if(error)toast("Log out failed: "+error.message,"error");}
 $("topLogout").addEventListener("click",logout);
 
@@ -978,8 +882,60 @@ async function loadDashboardFriendsCount(){
   const {count,error}=await db.from("friend_requests").select("id",{count:"exact",head:true}).eq("status","accepted").or(`sender_id.eq.${currentUser.id},receiver_id.eq.${currentUser.id}`);
   if(!error)$("dashFriends").textContent=String(count||0);
 }
+// Live community roster: Supabase Realtime Presence broadcasts who's currently connected.
+let memberRosterChannel=null;
+let memberRosterProfiles=[];
+let memberRosterOnline=new Set();
+let memberRosterRefreshTimer=null;
+function renderMemberRoster(){
+  const host=$("memberRosterList"),count=$("rosterOnlineCount");if(!host||!count)return;
+  const onlineCount=memberRosterOnline.size;count.textContent=onlineCount+" online";
+  if(!memberRosterProfiles.length){host.innerHTML='<div class="member-roster-empty">No member profiles found yet.</div>';return;}
+  const sorted=[...memberRosterProfiles].sort((a,b)=>{
+    const onA=memberRosterOnline.has(a.user_id)?1:0,onB=memberRosterOnline.has(b.user_id)?1:0;
+    return onB-onA||String(a.display_name||"").localeCompare(String(b.display_name||""));
+  });
+  host.innerHTML=sorted.map(p=>{const online=memberRosterOnline.has(p.user_id);return `<div class="member-roster-person"><span class="presence-dot${online?" online":""}" aria-label="${online?"Online":"Offline"}"></span><strong title="${esc(p.display_name||"Member")}">${esc(p.display_name||"Member")}${p.user_id===currentUser?.id?" (you)":""}</strong><span class="status-label">${online?"Online":"Offline"}</span></div>`;}).join("");
+}
+async function loadMemberRosterProfiles(){
+  if(!currentUser)return;
+  try{
+    const {data,error}=await db.from("profiles").select("user_id,display_name,role").order("display_name",{ascending:true}).limit(500);
+    if(error)throw error;
+    memberRosterProfiles=data||[];renderMemberRoster();
+  }catch(error){
+    const host=$("memberRosterList");if(host)host.innerHTML=`<div class="member-roster-empty">Could not load members: ${esc(error.message||"request failed")}</div>`;
+  }
+}
+function updateMemberRosterPresence(channel){
+  const state=channel?.presenceState?.()||{};const online=new Set();
+  for(const entries of Object.values(state)){
+    for(const entry of (Array.isArray(entries)?entries:[]))if(entry?.user_id)online.add(String(entry.user_id));
+  }
+  memberRosterOnline=online;renderMemberRoster();
+}
+async function setupMemberRosterPresence(){
+  if(!currentUser||!db)return;
+  if(memberRosterChannel){try{await db.removeChannel(memberRosterChannel);}catch{}}
+  await loadMemberRosterProfiles();
+  memberRosterChannel=db.channel("piltae-community-presence",{config:{presence:{key:currentUser.id}}})
+    .on("presence",{event:"sync"},()=>updateMemberRosterPresence(memberRosterChannel))
+    .on("presence",{event:"join"},()=>updateMemberRosterPresence(memberRosterChannel))
+    .on("presence",{event:"leave"},()=>updateMemberRosterPresence(memberRosterChannel))
+    .subscribe(async status=>{
+      if(status==="SUBSCRIBED"){
+        try{await memberRosterChannel.track({user_id:currentUser.id,display_name:myProfile?.display_name||currentUser.user_metadata?.display_name||"Member",online_at:new Date().toISOString()});}
+        catch(error){console.warn("Member presence tracking failed:",error);}
+        updateMemberRosterPresence(memberRosterChannel);
+      }
+    });
+  if(memberRosterRefreshTimer)clearInterval(memberRosterRefreshTimer);
+  memberRosterRefreshTimer=setInterval(()=>{if(currentUser)loadMemberRosterProfiles();},60000);
+}
+
 function setupRealtime(){
   realtimeChannels.forEach(ch=>db.removeChannel(ch));realtimeChannels=[];
+  setupMemberRosterPresence();
   const pub=db.channel("piltae-public-chat").on("postgres_changes",{event:"*",schema:"public",table:"chat_messages"},()=>{if(activePage==="chat")loadChat();}).subscribe();
   const suggestions=db.channel("piltae-website-suggestions").on("postgres_changes",{event:"*",schema:"public",table:"website_suggestions"},()=>{if(activePage==="suggestions")loadSuggestions();}).subscribe();
   const dm=db.channel("piltae-private-messages").on("postgres_changes",{event:"*",schema:"public",table:"direct_messages"},()=>{if(activePage==="dm"&&selectedDmId)loadDmMessages();}).subscribe();
@@ -1132,7 +1088,7 @@ async function loadShop(){
       const buyLabel=ownedIds.has(item.id)?"You already have this.":`Buy · ${money(item.price)} coins`;
       return `<article class="itemcard shop-skin-card">${preview}<div class="theme-meta"><strong>${esc(item.name)}</strong><span class="tag">${esc(tag)}</span></div><p class="skin-description">${esc(item.description||fallback)}</p><div class="coin">🪙 ${money(item.price)} coins</div>${ownedIds.has(item.id)?'<button class="btn secondary" disabled>You already have this.</button>':item.active?`<button class="btn" data-buy-item="${esc(item.id)}">${buyLabel}</button>`:'<p class="muted">Currently unavailable</p>'}${isStaff()?`<button class="smallbtn" style="margin-top:7px" data-toggle-item="${esc(item.id)}" data-active="${item.active?"false":"true"}">${item.active?"Disable listing":"Enable listing"}</button>`:""}</article>`;
     }).join("");
-  }catch(error){host.innerHTML=`<div class="empty">Shop failed to load: ${esc(error.message)}. Run the PILTAE shop appearance upgrade SQL if the error mentions appearance_type or target_page_key.</div>`;}
+  }catch(error){host.innerHTML=`<div class="empty">Shop failed to load: ${esc(error.message)}. Run the RIVEN shop appearance upgrade SQL if the error mentions appearance_type or target_page_key.</div>`;}
 }
 async function loadInventory(){
   if(!currentUser)return;const host=$("inventoryList");host.innerHTML='<div class="empty">Loading inventory...</div>';
@@ -1143,7 +1099,7 @@ async function loadInventory(){
     ownedMenuImageCache=items.filter(i=>i.appearance_type==="menu_button");applyMenuAppearance();
     const equippedMenu=readEquippedMenuImages();for(const page of Object.keys(equippedMenu)){if(!ownedMenuImageCache.some(i=>i.item_id===equippedMenu[page]&&i.target_page_key===page))delete equippedMenu[page];}writeEquippedMenuImages(equippedMenu);applyMenuAppearance();
     const hasActiveImage=Boolean(activeImageId&&items.some(i=>i.skin_type==="image"&&i.appearance_type!=="menu_button"&&i.item_id===activeImageId));
-    const defaultCard=`<article class="itemcard shop-skin-card">${themePreviewMarkup("midnight")}<div class="theme-meta"><strong>Midnight Default</strong><span class="tag">Free</span></div><p class="skin-description">The original PILTAE look. Always available, even without a purchase.</p>${current==="midnight"&&!hasActiveImage?'<span class="theme-current-label">Currently equipped</span>':'<button class="btn secondary" data-equip-theme="midnight" type="button">Equip default</button>'}</article>`;
+    const defaultCard=`<article class="itemcard shop-skin-card">${themePreviewMarkup("midnight")}<div class="theme-meta"><strong>Midnight Default</strong><span class="tag">Free</span></div><p class="skin-description">The original RIVEN look. Always available, even without a purchase.</p>${current==="midnight"&&!hasActiveImage?'<span class="theme-current-label">Currently equipped</span>':'<button class="btn secondary" data-equip-theme="midnight" type="button">Equip default</button>'}</article>`;
     const cards=items.map(item=>{
       if(item.appearance_type==="menu_button"){
         const selected=readEquippedMenuImages()[item.target_page_key]===item.item_id,preview=customImagePreviewMarkup(item.image_url,item.item_name),pageName=menuPageLabel(item.target_page_key);
@@ -1198,6 +1154,32 @@ $("inventoryList").addEventListener("click",async event=>{
 });
 $("resetThemeButton").addEventListener("click",()=>equipTheme("midnight"));
 $("inventoryResetThemeButton").addEventListener("click",()=>equipTheme("midnight"));
+
+
+/* BATTLESHIP 1v1 — server-authoritative matchmaking, placement, turns, timer and rewards */
+const BATTLESHIP_SHIPS=[{key:"carrier",name:"Carrier",size:5},{key:"battleship",name:"Battleship",size:4},{key:"cruiser",name:"Cruiser",size:3},{key:"submarine",name:"Submarine",size:3},{key:"destroyer",name:"Destroyer",size:2}];
+let battleshipGame=null,battleshipSelectedShip="carrier",battleshipVertical=false,battleshipBusy=false,battleshipTimerHandle=null,battleshipPollHandle=null;
+function battleshipNotice(message,type=""){const el=$("battleshipStatus");if(el){el.innerHTML=message;el.className="battleship-panel battle-status notice"+(type?" "+type:"");}}
+function battleshipEmptyBoard(){return Array(100).fill(null);}
+function battleshipCellsFor(start,size,vertical){const r=Math.floor(start/10),c=start%10,arr=[];for(let i=0;i<size;i++){const rr=r+(vertical?i:0),cc=c+(vertical?0:i);if(rr>9||cc>9)return null;arr.push(rr*10+cc);}return arr;}
+function battleshipCurrentPlacements(){return battleshipGame?.placements||[];}
+function battleshipOwnCellState(cell){const p=battleshipCurrentPlacements(),ship=p.find(x=>(x.cells||[]).includes(cell));const shots=battleshipGame?.opponent_shots||[];if(shots.includes(cell))return ship?"hit":"miss";return ship?"ship":"";}
+function battleshipEnemyCellState(cell){const shots=battleshipGame?.my_shots||[];if(!shots.includes(cell))return "";return (battleshipGame?.enemy_ship_cells||[]).includes(cell)?"hit":"miss";}
+function renderBattleshipBoard(id,enemy=false){const host=$(id);if(!host)return;host.innerHTML="";for(let cell=0;cell<100;cell++){const b=document.createElement("button");b.type="button";b.className="battleship-cell";b.dataset.battleCell=String(cell);b.dataset.enemy=enemy?"1":"0";let state=enemy?battleshipEnemyCellState(cell):battleshipOwnCellState(cell);if(state)b.classList.add(state);if(enemy&&battleshipGame?.status!=="playing")b.classList.add("disabled");if(!enemy&&battleshipGame?.status!=="placement")b.classList.add("disabled");if(state==="hit")b.textContent="✕";else if(state==="miss")b.textContent="•";else if(!enemy&&state==="ship")b.textContent="■";host.appendChild(b);}}
+function renderBattleshipShips(){const host=$("battleshipShipList");if(!host)return;const placed=new Set(battleshipCurrentPlacements().map(x=>x.name));host.innerHTML=BATTLESHIP_SHIPS.map(s=>`<button type="button" class="battle-ship-row ${battleshipSelectedShip===s.key?"active":""}" data-battle-ship="${s.key}"><strong>${s.name}</strong><small>${s.size} squares · ${placed.has(s.name)?"Placed":"Not placed"}</small></button>`).join("");}
+function battleshipRenderTimer(){const el=$("battleshipTimer");if(!el)return;let remaining=600;if(battleshipGame?.deadline_at)remaining=Math.max(0,Math.ceil((new Date(battleshipGame.deadline_at).getTime()-Date.now())/1000));const m=Math.floor(remaining/60),s=remaining%60;el.textContent=`${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;el.classList.toggle("urgent",remaining<=60);if(remaining<=0&&battleshipGame?.status==="playing")battleshipRefresh();}
+function battleshipStartTimer(){clearInterval(battleshipTimerHandle);battleshipTimerHandle=setInterval(battleshipRenderTimer,500);battleshipRenderTimer();}
+function battleshipRewardText(){if(!battleshipGame?.started_at)return "85,000–100,000";const elapsed=Math.max(0,(Date.now()-new Date(battleshipGame.started_at).getTime())/1000);return money(Math.max(85000,100000-Math.floor(elapsed/600*15000)));}
+function renderBattleship(){const g=battleshipGame;if(!g){$("battleshipMyTitle").textContent="Place your ships";$("battleshipOpponentTitle").textContent="Waiting for an opponent";$("battleshipCancelButton").hidden=true;$("battleshipReadyButton").disabled=true;renderBattleshipBoard("battleshipMyBoard");renderBattleshipBoard("battleshipEnemyBoard",true);renderBattleshipShips();battleshipRenderTimer();return;}const placement=g.status==="placement",playing=g.status==="playing";$("battleshipMyTitle").textContent=placement?"Place your ships":playing?"Your fleet":"Match complete";$("battleshipOpponentTitle").textContent=g.opponent_name||"Opponent";$("battleshipPlacementHint").textContent=placement?"Select a ship, choose horizontal/vertical, then click a starting square. Ships cannot overlap or leave the board.":playing?(g.turn_user_id===currentUser.id?"Your turn — fire at a square on the enemy board.":"Enemy turn — wait for the opponent to fire."):"This match has ended.";$("battleshipOpponentHint").textContent=playing?(g.turn_user_id===currentUser.id?"Hit every enemy ship before the timer ends.":"Watch the board while the opponent takes their turn."):g.status==="waiting"?"Searching for another member…":"Review the result below.";$("battleshipQueueButton").disabled=Boolean(g.id);$("battleshipReadyButton").disabled=!placement||Boolean(g.my_ready);$("battleshipCancelButton").hidden=false;$("battleshipRotateButton").disabled=!placement;renderBattleshipBoard("battleshipMyBoard");renderBattleshipBoard("battleshipEnemyBoard",true);renderBattleshipShips();battleshipStartTimer();if(g.status==="finished"){const won=g.winner_user_id===currentUser.id;$("battleshipRecentResult").innerHTML=`<div class="battle-info-row"><div><strong>${won?"🏆 YOU WIN":"💥 MATCH OVER"}</strong><div class="mutedline">${esc(g.result_text||"Battle complete.")}</div></div><span class="battle-reward">${won?"+"+money(g.payout||0)+" 🪙":"—"}</span></div>`;battleshipNotice(won?`🏆 You won Battleship and earned <strong>${money(g.payout||0)} coins</strong>!`:g.winner_user_id?`💥 ${esc(g.opponent_name||"Your opponent")} won this match.`:`⏱️ Time expired — the match ended in a draw.` ,won?"success":"error");}else if(g.status==="waiting")battleshipNotice("⚓ Searching for an opponent… Keep this page open.");else if(placement)battleshipNotice(g.my_ready?"Fleet locked. Waiting for your opponent to ready their fleet.":"Place all five ships, then press <strong>Ready Fleet</strong>.");else if(playing)battleshipNotice(g.turn_user_id===currentUser.id?"🎯 Your turn. Pick a square on the enemy board.":"⏳ Opponent's turn. Your board is protected for now.");}
+async function battleshipRefresh(){if(!currentUser||!battleshipGame?.id)return;try{const {data,error}=await db.rpc("battleship_get_state",{p_match_id:battleshipGame.id});if(error)throw error;battleshipGame=data;renderBattleship();if(data.status==="finished"){clearInterval(battleshipPollHandle);await refreshMyProfile();}}catch(e){console.warn("Battleship refresh:",e.message);}}
+async function loadBattleshipPage(){if(!currentUser)return;try{const {data,error}=await db.rpc("battleship_get_my_match");if(error)throw error;battleshipGame=data||null;renderBattleship();clearInterval(battleshipPollHandle);battleshipPollHandle=setInterval(()=>{if(activePage==="battleship"&&battleshipGame?.id)battleshipRefresh();},1500);}catch(e){battleshipNotice("Battleship SQL is not installed yet. Run the Battleship SQL in Supabase, then refresh. "+esc(e.message),"error");}}
+$("battleshipQueueButton").addEventListener("click",async()=>{if(battleshipBusy)return;battleshipBusy=true;setBusy($("battleshipQueueButton"),true,"Finding...","⚓ Find Opponent");try{const {data,error}=await db.rpc("battleship_join_queue");if(error)throw error;battleshipGame=data;renderBattleship();}catch(e){battleshipNotice("Could not enter the queue: "+esc(e.message),"error");}finally{battleshipBusy=false;setBusy($("battleshipQueueButton"),false,"Finding...","⚓ Find Opponent");renderBattleship();}});
+$("battleshipRotateButton").addEventListener("click",()=>{battleshipVertical=!battleshipVertical;$("battleshipRotateButton").textContent=battleshipVertical?"↔ Horizontal":"↕ Vertical";});
+$("battleshipShipList").addEventListener("click",e=>{const b=e.target.closest("[data-battle-ship]");if(!b)return;battleshipSelectedShip=b.dataset.battleShip;renderBattleshipShips();});
+$("battleshipMyBoard").addEventListener("click",e=>{const b=e.target.closest("[data-battle-cell]");if(!b||b.dataset.enemy==="1"||battleshipGame?.status!=="placement")return;const ship=BATTLESHIP_SHIPS.find(x=>x.key===battleshipSelectedShip);if(!ship)return;const cells=battleshipCellsFor(Number(b.dataset.battleCell),ship.size,battleshipVertical);if(!cells){battleshipNotice(`${ship.name} does not fit there. Try another starting square or rotate it.`,"error");return;}const current=battleshipCurrentPlacements().filter(x=>x.name!==ship.name);if(current.some(x=>(x.cells||[]).some(c=>cells.includes(c)))){battleshipNotice("Ships cannot overlap. Pick another starting square.","error");return;}battleshipGame.placements=[...current,{name:ship.name,size:ship.size,cells}];renderBattleship();});
+$("battleshipReadyButton").addEventListener("click",async()=>{if(battleshipBusy||battleshipGame?.status!=="placement")return;if(battleshipCurrentPlacements().length!==5){battleshipNotice("Place all five ships before readying your fleet.","error");return;}battleshipBusy=true;try{const {data,error}=await db.rpc("battleship_place_board",{p_match_id:battleshipGame.id,p_placements:battleshipCurrentPlacements()});if(error)throw error;battleshipGame=data;renderBattleship();}catch(e){battleshipNotice("Fleet could not be saved: "+esc(e.message),"error");}finally{battleshipBusy=false;renderBattleship();}});
+$("battleshipEnemyBoard").addEventListener("click",async e=>{const b=e.target.closest("[data-battle-cell]");if(!b||battleshipBusy||battleshipGame?.status!=="playing"||battleshipGame.turn_user_id!==currentUser.id)return;const cell=Number(b.dataset.battleCell);if((battleshipGame.my_shots||[]).includes(cell)){battleshipNotice("You already fired at that square.","error");return;}battleshipBusy=true;try{const {data,error}=await db.rpc("battleship_fire",{p_match_id:battleshipGame.id,p_cell:cell});if(error)throw error;battleshipGame=data;renderBattleship();await refreshMyProfile();}catch(e){battleshipNotice("Shot failed: "+esc(e.message),"error");}finally{battleshipBusy=false;renderBattleship();}});
+$("battleshipCancelButton").addEventListener("click",async()=>{if(!battleshipGame?.id||battleshipBusy)return;if(!confirm("Leave this Battleship match? Leaving forfeits the match if it has already started."))return;battleshipBusy=true;try{const {data,error}=await db.rpc("battleship_leave_match",{p_match_id:battleshipGame.id});if(error)throw error;battleshipGame=data||null;renderBattleship();}catch(e){battleshipNotice("Could not leave: "+esc(e.message),"error");}finally{battleshipBusy=false;renderBattleship();}});
 
 async function loadEvents(){
   if(!currentUser)return;const host=$("eventsList"),history=$("eventHistory");
@@ -1561,7 +1543,7 @@ async function initialize(){
       const params=new URLSearchParams(window.location.hash.replace(/^#/,"")),urlError=params.get("error_description")||params.get("error");
       if(urlError)toast("Authentication link error: "+urlError,"error");
     }
-  }catch(error){console.error("PILTAE startup error:",error);$("authView").hidden=false;showAuthMode("login");toast("Could not start PILTAE: "+error.message,"error");}
+  }catch(error){console.error("RIVEN startup error:",error);$("authView").hidden=false;showAuthMode("login");toast("Could not start RIVEN: "+error.message,"error");}
 }
 
 const TOS_STORAGE_KEY = "piltae_tos_accepted_v1";
@@ -1731,7 +1713,7 @@ $("menuOpacityRange")?.addEventListener("input",()=>{
 $("resetMemberSettings")?.addEventListener("click",()=>{
   const settings=readMemberSettings();settings.menuOpacity=100;writeMemberSettings(settings);$("menuOpacityRange").value=100;$("menuOpacityValue").textContent="100%";$("menuOpacityPreview").style.opacity="1";applyMenuAppearance();toast("Your menu opacity was reset.","success");
 });
-// Built-in PILTAE soundtrack: generated with Web Audio so it needs no external audio URL or file.
+// Built-in RIVEN soundtrack: generated with Web Audio so it needs no external audio URL or file.
 let builtInMusicContext=null,builtInMusicMaster=null,builtInMusicTimer=null,builtInMusicStep=0,builtInMusicPlaying=false;
 const BUILTIN_MUSIC_TEMPO=112;
 const BUILTIN_MUSIC_MELODY=[72,76,79,76,74,76,79,83,79,76,74,71,72,76,79,76,72,76,81,79,76,79,84,81,77,81,84,81,76,79,83,79];
