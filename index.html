@@ -281,6 +281,41 @@ body:has(#authView:not([hidden])) .halloween-decor{display:block}
 @keyframes halloweenFloat{0%,100%{translate:0 0;rotate:-3deg}50%{translate:0 -12px;rotate:3deg}}@keyframes halloweenFly{0%,100%{translate:0 0;rotate:-7deg}50%{translate:24px -10px;rotate:7deg}}@keyframes snowFall{0%{translate:0 -10vh;rotate:0}100%{translate:35px 115vh;rotate:360deg}}
 @media(prefers-reduced-motion:reduce){.halloween-pumpkin,.halloween-bat,.halloween-ghost,.snowflake,.tree,.gift{animation:none!important}}@media(max-width:600px){.halloween-decor:before{right:-32px;top:5%;opacity:.5}.halloween-pumpkin.pumpkin-one{left:1%;bottom:3%}.halloween-pumpkin.pumpkin-two{right:1%;bottom:5%}.halloween-ghost{left:1%;top:38%}.auth-wrap{margin-top:12px}.auth-hero h1{letter-spacing:-1.8px}}
 
+
+/* RIVEN responsive HUD system */
+.hud-choice-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:14px 0}
+.hud-choice{display:grid;grid-template-columns:auto 1fr;align-items:center;gap:7px 11px;padding:15px;border:1px solid var(--border);border-radius:14px;background:#101521;cursor:pointer}
+.hud-choice input{width:18px;height:18px;grid-row:1 / span 2;accent-color:var(--accent)}
+.hud-choice-icon{font-size:24px}.hud-choice strong{font-size:14px}.hud-choice small{grid-column:2;color:var(--muted);font-weight:500;line-height:1.45}
+.settings-shortcuts{display:flex;flex-wrap:wrap;gap:9px}
+.scroll-cue{position:fixed;right:22px;bottom:20px;z-index:30;display:flex;align-items:center;gap:7px;padding:10px 14px;border:1px solid #6650a1;border-radius:999px;background:#211a38;color:#eee7ff;box-shadow:0 8px 28px #0007;font-weight:800}
+.scroll-cue[hidden]{display:none!important}.scroll-cue span{font-size:11px}
+/* Avoid long, narrow stacks on larger screens. */
+@media(min-width:801px){.quickgrid,.itemsgrid,.eventgrid{grid-template-columns:repeat(2,minmax(0,1fr))}.settings-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.page>.card{margin-bottom:14px}}
+/* Phone HUD uses a persistent, thumb-friendly bottom navigation strip. */
+body.hud-phone{padding-bottom:92px}
+body.hud-phone .appgrid{display:block}
+body.hud-phone .sidebar{position:fixed;z-index:50;left:8px;right:8px;bottom:8px;top:auto;display:flex;gap:7px;overflow-x:auto;overflow-y:hidden;padding:8px;border:1px solid #3b3554;border-radius:17px;background:#0d111eef;backdrop-filter:blur(16px);box-shadow:0 12px 40px #0009;scrollbar-width:thin}
+body.hud-phone .sidebar .navbtn{width:auto;min-width:max-content;flex:0 0 auto;padding:10px 12px;border-radius:12px;font-size:12px}
+body.hud-phone .maincol{padding-bottom:10px}
+body.hud-phone .stats{grid-template-columns:repeat(3,minmax(0,1fr))}
+body.hud-phone .quickgrid,body.hud-phone .itemsgrid,body.hud-phone .eventgrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+body.hud-phone .card{padding:15px}
+body.hud-phone .scroll-cue{right:13px;bottom:82px}
+body.hud-phone .topright{flex-direction:row;align-items:flex-start}
+body.hud-phone .member-roster{max-width:58vw}
+body.hud-pc .sidebar{display:grid}
+@media(max-width:800px){body.hud-pc .sidebar{position:static;display:flex;overflow-x:auto;overflow-y:hidden;padding-bottom:7px}.hud-phone .sidebar::after{content:"⇢ swipe";position:sticky;right:0;align-self:center;flex:0 0 auto;padding:8px 10px;border-radius:9px;background:#211a38;color:#d9ccff;font-size:10px;font-weight:900;pointer-events:none;box-shadow:-8px 0 14px #0d111e}}
+@media(max-width:520px){.hud-choice-grid{grid-template-columns:1fr}.stats{grid-template-columns:repeat(3,minmax(0,1fr))}.stats .stat{padding:11px 9px}.stat strong{font-size:17px}.stat small{font-size:10px}.quickgrid,.itemsgrid,.eventgrid,.twoform{grid-template-columns:repeat(2,minmax(0,1fr))}.quickcard{padding:11px;font-size:12px}.quickcard strong{font-size:12px}.rowcard{flex-wrap:wrap}.scroll-cue{bottom:82px}}
+@media(max-width:360px){body.hud-phone .stats{grid-template-columns:1fr 1fr}.quickgrid,body.hud-phone .quickgrid{grid-template-columns:1fr 1fr}}
+
+
+/* RIVEN universal search, arcade hub and member quick actions */
+.riven-commandbar{position:relative;z-index:80;display:flex;align-items:center;gap:10px;margin:0 0 16px;padding:10px 13px;border:1px solid var(--border);border-radius:14px;background:var(--panel);box-shadow:0 8px 28px #0002}.command-search-icon{font-size:23px;color:var(--mint)}.riven-commandbar input{flex:1;min-width:0;border:0!important;background:transparent!important;box-shadow:none!important;padding:7px!important;color:var(--text)}.riven-commandbar kbd{font-size:10px;color:var(--muted);border:1px solid var(--border);border-radius:6px;padding:4px 7px}.riven-search-results{position:absolute;top:calc(100% + 7px);left:0;right:0;max-height:min(55vh,420px);overflow:auto;padding:7px;border:1px solid var(--border);border-radius:13px;background:var(--panel);box-shadow:0 18px 55px #0009}.riven-search-results button{display:flex;width:100%;align-items:center;gap:10px;text-align:left;padding:11px;border:0;border-radius:9px;background:transparent;color:var(--text);cursor:pointer}.riven-search-results button:hover{background:var(--panel2)}.riven-search-results small{margin-left:auto;color:var(--muted)}
+.arcade-portal-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:0 0 18px}.arcade-portal{display:flex;min-width:0;flex-direction:column;align-items:flex-start;gap:7px;padding:16px;text-align:left;border:1px solid var(--border);border-radius:15px;background:linear-gradient(145deg,var(--panel2),var(--panel));color:var(--text);cursor:pointer;transition:.2s}.arcade-portal:hover{transform:translateY(-3px);border-color:var(--accent)}.arcade-portal>span{font-size:27px}.arcade-portal strong{font-size:15px}.arcade-portal small{color:var(--muted);line-height:1.4}.arcade-portal b{margin-top:5px;color:var(--mint);font-size:10px;letter-spacing:1px}
+.member-context-menu{position:fixed;z-index:10020;min-width:190px;padding:7px;border:1px solid var(--border);border-radius:12px;background:var(--panel);box-shadow:0 16px 50px #000b}.member-context-title{padding:8px 10px 10px;font-weight:900;border-bottom:1px solid var(--border);margin-bottom:5px}.member-context-menu button{display:block;width:100%;padding:10px;text-align:left;border:0;border-radius:8px;background:transparent;color:var(--text);cursor:pointer}.member-context-menu button:hover{background:var(--panel2)}
+@media(max-width:900px){.arcade-portal-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:520px){.riven-commandbar{padding:8px 10px}.riven-commandbar kbd{display:none}.arcade-portal-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.arcade-portal{padding:12px}.arcade-portal small{font-size:11px}}
+
 </style>
 </head>
 <body>
@@ -339,14 +374,13 @@ body:has(#authView:not([hidden])) .halloween-decor{display:block}
     </form>
     <div id="authNotice" class="notice" role="status" aria-live="polite" hidden></div>
   </div>
-  <p class="auth-footnote">🧡 Stay spooky, be kind, and keep your account details private. <span aria-hidden="true">✦</span></p>
+  <p class="auth-footnote">🎄 Enjoy the season, be kind, and keep your account details private. <span aria-hidden="true">✦</span></p>
 </section>
 
 <section id="appView" hidden>
 <div class="appgrid">
 <nav class="sidebar" aria-label="Main navigation">
   <button class="navbtn active" data-page="dashboard"><span class="navicon">⌂</span> Dashboard</button>
-  <button class="navbtn" data-page="profile"><span class="navicon">◉</span> Profile</button>
   <button class="navbtn" data-page="chat"><span class="navicon">☷</span> Community chat</button>
   <button class="navbtn" data-page="suggestions"><span class="navicon">💡</span> Suggestions</button>
   <button class="navbtn" data-page="redeem"><span class="navicon">🎟️</span> Redeem code</button>
@@ -354,11 +388,7 @@ body:has(#authView:not([hidden])) .halloween-decor{display:block}
   <button class="navbtn" data-page="dm"><span class="navicon">✉</span> Private messages</button>
   <button class="navbtn" data-page="shop"><span class="navicon">▣</span> Shop</button>
   <button class="navbtn" data-page="inventory"><span class="navicon">▤</span> Inventory</button>
-  <button class="navbtn" data-page="mines"><span class="navicon">💎</span> Mines</button>
-  <button class="navbtn" data-page="tower"><span class="navicon">🏰</span> TOWER</button>
   <button class="navbtn" data-page="arcade"><span class="navicon">🎰</span> Arcade Games</button>
-  <button class="navbtn" data-page="battleship"><span class="navicon">🚢</span> BATTLESHIP 1v1</button>
-  <button class="navbtn" data-page="events"><span class="navicon">🎲</span> Fake-coin events</button>
   <button class="navbtn" data-page="admin" id="adminNav" hidden><span class="navicon">⚙</span> Admin panel</button>
   <button class="navbtn" data-page="terms"><span class="navicon">ⓘ</span> Terms of Service</button>
   <button class="navbtn" data-page="audit" id="auditNav" hidden><span class="navicon">≡</span> Audit log</button>
@@ -367,6 +397,7 @@ body:has(#authView:not([hidden])) .halloween-decor{display:block}
   <button class="navbtn" data-page="settings" id="settingsNav"><span class="navicon">⚙</span> Settings</button>
 </nav>
 <div class="maincol">
+<div class="riven-commandbar" id="rivenCommandbar"><span class="command-search-icon">⌕</span><input id="rivenHudSearch" type="search" autocomplete="off" placeholder="Search RIVEN… try Battleship, profile, shop, chat" aria-label="Search RIVEN pages and games"><kbd>CTRL K</kbd><div id="rivenSearchResults" class="riven-search-results" hidden></div></div>
 <div id="appNotice" class="notice" role="status" aria-live="polite" hidden></div>
 <div id="memberWarningBanner" class="warn-banner" role="alert" hidden></div>
 
@@ -401,8 +432,6 @@ body:has(#authView:not([hidden])) .halloween-decor{display:block}
     <div class="field"><label for="profileBio">BIO</label><textarea id="profileBio" maxlength="160" placeholder="Say something about yourself..."></textarea><p class="muted"><span id="bioCount">0</span>/160 characters</p></div>
     <button class="btn" id="saveProfileButton" type="submit">Save profile and return to dashboard</button>
   </form></div>
-
-  <div class="card danger-zone sectiongap"><h3>Delete your account</h3><p class="muted">This permanently deletes your account and profile. This cannot be undone.</p><button class="btn" id="openDeleteAccount" type="button">Delete my account permanently</button><div id="deleteAccountConfirm" class="sectiongap" hidden><label for="deleteAccountText">Type <strong>DELETE</strong> to confirm</label><input id="deleteAccountText" autocomplete="off" maxlength="6" placeholder="Type DELETE"><button class="btn" id="confirmDeleteAccount" type="button">Permanently delete account</button><button class="btn secondary" id="cancelDeleteAccount" type="button">Cancel</button></div></div>
 </section>
 
 <section class="page" id="page-chat" hidden>
@@ -486,6 +515,12 @@ body:has(#authView:not([hidden])) .halloween-decor{display:block}
   <div class="arcade-hero">
     <div><div class="eyebrow">RIVEN AFTER DARK · VIRTUAL COINS</div><h2>NEON ARCADE</h2><p class="muted">Pick your game. Place your wager. Watch the moment unfold.</p></div>
     <div class="arcade-wallet"><span>YOUR WALLET</span><strong>🪙 <b id="arcadeWalletCoins">0</b></strong><button class="smallbtn" id="arcadeRefreshButton" type="button">↻ Refresh</button></div>
+  </div>
+  <div class="arcade-portal-grid" aria-label="All RIVEN games">
+    <button class="arcade-portal" type="button" data-open-game-page="battleship"><span>🚢</span><strong>Battleship 1v1</strong><small>Find an opponent · 85k–100k coins</small><b>OPEN GAME ↗</b></button>
+    <button class="arcade-portal" type="button" data-open-game-page="mines"><span>💎</span><strong>Mines</strong><small>Risk and reward game</small><b>OPEN GAME ↗</b></button>
+    <button class="arcade-portal" type="button" data-open-game-page="tower"><span>🏰</span><strong>Tower</strong><small>Climb floors and cash out</small><b>OPEN GAME ↗</b></button>
+    <button class="arcade-portal" type="button" data-open-game-page="events"><span>🎲</span><strong>Community events</strong><small>Join virtual-coin events</small><b>OPEN EVENTS ↗</b></button>
   </div>
   <div class="arcade-game-grid">
     <article class="arcade-game-card dice-card"><div class="arcade-card-glow"></div><div class="arcade-game-art dice-art" aria-hidden="true"><div class="mini-die die-one"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="mini-die die-two"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div><div class="eyebrow">01 / LUCK + TIMING</div><h3>Dice Duel</h3><p>Pick a number from 1 to 10. Match the exact roll to win 1.5× your wager.</p><div class="arcade-card-bottom"><span class="arcade-pill">EXACT MATCH · 1.5×</span><button class="btn arcade-launch" type="button" data-open-arcade="dice">Play Dice <span>↗</span></button></div></article>
@@ -640,6 +675,8 @@ body:has(#authView:not([hidden])) .halloween-decor{display:block}
 
 <section class="page" id="page-settings" hidden>
   <div class="pagehead"><div><h2>Settings</h2><p class="muted">Change your menu button opacity and control the built-in website music. Manage custom menu button designs in the Shop. Personal preferences are saved in this browser.</p></div></div>
+  <div class="card settings-intro sectiongap"><div class="eyebrow">MAKE RIVEN FEEL RIGHT</div><h3>Choose your layout</h3><p class="muted">Pick the HUD that fits the device you are using. You can change it any time; this preference is saved on this device.</p><div class="hud-choice-grid"><label class="hud-choice"><input type="radio" name="rivenHudMode" value="pc"><span class="hud-choice-icon">🖥️</span><strong>PC HUD</strong><small>Side navigation, wider panels and a desktop-style layout.</small></label><label class="hud-choice"><input type="radio" name="rivenHudMode" value="phone"><span class="hud-choice-icon">📱</span><strong>Phone HUD</strong><small>Compact touch controls, bottom navigation and mobile-friendly panels.</small></label></div><p class="muted" id="hudModeStatus" aria-live="polite">Choose PC HUD or Phone HUD.</p></div>
+  <div class="card sectiongap"><h3>Quick navigation</h3><p class="muted">Not sure where something is? Jump straight to it.</p><div class="settings-shortcuts"><button class="smallbtn" type="button" data-settings-go="profile">◉ Profile &amp; bio</button><button class="smallbtn" type="button" data-settings-go="reports">⚑ Report a member</button><button class="smallbtn" type="button" data-settings-go="credits">✦ Credits</button><button class="smallbtn" type="button" data-settings-go="profile">◉ Edit profile</button><button class="smallbtn" type="button" data-settings-go="chat">☷ Community chat</button></div></div>
   <div class="settings-grid">
     <div class="card">
       <h3>Menu button opacity</h3>
@@ -656,6 +693,7 @@ body:has(#authView:not([hidden])) .halloween-decor{display:block}
       <div id="musicStatus" class="notice sectiongap" role="status" aria-live="polite">Built-in music is paused.</div>
     </div>
   </div>
+  <div class="card danger-zone sectiongap"><h3>Delete your account</h3><p class="muted">This permanently deletes your account and profile. This cannot be undone.</p><button class="btn" id="openDeleteAccount" type="button">Delete my account permanently</button><div id="deleteAccountConfirm" class="sectiongap" hidden><label for="deleteAccountText">Type <strong>DELETE</strong> to confirm</label><input id="deleteAccountText" autocomplete="off" maxlength="6" placeholder="Type DELETE"><button class="btn" id="confirmDeleteAccount" type="button">Permanently delete account</button><button class="btn secondary" id="cancelDeleteAccount" type="button">Cancel</button></div></div>
 </section>
 
 <section class="page" id="page-credits" hidden>
@@ -664,6 +702,8 @@ body:has(#authView:not([hidden])) .halloween-decor{display:block}
  <div class="card staffonly sectiongap" id="creditsEditor" hidden><h3>Manage credits (owner only)</h3><form id="creditsForm"><div class="field"><label for="creditName">Name / handle</label><input id="creditName" maxlength="60" required></div><div class="field"><label for="creditContribution">Contribution</label><input id="creditContribution" maxlength="160" required placeholder="Website design, coding, art..."></div><div class="inlineform"><button class="btn" type="submit">Add credit</button><button class="btn secondary" id="refreshCredits" type="button">Refresh</button></div></form><div id="creditsManageList" class="stack sectiongap"></div></div>
 </section>
 
+<div id="memberContextMenu" class="member-context-menu" role="menu" hidden><div class="member-context-title" id="memberContextName">Member</div><button type="button" data-member-action="add" role="menuitem">＋ Add friend</button><button type="button" data-member-action="message" role="menuitem">✉ Message member</button><button type="button" data-member-action="report" role="menuitem">⚑ Report member</button></div>
+<button class="scroll-cue" id="scrollCue" type="button" aria-label="Scroll down to discover more">↓ <span>More below</span></button>
 <div class="footer">RIVEN · Community coins are simulated and have no real-world value.</div>
 </main>
 
@@ -778,6 +818,22 @@ $("itemImageFile").addEventListener("change",()=>{
   preview.appendChild(img);preview.hidden=false;
 });
 
+
+// Universal RIVEN HUD search (Ctrl+K / Cmd+K)
+const RIVEN_SEARCH_ITEMS=[
+{label:"Dashboard",icon:"⌂",page:"dashboard",terms:"home overview leaderboard members"},{label:"Community chat",icon:"☷",page:"chat",terms:"messages public chat"},{label:"Friends",icon:"♧",page:"friends",terms:"add friend requests people"},{label:"Private messages",icon:"✉",page:"dm",terms:"dm inbox"},{label:"Shop",icon:"▣",page:"shop",terms:"store buy items"},{label:"Inventory",icon:"▤",page:"inventory",terms:"owned items equip"},{label:"Arcade Games",icon:"🎰",page:"arcade",terms:"games dice roulette higher lower"},{label:"Battleship 1v1",icon:"🚢",page:"battleship",terms:"battleship ship naval fleet duel"},{label:"Mines",icon:"💎",page:"mines",terms:"mine gems risk"},{label:"Tower",icon:"🏰",page:"tower",terms:"climb floors"},{label:"Community events",icon:"🎲",page:"events",terms:"events coin flip"},{label:"Suggestions",icon:"💡",page:"suggestions",terms:"ideas feedback"},{label:"Redeem code",icon:"🎟️",page:"redeem",terms:"reward promo code"},{label:"Profile & bio",icon:"◉",page:"profile",terms:"edit username biography"},{label:"Settings",icon:"⚙",page:"settings",terms:"preferences hud layout music delete account"},{label:"Report a member",icon:"⚑",page:"reports",terms:"report abuse moderation"},{label:"Credits",icon:"✦",page:"credits",terms:"contributors team"}];
+const searchInput=$("rivenHudSearch"),searchResults=$("rivenSearchResults");
+function renderRivenSearch(){if(!searchInput||!searchResults)return;const q=searchInput.value.trim().toLowerCase();if(!q){searchResults.hidden=true;searchResults.innerHTML="";return;}const matches=RIVEN_SEARCH_ITEMS.filter(x=>(x.label+" "+x.terms).toLowerCase().includes(q)).slice(0,9);searchResults.innerHTML=matches.length?matches.map(x=>`<button type="button" data-search-page="${x.page}"><span>${x.icon}</span><strong>${x.label}</strong><small>Open ↗</small></button>`).join(""):'<div class="empty">No matches. Try “games”, “profile”, or “Battleship”.</div>';searchResults.hidden=false;}
+searchInput?.addEventListener("input",renderRivenSearch);searchInput?.addEventListener("keydown",e=>{if(e.key==="Enter"){const b=searchResults.querySelector("[data-search-page]");if(b){navigate(b.dataset.searchPage);searchResults.hidden=true;searchInput.value="";}}if(e.key==="Escape"){searchResults.hidden=true;searchInput.blur();}});searchResults?.addEventListener("click",e=>{const b=e.target.closest("[data-search-page]");if(!b)return;navigate(b.dataset.searchPage);searchResults.hidden=true;searchInput.value="";});document.addEventListener("keydown",e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="k"){e.preventDefault();searchInput?.focus();}});document.addEventListener("click",e=>{if(!e.target.closest("#rivenCommandbar")&&searchResults)searchResults.hidden=true;});
+document.querySelectorAll("[data-open-game-page]").forEach(b=>b.addEventListener("click",()=>navigate(b.dataset.openGamePage)));
+// Right-click or tap the three-dot button on a leaderboard member.
+let contextMember=null;const memberMenu=$("memberContextMenu");function hideMemberMenu(){if(memberMenu)memberMenu.hidden=true;contextMember=null;}
+function openMemberMenu(id,name,x,y){contextMember={id,name};$("memberContextName").textContent=name;memberMenu.hidden=false;memberMenu.style.left=Math.max(8,Math.min(x,window.innerWidth-205))+"px";memberMenu.style.top=Math.max(8,Math.min(y,window.innerHeight-175))+"px";}
+$("leaderboard")?.addEventListener("contextmenu",e=>{const row=e.target.closest("[data-member-id]");if(!row)return;e.preventDefault();openMemberMenu(row.dataset.memberId,row.dataset.memberName||"Member",e.clientX,e.clientY);});
+$("leaderboard")?.addEventListener("click",e=>{const b=e.target.closest(".leaderboard-member-actions");if(!b)return;openMemberMenu(b.dataset.memberId,b.dataset.memberName||"Member",b.getBoundingClientRect().left,b.getBoundingClientRect().bottom);});
+document.addEventListener("click",e=>{if(!e.target.closest("#memberContextMenu")&&!e.target.closest(".leaderboard-member-actions"))hideMemberMenu();});document.addEventListener("keydown",e=>{if(e.key==="Escape")hideMemberMenu();});
+memberMenu?.addEventListener("click",async e=>{const action=e.target.closest("[data-member-action]")?.dataset.memberAction;if(!action||!contextMember)return;const target={...contextMember};hideMemberMenu();if(action==="add"){try{const {data,error}=await db.rpc("send_friend_request",{p_target_display_name:target.name});if(error)throw error;toast(typeof data==="string"?data:"Friend request sent.","success");}catch(err){toast("Couldn't add friend: "+err.message,"error");}}else if(action==="message"){try{const {data,error}=await db.from("profiles").select("user_id,display_name").eq("user_id",target.id).maybeSingle();if(error)throw error;if(!data)throw new Error("Member not found.");selectedDmId=data.user_id;selectedDmName=data.display_name;navigate("dm");loadDmFriendChoices();}catch(err){toast("Couldn't open member: "+err.message,"error");}}else if(action==="report"){navigate("reports");const sel=$("reportTarget");if(sel)sel.value=target.id;}});
+
 function showAuthMode(mode){
   const isSignup=mode==="signup";
   $("signupForm").hidden=!isSignup;$("loginForm").hidden=isSignup;
@@ -872,8 +928,9 @@ async function loadLeaderboard(){
   try{
     const {data,error}=await db.from("profiles").select("user_id,display_name,role,coins,created_at").order("coins",{ascending:false}).order("created_at",{ascending:true}).limit(10);
     if(error)throw error;
-    if(!data?.length){host.innerHTML='<div class="empty">No leaderboard entries yet.</div>';return;}
-    host.innerHTML=data.map((p,i)=>`<div class="rowcard"><div class="grow"><strong>${i+1}. ${esc(p.display_name)} ${p.user_id===currentUser.id?'<span class="tag">You</span>':""}</strong><span class="mutedline">${esc(roleTitle(p.role))}</span></div><span class="coin">${money(p.coins)} 🪙</span></div>`).join("");
+    const publicEntries=(data||[]).filter(p=>p.user_id!==currentUser.id && String(p.role||'').toLowerCase()!=='owner');
+    if(!publicEntries.length){host.innerHTML='<div class="empty">No member leaderboard entries yet.</div>';return;}
+    host.innerHTML=publicEntries.map((p,i)=>`<div class="rowcard" data-member-id="${esc(p.user_id)}" data-member-name="${esc(p.display_name)}" tabindex="0" title="Right-click or use the actions button"><div class="grow"><strong>${i+1}. ${esc(p.display_name)}</strong><span class="mutedline">${esc(roleTitle(p.role))} · right-click for actions</span></div><span class="coin">${money(p.coins)} 🪙</span><button class="smallbtn leaderboard-member-actions" type="button" data-member-id="${esc(p.user_id)}" data-member-name="${esc(p.display_name)}" aria-label="Actions for ${esc(p.display_name)}">•••</button></div>`).join("");
   }catch(error){host.innerHTML=`<div class="empty">Leaderboard failed to load: ${esc(error.message)}</div>`;}
 }
 $("reloadLeaderboard").addEventListener("click",loadLeaderboard);
@@ -1780,6 +1837,30 @@ const priorHandleSessionForSettings=handleSession;
 handleSession=async function(session){await priorHandleSessionForSettings(session);if(session?.user&&currentUser){loadPersonalSettingsUI();await loadMenuAppearance();}else{menuAppearanceCache={};applyMenuAppearance();}};
 // Apply opacity immediately, including before authentication finishes.
 applyMenuAppearance();
+
+
+// Device HUD preference: PC HUD or Phone HUD. Stored locally per browser/device.
+function applyRivenHudMode(mode){
+  const chosen=mode==='phone'?'phone':'pc';
+  document.body.classList.toggle('hud-phone',chosen==='phone');
+  document.body.classList.toggle('hud-pc',chosen==='pc');
+  document.querySelectorAll('input[name="rivenHudMode"]').forEach(el=>{el.checked=el.value===chosen;});
+  const status=document.getElementById('hudModeStatus');
+  if(status)status.textContent=chosen==='phone'?'Phone HUD is active: use the bottom navigation bar to move around RIVEN.':'PC HUD is active: use the side navigation to move around RIVEN.';
+  try{localStorage.setItem('riven_hud_mode',chosen);}catch{}
+}
+function initRivenHudMode(){
+  let saved='';try{saved=localStorage.getItem('riven_hud_mode')||'';}catch{}
+  if(!saved)saved=(window.matchMedia&&window.matchMedia('(max-width: 800px)').matches)?'phone':'pc';
+  applyRivenHudMode(saved);
+}
+document.querySelectorAll('input[name="rivenHudMode"]').forEach(el=>el.addEventListener('change',()=>{if(el.checked){applyRivenHudMode(el.value);toast(el.value==='phone'?'Phone HUD enabled.':'PC HUD enabled.','success');}}));
+document.querySelectorAll('[data-settings-go]').forEach(el=>el.addEventListener('click',()=>navigate(el.dataset.settingsGo)));
+initRivenHudMode();
+const scrollCue=document.getElementById('scrollCue');
+function updateScrollCue(){if(!scrollCue)return;const remaining=document.documentElement.scrollHeight-(window.scrollY+window.innerHeight);scrollCue.hidden=remaining<100;scrollCue.innerHTML=remaining<500?'↑ <span>Back up</span>':'↓ <span>More below</span>';}
+scrollCue?.addEventListener('click',()=>{const atBottom=document.documentElement.scrollHeight-(window.scrollY+window.innerHeight)<500;window.scrollTo({top:atBottom?0:Math.min(document.documentElement.scrollHeight,window.scrollY+Math.max(420,window.innerHeight*.78)),behavior:'smooth'});});
+window.addEventListener('scroll',updateScrollCue,{passive:true});window.addEventListener('resize',updateScrollCue);document.querySelectorAll('.navbtn').forEach(b=>b.addEventListener('click',()=>setTimeout(updateScrollCue,120)));setTimeout(updateScrollCue,250);
 
 </script>
 </body>
