@@ -307,6 +307,65 @@ html{scroll-behavior:smooth}body{background-attachment:fixed}
 @media(max-width:650px){.crypto-topline,.crypto-section-head{align-items:flex-start;flex-direction:column}.crypto-main-grid{grid-template-columns:1fr}.crypto-scene{height:250px}.crypto-upgrade-grid{grid-template-columns:1fr 1fr}.crypto-registry-card{align-items:flex-start;flex-direction:column}.crypto-registry-next{text-align:left}.crypto-live{font-size:9px}}
 @media(max-width:390px){.crypto-wallet-grid{gap:7px}.crypto-wallet-card{padding:11px}.crypto-upgrade-grid{grid-template-columns:1fr}.crypto-scene{height:225px}}
 
+
+/* RIVEN visual refresh — excludes #page-crypto so the mining game stays exactly as designed. */
+:root{--ui-radius:20px;--ui-shadow:0 22px 70px #02040b70;--ui-line:color-mix(in srgb,var(--border) 78%,white 5%);--ui-glass:color-mix(in srgb,var(--panel) 88%,transparent)}
+html{scroll-behavior:smooth}
+body{background-image:radial-gradient(ellipse at 12% -8%,color-mix(in srgb,var(--accent) 20%,transparent),transparent 42%),radial-gradient(ellipse at 94% 18%,color-mix(in srgb,var(--mint) 10%,transparent),transparent 34%),radial-gradient(ellipse at 50% 110%,#111b36aa,transparent 48%),linear-gradient(180deg,#080a12,var(--bg));background-attachment:fixed}
+.topbar{padding:13px 15px;border:1px solid var(--ui-line);border-radius:19px;background:linear-gradient(120deg,#101624eF,#111322e8);box-shadow:0 12px 36px #0004;backdrop-filter:blur(18px)}
+.brand{letter-spacing:2px}.logo{border:1px solid #ffffff22;box-shadow:0 0 0 5px color-mix(in srgb,var(--accent) 10%,transparent),0 12px 32px color-mix(in srgb,var(--accent) 35%,transparent)}
+.wallet{box-shadow:inset 0 1px #ffffff12,0 8px 25px #0003}
+.member-roster{border-radius:15px;background:linear-gradient(145deg,var(--panel),var(--panel2));box-shadow:0 10px 28px #0004}
+.member-roster-head{background:color-mix(in srgb,var(--accent) 10%,var(--panel2));letter-spacing:.5px}
+.appgrid{grid-template-columns:224px minmax(0,1fr);gap:19px}
+.sidebar{padding:11px;border:1px solid var(--ui-line);border-radius:20px;background:linear-gradient(165deg,#111827ed,#0b101bea);box-shadow:var(--ui-shadow);backdrop-filter:blur(18px);max-height:calc(100vh - 24px);overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--border) transparent}
+.sidebar .navbtn:not(.quickcard){position:relative;min-height:43px;padding:11px 12px;border-radius:12px;border-color:transparent;background:transparent;color:var(--muted);font-size:12px;letter-spacing:.1px;transition:background .2s,border-color .2s,color .2s,transform .2s,box-shadow .2s}
+.sidebar .navbtn:not(.quickcard) .navicon{width:29px;font-size:15px;text-align:center;filter:drop-shadow(0 2px 5px #0005)}
+.sidebar .navbtn:not(.quickcard):hover{transform:translateX(3px);background:color-mix(in srgb,var(--accent) 10%,var(--panel));border-color:color-mix(in srgb,var(--accent) 28%,transparent);color:var(--text);box-shadow:0 8px 20px #0002}
+.sidebar .navbtn:not(.quickcard).active{background:linear-gradient(105deg,color-mix(in srgb,var(--accent) 27%,var(--panel)),color-mix(in srgb,var(--mint) 8%,var(--panel)));border-color:color-mix(in srgb,var(--accent) 50%,var(--border));color:var(--text);box-shadow:inset 3px 0 var(--accent),0 8px 24px color-mix(in srgb,var(--accent) 12%,transparent)}
+.maincol{min-width:0;padding:2px 0}
+#appView .page:not(#page-crypto){animation:rivenPageIn .28s cubic-bezier(.2,.75,.25,1) both}
+@keyframes rivenPageIn{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
+#appView .page:not(#page-crypto) .pagehead{align-items:center;margin:4px 0 20px;padding:3px 1px 12px;border-bottom:1px solid color-mix(in srgb,var(--border) 70%,transparent)}
+#appView .page:not(#page-crypto) .pagehead h2{font-size:clamp(23px,3vw,30px);letter-spacing:-.8px}
+#appView .page:not(#page-crypto) .eyebrow{letter-spacing:2px;color:var(--mint);text-shadow:0 0 18px color-mix(in srgb,var(--mint) 30%,transparent)}
+#appView .page:not(#page-crypto) .card{position:relative;border:1px solid var(--ui-line);border-radius:var(--ui-radius);background:linear-gradient(145deg,color-mix(in srgb,var(--panel2) 95%,white 2%),color-mix(in srgb,var(--panel) 96%,black 4%));box-shadow:0 14px 42px #0003,inset 0 1px #ffffff08;transition:border-color .2s,box-shadow .2s,transform .2s}
+#appView .page:not(#page-crypto) .card:hover{border-color:color-mix(in srgb,var(--accent) 36%,var(--border));box-shadow:0 18px 48px #0004,0 0 28px color-mix(in srgb,var(--accent) 6%,transparent),inset 0 1px #ffffff0c}
+#appView .page:not(#page-crypto) .stat{border:1px solid var(--ui-line);border-radius:16px;background:linear-gradient(145deg,color-mix(in srgb,var(--accent) 8%,var(--panel2)),var(--panel));box-shadow:inset 0 1px #ffffff08;transition:transform .2s,border-color .2s}
+#appView .page:not(#page-crypto) .stat:hover{transform:translateY(-3px);border-color:color-mix(in srgb,var(--accent) 42%,var(--border))}
+#appView .page:not(#page-crypto) .stat small{font-size:10px;font-weight:850;letter-spacing:1.1px;text-transform:uppercase}
+#appView .page:not(#page-crypto) .stat strong{font-size:clamp(20px,2.2vw,27px);letter-spacing:-.7px}
+#appView .page:not(#page-crypto) .quickcard,#appView .page:not(#page-crypto) .itemcard,#appView .page:not(#page-crypto) .eventcard,#appView .page:not(#page-crypto) .rowcard{border:1px solid var(--ui-line);border-radius:15px;background:linear-gradient(145deg,var(--panel2),var(--panel));transition:transform .2s,border-color .2s,box-shadow .2s}
+#appView .page:not(#page-crypto) .quickcard:hover,#appView .page:not(#page-crypto) .itemcard:hover,#appView .page:not(#page-crypto) .eventcard:hover{transform:translateY(-3px);border-color:color-mix(in srgb,var(--accent) 48%,var(--border));box-shadow:0 14px 28px #0003}
+#appView .page:not(#page-crypto) .btn,#appView .page:not(#page-crypto) .smallbtn{border-radius:12px;font-weight:850;letter-spacing:.15px;transition:transform .18s,filter .18s,box-shadow .18s}
+#appView .page:not(#page-crypto) .btn:not(:disabled):hover,#appView .page:not(#page-crypto) .smallbtn:not(:disabled):hover{transform:translateY(-2px);filter:brightness(1.12);box-shadow:0 9px 24px color-mix(in srgb,var(--accent) 16%,transparent)}
+#appView .page:not(#page-crypto) input,#appView .page:not(#page-crypto) textarea,#appView .page:not(#page-crypto) select{border-radius:12px;transition:border-color .18s,box-shadow .18s;background:color-mix(in srgb,var(--theme-input) 90%,var(--panel))}
+#appView .page:not(#page-crypto) label{font-size:10px;letter-spacing:1px;color:var(--muted)}
+#appView .page:not(#page-crypto) .notice{border-radius:13px;background:color-mix(in srgb,var(--panel2) 85%,transparent)}
+#appView .page:not(#page-crypto) .chatbox{border-radius:16px;box-shadow:inset 0 2px 15px #0003}
+#appView .page:not(#page-crypto) .message{border-radius:14px;box-shadow:0 5px 16px #0002}
+#appView .page:not(#page-crypto) .tag{padding:5px 9px;letter-spacing:.7px}
+#appView .page:not(#page-crypto) .quickgrid{gap:13px}
+#appView .page:not(#page-crypto) .footer{opacity:.8;letter-spacing:.4px}
+.game-page-actions{display:flex;gap:8px;flex-wrap:wrap}
+.arcade-featured-head{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;margin:25px 2px 12px}
+.arcade-featured-head h3{margin:4px 0;font-size:20px;letter-spacing:-.4px}
+.arcade-featured-count{padding:7px 10px;border:1px solid var(--border);border-radius:999px;background:var(--theme-surface);color:var(--muted);font-size:9px;font-weight:900;letter-spacing:1px;white-space:nowrap}
+.arcade-featured-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px;margin-bottom:22px}
+.arcade-featured-card{position:relative;display:flex;align-items:center;gap:15px;min-height:185px;padding:20px;overflow:hidden;border:1px solid var(--border);border-radius:19px;background:linear-gradient(130deg,color-mix(in srgb,#7c3aed 18%,var(--panel)),var(--panel2) 70%);box-shadow:0 14px 36px #0003;isolation:isolate;transition:transform .22s,border-color .22s,box-shadow .22s}
+.arcade-featured-card:hover{transform:translateY(-4px);border-color:color-mix(in srgb,var(--accent) 55%,var(--border));box-shadow:0 20px 44px #0005,0 0 28px color-mix(in srgb,var(--accent) 12%,transparent)}
+.arcade-featured-card.tower-featured{background:linear-gradient(130deg,color-mix(in srgb,#d97706 18%,var(--panel)),var(--panel2) 72%)}
+.arcade-featured-icon{z-index:1;display:grid;place-items:center;flex:0 0 64px;width:64px;height:64px;border:1px solid #ffffff18;border-radius:19px;background:linear-gradient(145deg,#ffffff15,#ffffff05);font-size:31px;box-shadow:inset 0 1px #ffffff18,0 12px 28px #0003}
+.arcade-featured-copy{position:relative;z-index:2;min-width:0}.arcade-featured-kicker{font-size:9px;font-weight:900;letter-spacing:1.6px;color:var(--mint)}
+.arcade-featured-copy h3{margin:5px 0;font-size:21px;letter-spacing:-.5px}.arcade-featured-copy p{margin:0 0 10px;color:var(--muted);font-size:12px;line-height:1.5}.arcade-featured-copy .btn{max-width:190px;margin-top:0}
+.arcade-featured-orbit{position:absolute;z-index:0;right:-48px;bottom:-90px;width:210px;height:210px;border:1px solid #ffffff12;border-radius:50%;box-shadow:0 0 0 22px #ffffff06,0 0 0 46px #ffffff04}
+.mines-featured .arcade-featured-orbit{border-color:#5eead422;box-shadow:0 0 0 22px #5eead40a,0 0 0 46px #5eead406}
+.tower-featured .arcade-featured-orbit{border-color:#fbbf2422;box-shadow:0 0 0 22px #fbbf240a,0 0 0 46px #fbbf2406}
+@media(max-width:900px){.appgrid{grid-template-columns:190px minmax(0,1fr);gap:13px}.sidebar{padding:8px}}
+@media(max-width:800px){.appgrid{grid-template-columns:1fr}.sidebar{position:static;display:flex;max-height:none;overflow-x:auto;overflow-y:hidden;gap:6px;padding:8px}.sidebar .navbtn:not(.quickcard){flex:0 0 auto;white-space:nowrap;width:auto}.topbar{border-radius:16px}}
+@media(max-width:620px){.arcade-featured-grid{grid-template-columns:1fr}.arcade-featured-card{min-height:160px;padding:16px}.arcade-featured-icon{flex-basis:54px;width:54px;height:54px;font-size:26px}.arcade-featured-head{align-items:flex-start;flex-direction:column}.game-page-actions{width:100%;justify-content:flex-end}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}#appView .page:not(#page-crypto){animation:none!important}#appView .page:not(#page-crypto) *,#appView .page:not(#page-crypto) *::before,#appView .page:not(#page-crypto) *::after{transition:none!important;animation-duration:.01ms!important;animation-iteration-count:1!important}}
+
 </style>
 </head>
 <body>
@@ -372,9 +431,7 @@ html{scroll-behavior:smooth}body{background-attachment:fixed}
   <button class="navbtn" data-page="dm"><span class="navicon">✉</span> Private messages</button>
   <button class="navbtn" data-page="shop"><span class="navicon">▣</span> Shop</button>
   <button class="navbtn" data-page="inventory"><span class="navicon">▤</span> Inventory</button>
-  <button class="navbtn" data-page="mines"><span class="navicon">💎</span> Mines</button>
   <button class="navbtn" data-page="crypto"><span class="navicon">⛏️</span> Crypto Mining Sim</button>
-  <button class="navbtn" data-page="tower"><span class="navicon">🏰</span> TOWER</button>
   <button class="navbtn" data-page="arcade"><span class="navicon">🎰</span> Arcade Games</button>
   <button class="navbtn" data-page="events"><span class="navicon">🎲</span> Fake-coin events</button>
   <button class="navbtn" data-page="admin" id="adminNav" hidden><span class="navicon">⚙</span> Admin panel</button>
@@ -482,7 +539,7 @@ html{scroll-behavior:smooth}body{background-attachment:fixed}
 </section>
 
 <section class="page" id="page-tower" hidden>
-  <div class="pagehead"><div><div class="eyebrow">CLIMB · RISK · CASH OUT</div><h2>TOWER</h2><p class="muted">Climb higher for a bigger virtual-coin payout. Each floor can be safe or collapse. Cash out after a safe floor, before the next climb.</p></div><button class="smallbtn" id="towerRefreshButton" type="button">Refresh</button></div>
+  <div class="pagehead"><div><div class="eyebrow">ARCADE / TOWER · CLIMB · RISK · CASH OUT</div><h2>TOWER</h2><p class="muted">Climb higher for a bigger virtual-coin payout. Each floor can be safe or collapse. Cash out after a safe floor, before the next climb.</p></div><div class="game-page-actions"><button class="smallbtn" type="button" data-page="arcade">← Arcade</button><button class="smallbtn" id="towerRefreshButton" type="button">Refresh</button></div></div>
   <div class="tower-layout">
     <div class="card">
       <div class="stats"><div class="stat"><small>Your wallet</small><strong id="towerWallet">0</strong></div><div class="stat"><small>Current floor</small><strong id="towerFloorValue">0 / 20</strong></div><div class="stat"><small>Multiplier</small><strong id="towerMultiplier">1.00×</strong></div></div>
@@ -505,6 +562,11 @@ html{scroll-behavior:smooth}body{background-attachment:fixed}
   <div class="arcade-hero">
     <div><div class="eyebrow">PILTAE AFTER DARK · VIRTUAL COINS</div><h2>NEON ARCADE</h2><p class="muted">Pick your game. Place your wager. Watch the moment unfold.</p></div>
     <div class="arcade-wallet"><span>YOUR WALLET</span><strong>🪙 <b id="arcadeWalletCoins">0</b></strong><button class="smallbtn" id="arcadeRefreshButton" type="button">↻ Refresh</button></div>
+  </div>
+  <div class="arcade-featured-head"><div><div class="eyebrow">COMMUNITY GAME MODES</div><h3>More ways to play</h3><p class="muted">Queue up with the community or take on the tower. These games keep their existing rules and saved progress.</p></div><span class="arcade-featured-count">2 EXTRA GAMES</span></div>
+  <div class="arcade-featured-grid">
+    <article class="arcade-featured-card mines-featured"><div class="arcade-featured-icon">💎</div><div class="arcade-featured-copy"><span class="arcade-featured-kicker">QUEUE · MULTIPLAYER</span><h3>Mines Session</h3><p>Join the player queue, host a session, reveal safe tiles, or spectate the action.</p><button class="btn arcade-launch" type="button" data-open-game-page="mines">Open Mines <span>↗</span></button></div><div class="arcade-featured-orbit"></div></article>
+    <article class="arcade-featured-card tower-featured"><div class="arcade-featured-icon">🏰</div><div class="arcade-featured-copy"><span class="arcade-featured-kicker">CLIMB · CASH OUT</span><h3>Tower</h3><p>Climb floor by floor, watch the risk rise, and decide when to secure your virtual-coin payout.</p><button class="btn arcade-launch" type="button" data-open-game-page="tower">Enter Tower <span>↗</span></button></div><div class="arcade-featured-orbit"></div></article>
   </div>
   <div class="arcade-game-grid">
     <article class="arcade-game-card dice-card"><div class="arcade-card-glow"></div><div class="arcade-game-art dice-art" aria-hidden="true"><div class="mini-die die-one"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="mini-die die-two"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div><div class="eyebrow">01 / LUCK + TIMING</div><h3>Dice Duel</h3><p>Pick a number from 1 to 10. Match the exact roll to win 1.5× your wager.</p><div class="arcade-card-bottom"><span class="arcade-pill">EXACT MATCH · 1.5×</span><button class="btn arcade-launch" type="button" data-open-arcade="dice">Play Dice <span>↗</span></button></div></article>
@@ -582,7 +644,7 @@ html{scroll-behavior:smooth}body{background-attachment:fixed}
 </section>
 
 <section class="page" id="page-mines" hidden>
-  <div class="pagehead"><div><h2>Mines Session</h2><p class="muted">The owner can host the session AND join the queue as a member. Choose a 5×5, 7×7, or 9×9 board with up to 32 mines. Anyone waiting can spectate a player and watch safe tiles reveal without seeing hidden mine locations.</p></div><button class="smallbtn" id="refreshMinesQueue" type="button">Refresh</button></div>
+  <div class="pagehead"><div><div class="eyebrow">ARCADE / MINES · COMMUNITY SESSION</div><h2>Mines Session</h2><p class="muted">The owner can host the session AND join the queue as a member. Choose a 5×5, 7×7, or 9×9 board with up to 32 mines. Anyone waiting can spectate a player and watch safe tiles reveal without seeing hidden mine locations.</p></div><div class="game-page-actions"><button class="smallbtn" type="button" data-page="arcade">← Arcade</button><button class="smallbtn" id="refreshMinesQueue" type="button">Refresh</button></div></div>
   <div class="mines-queue-layout">
     <aside class="card mines-queue-card">
       <div class="eyebrow">LIVE SESSION + PLAYER QUEUE</div><h3 class="sectiongap" id="minesSessionTitle">Session status</h3><p class="muted" id="minesSessionDescription">The host controls when players can join.</p>
