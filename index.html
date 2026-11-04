@@ -375,6 +375,19 @@ body{background-image:radial-gradient(ellipse at 12% -8%,color-mix(in srgb,var(-
 @media(max-width:800px){.appgrid{grid-template-columns:1fr}.sidebar{position:static;display:flex;max-height:none;overflow-x:auto;overflow-y:hidden;gap:6px;padding:8px}.sidebar .navbtn:not(.quickcard){flex:0 0 auto;white-space:nowrap;width:auto}.topbar{border-radius:16px}}
 @media(max-width:620px){.arcade-featured-grid{grid-template-columns:1fr}.arcade-featured-card{min-height:160px;padding:16px}.arcade-featured-icon{flex-basis:54px;width:54px;height:54px;font-size:26px}.arcade-featured-head{align-items:flex-start;flex-direction:column}.game-page-actions{width:100%;justify-content:flex-end}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}#appView .page:not(#page-crypto){animation:none!important}#appView .page:not(#page-crypto) *,#appView .page:not(#page-crypto) *::before,#appView .page:not(#page-crypto) *::after{transition:none!important;animation-duration:.01ms!important;animation-iteration-count:1!important}}
+/* Wallet feedback + subtle interaction polish. */
+.wallet{position:relative;overflow:visible;transition:transform .22s,box-shadow .22s,border-color .22s}
+.wallet.wallet-credit{animation:walletCreditPulse .72s cubic-bezier(.2,.8,.2,1)}
+.wallet span.wallet-pop{display:inline-block;animation:walletNumberPop .48s cubic-bezier(.2,.8,.2,1)}
+.wallet-float{position:absolute;right:14px;top:-8px;z-index:5;pointer-events:none;color:#86efac;font-size:12px;font-weight:950;text-shadow:0 2px 12px #000;white-space:nowrap;animation:walletFloatUp 1.15s ease-out forwards}
+@keyframes walletCreditPulse{0%{transform:scale(1);box-shadow:inset 0 1px #ffffff12,0 8px 25px #0003}35%{transform:scale(1.055);border-color:#86efac;box-shadow:0 0 0 5px #86efac20,0 0 32px #22c55e55}100%{transform:scale(1);box-shadow:inset 0 1px #ffffff12,0 8px 25px #0003}}
+@keyframes walletNumberPop{0%{transform:translateY(5px) scale(.86);opacity:.45}65%{transform:translateY(-2px) scale(1.12);opacity:1}100%{transform:translateY(0) scale(1)}}
+@keyframes walletFloatUp{0%{opacity:0;transform:translateY(8px) scale(.85)}18%{opacity:1}100%{opacity:0;transform:translateY(-34px) scale(1.05)}}
+#appView button:not(:disabled){transition:transform .18s ease,filter .18s ease,box-shadow .18s ease}
+#appView button:not(:disabled):active{transform:scale(.97)}
+#appView .itemcard,#appView .eventcard,#appView .rowcard{animation:rivenCardIn .32s ease both}
+@keyframes rivenCardIn{from{opacity:0;transform:translateY(8px) scale(.99)}to{opacity:1;transform:translateY(0) scale(1)}}
+@media(prefers-reduced-motion:reduce){.wallet.wallet-credit,.wallet span.wallet-pop,.wallet-float,#appView .itemcard,#appView .eventcard,#appView .rowcard{animation:none!important}}
 
 </style>
 </head>
@@ -809,6 +822,14 @@ let activeMinesGame=null,minesBusy=false,minesQueueState=null,minesSessionState=
 
 function esc(value){return String(value??"").replace(/[&<>"']/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));}
 function money(value){return Number(value||0).toLocaleString();}
+function animateWalletCredit(amount){
+  const wallet=document.querySelector(".wallet"),coinText=$("topCoins");
+  if(!wallet||!coinText||!Number.isFinite(amount)||amount<=0)return;
+  wallet.classList.remove("wallet-credit");coinText.classList.remove("wallet-pop");
+  void wallet.offsetWidth;wallet.classList.add("wallet-credit");coinText.classList.add("wallet-pop");
+  const floater=document.createElement("span");floater.className="wallet-float";floater.textContent="+"+money(amount)+" 🪙";wallet.appendChild(floater);
+  window.setTimeout(()=>{floater.remove();wallet.classList.remove("wallet-credit");coinText.classList.remove("wallet-pop");},1250);
+}
 function timeText(value){try{return new Date(value).toLocaleString([],{month:"short",day:"numeric",hour:"numeric",minute:"2-digit"});}catch{return "";}}
 function toast(message,type=""){
   const el=$(currentUser?"appNotice":"authNotice");
@@ -1024,6 +1045,7 @@ async function refreshMyProfile(){
   }
   if(error)throw error;
   if(!data)throw new Error("Your profile row is missing. Run the Supabase SQL setup file.");
+  const previousCoins=myProfile?.user_id===data.user_id?Number(myProfile.coins||0):null;
   data.active_theme=THEME_BY_KEY[data.active_theme]?data.active_theme:"midnight";
   data.active_image_skin_item_id=data.active_image_skin_item_id||null;data.active_image_skin=null;
   if(data.active_image_skin_item_id){
@@ -1031,6 +1053,7 @@ async function refreshMyProfile(){
   }
   myProfile=data;populateThemeSelect();syncSkinTypeFields();applyTheme(myProfile.active_theme);
   $("topCoins").textContent=money(data.coins);$("dashCoins").textContent=money(data.coins);if($("arcadeWalletCoins"))$("arcadeWalletCoins").textContent=money(data.coins);
+  if(previousCoins!==null&&Number(data.coins)>previousCoins)animateWalletCredit(Number(data.coins)-previousCoins);
   $("dashRole").textContent=roleTitle(data.role);$("welcomeName").textContent=data.display_name;
   $("roleBadge").textContent=roleTitle(data.role);
   $("roleBadge").className="tag"+(data.role==="owner"?" owner":data.role==="admin"?" admin":"");
@@ -1969,7 +1992,7 @@ function cryptoFmt(n){n=Number(n)||0;if(n>=1e12)return (n/1e12).toFixed(2)+"T";i
 function cryptoPrice(upgrade){const level=Number(cryptoState?.levels?.[upgrade.key]||0);return Math.floor(upgrade.base*Math.pow(upgrade.growth,level));}
 function cryptoRate(){if(!cryptoState)return .05;const l=cryptoState.levels||{};let rate=.05+Number(cryptoState.pickaxe_level||1)*.035;for(const u of CRYPTO_UPGRADES)rate+=Number(l[u.key]||0)*u.rate*Math.pow(1.075,Math.max(0,Number(l[u.key]||0)-1));return rate;}
 function cryptoRender(){if(!cryptoState)return;const rate=cryptoRate(),coins=Number(cryptoState.coins||0),rank=Number(cryptoState.pickaxe_level||1),name=cryptoPickName(rank);$("cryptoCoins").textContent=cryptoFmt(coins);$("cryptoRate").innerHTML=cryptoFmt(rate)+' <em>/s</em>';$('cryptoRateChip').textContent=cryptoFmt(rate)+" coins/s";$('cryptoLifetime').textContent=cryptoFmt(cryptoState.total_earned||0);$('cryptoPickaxeRank').textContent="#"+rank.toLocaleString();$('cryptoPickaxeName').textContent=name;$('cryptoRegistryName').textContent=name;$('cryptoRegistrySub').textContent="Mining tool · Rank "+rank.toLocaleString();$('cryptoRegistryCount').textContent=rank.toLocaleString();$('cryptoRegistryNext').textContent=cryptoPickName(Math.min(10000,rank+1));const pickCost=Math.floor(35*Math.pow(1.105,rank-1));$('cryptoPickaxeCost').textContent='Cost: '+cryptoFmt(pickCost)+' coins';$('cryptoPickaxeUpgradeButton').disabled=coins<pickCost||rank>=10000;$('cryptoPickaxeUpgradeButton').textContent=rank>=10000?'MAX RANK':'Upgrade · '+cryptoFmt(pickCost);$('cryptoNextPickaxe').textContent=cryptoPickName(Math.min(10000,rank+1));$('cryptoDepth').textContent=String(Math.max(1,Math.floor(rank/7)+1)).padStart(3,"0");$('cryptoSwingLabel').textContent=(1+Number(cryptoState.levels?.speed||0)*.12).toFixed(1)+" swings / sec";$('cryptoOpsLevel').textContent=1+Object.values(cryptoState.levels||{}).reduce((a,b)=>a+Number(b||0),0);$('cryptoShaftName').textContent=rank>7000?"Singularity Deepcore":rank>3000?"Voidglass Cavern":rank>1000?"Starfall Mine":rank>250?"Obsidian Ridge":rank>40?"Ironroot Tunnels":"Copper Hollow";$('cryptoSceneName').textContent=$('cryptoShaftName').textContent;$('cryptoUpgradeGrid').innerHTML=CRYPTO_UPGRADES.map(u=>{const lv=Number(cryptoState.levels?.[u.key]||0),cost=cryptoPrice(u);return `<article class="crypto-upgrade"><div class="crypto-upgrade-top"><div class="crypto-upgrade-icon">${u.icon}</div><div><h4>${u.name}</h4><small>LEVEL ${lv} · +${u.rate.toFixed(2)} base/s</small></div></div><p>${u.desc}</p><div class="crypto-upgrade-meta"><span>Next: ${cryptoFmt(cost)} coins</span><strong>Lv. ${lv+1}</strong></div><button type="button" data-crypto-upgrade="${u.key}" ${coins<cost?"disabled":""}>${coins<cost?"Need "+cryptoFmt(cost):"Purchase upgrade"}</button></article>`}).join("");const pickProgress=Math.min(100,coins/pickCost*100);$('cryptoPickaxeProgress').textContent=pickProgress.toFixed(1)+"%";$('cryptoPickaxeProgressBar').style.width=pickProgress+"%";}
-async function cryptoRpc(action,upgrade=null){if(!currentUser)throw new Error("Log in to save your mining progress.");const {data,error}=await db.rpc("crypto_mining_action",{p_action:action,p_upgrade:upgrade});if(error)throw error;if(!data?.success)throw new Error(data?.message||"The mining server did not accept that action.");cryptoState=data.state;cryptoRender();if(data.rush_active){$('cryptoRushBanner').textContent='⚡ RUSH EVENT ACTIVE · '+(data.rush_seconds||0)+'s · 1.75× production';$('cryptoRushBanner').className='notice crypto-rush success';}else{$('cryptoRushBanner').textContent='⚡ Rush events can activate randomly while you mine.';$('cryptoRushBanner').className='notice crypto-rush';}return data;}
+async function cryptoRpc(action,upgrade=null){if(!currentUser)throw new Error("Log in to save your mining progress.");const {data,error}=await db.rpc("crypto_mining_action",{p_action:action,p_upgrade:upgrade});if(error)throw error;if(!data?.success)throw new Error(data?.message||"The mining server did not accept that action.");cryptoState=data.state;cryptoRender();if(action==="claim"){await refreshMyProfile();}if(data.rush_active){$('cryptoRushBanner').textContent='⚡ RUSH EVENT ACTIVE · '+(data.rush_seconds||0)+'s · 1.75× production';$('cryptoRushBanner').className='notice crypto-rush success';}else{$('cryptoRushBanner').textContent='⚡ Rush events can activate randomly while you mine.';$('cryptoRushBanner').className='notice crypto-rush';}return data;}
 async function openCryptoMining(){if(!currentUser)return;if(cryptoTickTimer){clearInterval(cryptoTickTimer);cryptoTickTimer=null;}$('cryptoStatus').textContent="Connecting to your saved mining operation...";try{await cryptoRpc("load");$('cryptoStatus').textContent="Your mining operation is online. Production is saved to your account.";$('cryptoStatus').className="notice success";cryptoTickTimer=setInterval(()=>{if(activePage!=="crypto"||!cryptoState)return;const rate=cryptoRate();cryptoState.coins=Number(cryptoState.coins||0)+rate;cryptoRender();},1000);if(cryptoSyncTimer)clearInterval(cryptoSyncTimer);cryptoSyncTimer=setInterval(async()=>{if(activePage!=="crypto"||cryptoBusy)return;try{await cryptoRpc("claim");}catch(e){console.warn("Mining sync:",e.message);}},30000);}catch(e){$('cryptoStatus').textContent="Mining setup needed: "+e.message+" Run the Crypto Mining Sim SQL query in Supabase, then reload this page.";$('cryptoStatus').className="notice error";}}
 $('cryptoUpgradeGrid')?.addEventListener("click",async e=>{const b=e.target.closest("[data-crypto-upgrade]");if(!b||cryptoBusy)return;cryptoBusy=true;b.disabled=true;try{await cryptoRpc("buy",b.dataset.cryptoUpgrade);$('cryptoStatus').textContent="Upgrade installed. Your production rate has increased.";$('cryptoStatus').className="notice success";}catch(err){$('cryptoStatus').textContent=err.message;$('cryptoStatus').className="notice error";}finally{cryptoBusy=false;cryptoRender();}});
 $('cryptoPickaxeUpgradeButton')?.addEventListener("click",async()=>{if(cryptoBusy)return;cryptoBusy=true;$('cryptoPickaxeUpgradeButton').disabled=true;try{await cryptoRpc("buy_pickaxe");$('cryptoStatus').textContent="New pickaxe unlocked: "+cryptoPickName(cryptoState.pickaxe_level)+". Production increased.";$('cryptoStatus').className="notice success";}catch(e){$('cryptoStatus').textContent=e.message;$('cryptoStatus').className="notice error";}finally{cryptoBusy=false;cryptoRender();}});
