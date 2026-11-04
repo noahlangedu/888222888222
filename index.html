@@ -281,6 +281,34 @@ body:has(#authView:not([hidden])) .halloween-decor{display:block}
 @keyframes halloweenFloat{0%,100%{translate:0 0;rotate:-3deg}50%{translate:0 -12px;rotate:3deg}}@keyframes halloweenFly{0%,100%{translate:0 0;rotate:-7deg}50%{translate:24px -10px;rotate:7deg}}@keyframes snowFall{0%{translate:0 -10vh;rotate:0}100%{translate:35px 115vh;rotate:360deg}}
 @media(prefers-reduced-motion:reduce){.halloween-pumpkin,.halloween-bat,.halloween-ghost,.snowflake,.tree,.gift{animation:none!important}}@media(max-width:600px){.halloween-decor:before{right:-32px;top:5%;opacity:.5}.halloween-pumpkin.pumpkin-one{left:1%;bottom:3%}.halloween-pumpkin.pumpkin-two{right:1%;bottom:5%}.halloween-ghost{left:1%;top:38%}.auth-wrap{margin-top:12px}.auth-hero h1{letter-spacing:-1.8px}}
 
+
+/* RIVEN responsive HUD system */
+.hud-choice-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:14px 0}
+.hud-choice{display:grid;grid-template-columns:auto 1fr;align-items:center;gap:7px 11px;padding:15px;border:1px solid var(--border);border-radius:14px;background:#101521;cursor:pointer}
+.hud-choice input{width:18px;height:18px;grid-row:1 / span 2;accent-color:var(--accent)}
+.hud-choice-icon{font-size:24px}.hud-choice strong{font-size:14px}.hud-choice small{grid-column:2;color:var(--muted);font-weight:500;line-height:1.45}
+.settings-shortcuts{display:flex;flex-wrap:wrap;gap:9px}
+.scroll-cue{position:fixed;right:22px;bottom:20px;z-index:30;display:flex;align-items:center;gap:7px;padding:10px 14px;border:1px solid #6650a1;border-radius:999px;background:#211a38;color:#eee7ff;box-shadow:0 8px 28px #0007;font-weight:800}
+.scroll-cue[hidden]{display:none!important}.scroll-cue span{font-size:11px}
+/* Avoid long, narrow stacks on larger screens. */
+@media(min-width:801px){.quickgrid,.itemsgrid,.eventgrid{grid-template-columns:repeat(2,minmax(0,1fr))}.settings-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.page>.card{margin-bottom:14px}}
+/* Phone HUD uses a persistent, thumb-friendly bottom navigation strip. */
+body.hud-phone{padding-bottom:92px}
+body.hud-phone .appgrid{display:block}
+body.hud-phone .sidebar{position:fixed;z-index:50;left:8px;right:8px;bottom:8px;top:auto;display:flex;gap:7px;overflow-x:auto;overflow-y:hidden;padding:8px;border:1px solid #3b3554;border-radius:17px;background:#0d111eef;backdrop-filter:blur(16px);box-shadow:0 12px 40px #0009;scrollbar-width:thin}
+body.hud-phone .sidebar .navbtn{width:auto;min-width:max-content;flex:0 0 auto;padding:10px 12px;border-radius:12px;font-size:12px}
+body.hud-phone .maincol{padding-bottom:10px}
+body.hud-phone .stats{grid-template-columns:repeat(3,minmax(0,1fr))}
+body.hud-phone .quickgrid,body.hud-phone .itemsgrid,body.hud-phone .eventgrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+body.hud-phone .card{padding:15px}
+body.hud-phone .scroll-cue{right:13px;bottom:82px}
+body.hud-phone .topright{flex-direction:row;align-items:flex-start}
+body.hud-phone .member-roster{max-width:58vw}
+body.hud-pc .sidebar{display:grid}
+@media(max-width:800px){body.hud-pc .sidebar{position:static;display:flex;overflow-x:auto;overflow-y:hidden;padding-bottom:7px}.hud-phone .sidebar::after{content:"⇢ swipe";position:sticky;right:0;align-self:center;flex:0 0 auto;padding:8px 10px;border-radius:9px;background:#211a38;color:#d9ccff;font-size:10px;font-weight:900;pointer-events:none;box-shadow:-8px 0 14px #0d111e}}
+@media(max-width:520px){.hud-choice-grid{grid-template-columns:1fr}.stats{grid-template-columns:repeat(3,minmax(0,1fr))}.stats .stat{padding:11px 9px}.stat strong{font-size:17px}.stat small{font-size:10px}.quickgrid,.itemsgrid,.eventgrid,.twoform{grid-template-columns:repeat(2,minmax(0,1fr))}.quickcard{padding:11px;font-size:12px}.quickcard strong{font-size:12px}.rowcard{flex-wrap:wrap}.scroll-cue{bottom:82px}}
+@media(max-width:360px){body.hud-phone .stats{grid-template-columns:1fr 1fr}.quickgrid,body.hud-phone .quickgrid{grid-template-columns:1fr 1fr}}
+
 </style>
 </head>
 <body>
@@ -339,7 +367,7 @@ body:has(#authView:not([hidden])) .halloween-decor{display:block}
     </form>
     <div id="authNotice" class="notice" role="status" aria-live="polite" hidden></div>
   </div>
-  <p class="auth-footnote">🧡 Stay spooky, be kind, and keep your account details private. <span aria-hidden="true">✦</span></p>
+  <p class="auth-footnote">🎄 Enjoy the season, be kind, and keep your account details private. <span aria-hidden="true">✦</span></p>
 </section>
 
 <section id="appView" hidden>
@@ -401,8 +429,6 @@ body:has(#authView:not([hidden])) .halloween-decor{display:block}
     <div class="field"><label for="profileBio">BIO</label><textarea id="profileBio" maxlength="160" placeholder="Say something about yourself..."></textarea><p class="muted"><span id="bioCount">0</span>/160 characters</p></div>
     <button class="btn" id="saveProfileButton" type="submit">Save profile and return to dashboard</button>
   </form></div>
-
-  <div class="card danger-zone sectiongap"><h3>Delete your account</h3><p class="muted">This permanently deletes your account and profile. This cannot be undone.</p><button class="btn" id="openDeleteAccount" type="button">Delete my account permanently</button><div id="deleteAccountConfirm" class="sectiongap" hidden><label for="deleteAccountText">Type <strong>DELETE</strong> to confirm</label><input id="deleteAccountText" autocomplete="off" maxlength="6" placeholder="Type DELETE"><button class="btn" id="confirmDeleteAccount" type="button">Permanently delete account</button><button class="btn secondary" id="cancelDeleteAccount" type="button">Cancel</button></div></div>
 </section>
 
 <section class="page" id="page-chat" hidden>
@@ -640,6 +666,8 @@ body:has(#authView:not([hidden])) .halloween-decor{display:block}
 
 <section class="page" id="page-settings" hidden>
   <div class="pagehead"><div><h2>Settings</h2><p class="muted">Change your menu button opacity and control the built-in website music. Manage custom menu button designs in the Shop. Personal preferences are saved in this browser.</p></div></div>
+  <div class="card settings-intro sectiongap"><div class="eyebrow">MAKE RIVEN FEEL RIGHT</div><h3>Choose your layout</h3><p class="muted">Pick the HUD that fits the device you are using. You can change it any time; this preference is saved on this device.</p><div class="hud-choice-grid"><label class="hud-choice"><input type="radio" name="rivenHudMode" value="pc"><span class="hud-choice-icon">🖥️</span><strong>PC HUD</strong><small>Side navigation, wider panels and a desktop-style layout.</small></label><label class="hud-choice"><input type="radio" name="rivenHudMode" value="phone"><span class="hud-choice-icon">📱</span><strong>Phone HUD</strong><small>Compact touch controls, bottom navigation and mobile-friendly panels.</small></label></div><p class="muted" id="hudModeStatus" aria-live="polite">Choose PC HUD or Phone HUD.</p></div>
+  <div class="card sectiongap"><h3>Quick navigation</h3><p class="muted">Not sure where something is? Jump straight to it.</p><div class="settings-shortcuts"><button class="smallbtn" type="button" data-settings-go="reports">⚑ Report a member</button><button class="smallbtn" type="button" data-settings-go="credits">✦ Credits</button><button class="smallbtn" type="button" data-settings-go="profile">◉ Edit profile</button><button class="smallbtn" type="button" data-settings-go="chat">☷ Community chat</button></div></div>
   <div class="settings-grid">
     <div class="card">
       <h3>Menu button opacity</h3>
@@ -656,6 +684,7 @@ body:has(#authView:not([hidden])) .halloween-decor{display:block}
       <div id="musicStatus" class="notice sectiongap" role="status" aria-live="polite">Built-in music is paused.</div>
     </div>
   </div>
+  <div class="card danger-zone sectiongap"><h3>Delete your account</h3><p class="muted">This permanently deletes your account and profile. This cannot be undone.</p><button class="btn" id="openDeleteAccount" type="button">Delete my account permanently</button><div id="deleteAccountConfirm" class="sectiongap" hidden><label for="deleteAccountText">Type <strong>DELETE</strong> to confirm</label><input id="deleteAccountText" autocomplete="off" maxlength="6" placeholder="Type DELETE"><button class="btn" id="confirmDeleteAccount" type="button">Permanently delete account</button><button class="btn secondary" id="cancelDeleteAccount" type="button">Cancel</button></div></div>
 </section>
 
 <section class="page" id="page-credits" hidden>
@@ -664,6 +693,7 @@ body:has(#authView:not([hidden])) .halloween-decor{display:block}
  <div class="card staffonly sectiongap" id="creditsEditor" hidden><h3>Manage credits (owner only)</h3><form id="creditsForm"><div class="field"><label for="creditName">Name / handle</label><input id="creditName" maxlength="60" required></div><div class="field"><label for="creditContribution">Contribution</label><input id="creditContribution" maxlength="160" required placeholder="Website design, coding, art..."></div><div class="inlineform"><button class="btn" type="submit">Add credit</button><button class="btn secondary" id="refreshCredits" type="button">Refresh</button></div></form><div id="creditsManageList" class="stack sectiongap"></div></div>
 </section>
 
+<button class="scroll-cue" id="scrollCue" type="button" aria-label="Scroll down to discover more">↓ <span>More below</span></button>
 <div class="footer">RIVEN · Community coins are simulated and have no real-world value.</div>
 </main>
 
@@ -872,8 +902,9 @@ async function loadLeaderboard(){
   try{
     const {data,error}=await db.from("profiles").select("user_id,display_name,role,coins,created_at").order("coins",{ascending:false}).order("created_at",{ascending:true}).limit(10);
     if(error)throw error;
-    if(!data?.length){host.innerHTML='<div class="empty">No leaderboard entries yet.</div>';return;}
-    host.innerHTML=data.map((p,i)=>`<div class="rowcard"><div class="grow"><strong>${i+1}. ${esc(p.display_name)} ${p.user_id===currentUser.id?'<span class="tag">You</span>':""}</strong><span class="mutedline">${esc(roleTitle(p.role))}</span></div><span class="coin">${money(p.coins)} 🪙</span></div>`).join("");
+    const publicEntries=(data||[]).filter(p=>p.user_id!==currentUser.id && String(p.role||'').toLowerCase()!=='owner');
+    if(!publicEntries.length){host.innerHTML='<div class="empty">No member leaderboard entries yet.</div>';return;}
+    host.innerHTML=publicEntries.map((p,i)=>`<div class="rowcard"><div class="grow"><strong>${i+1}. ${esc(p.display_name)} ${p.user_id===currentUser.id?'<span class="tag">You</span>':""}</strong><span class="mutedline">${esc(roleTitle(p.role))}</span></div><span class="coin">${money(p.coins)} 🪙</span></div>`).join("");
   }catch(error){host.innerHTML=`<div class="empty">Leaderboard failed to load: ${esc(error.message)}</div>`;}
 }
 $("reloadLeaderboard").addEventListener("click",loadLeaderboard);
@@ -1569,6 +1600,49 @@ function declineTos(){
 $("tosAcceptButton").addEventListener("click",acceptTos);
 $("tosDeclineButton").addEventListener("click",declineTos);
 $("termsViewButton").addEventListener("click",showTosGate);
+
+// Authentication forms: keep the existing Supabase project, profile flow, and session handling.
+$("signupForm").addEventListener("submit",async event=>{
+  event.preventDefault();
+  const name=$("signupName").value.trim(),email=$("signupEmail").value.trim(),password=$("signupPassword").value;
+  if(!name||name.length>24){toast("Display name must be between 1 and 24 characters.","error");return;}
+  if(password.length<6){toast("Password must be at least 6 characters.","error");return;}
+  let tosAcceptedForSignup=false;try{tosAcceptedForSignup=localStorage.getItem(TOS_STORAGE_KEY)==="1";}catch{}
+  if(!tosAcceptedForSignup){showTosGate();toast("You must accept the Terms of Service before creating an account.","error");return;}
+  if(!$("termsAgree").checked){toast("Please agree to the Terms of Service before creating an account.","error");return;}
+  const button=$("signupButton");setBusy(button,true,"Creating account...","Create account →");
+  try{
+    const {data,error}=await db.auth.signUp({email,password,options:{data:{display_name:name},emailRedirectTo:SITE_URL}});
+    if(error)throw error;
+    $("signupPassword").value="";
+    if(data.session?.user){await handleSession(data.session);toast("Account created. Welcome to RIVEN!","success");}
+    else{showAuthMode("login");$("loginEmail").value=email;toast("Account created. Confirm your email using the link we sent, then log in. The link returns to RIVEN.","success");}
+  }catch(error){console.error("Signup error:",error);toast("Signup failed: "+error.message,"error");}
+  finally{setBusy(button,false,"Creating account...","Create account →");}
+});
+$("loginForm").addEventListener("submit",async event=>{
+  event.preventDefault();
+  const button=$("loginButton");setBusy(button,true,"Logging in...","Log in →");
+  try{
+    const {data,error}=await db.auth.signInWithPassword({email:$("loginEmail").value.trim(),password:$("loginPassword").value});
+    if(error)throw error;
+    $("loginPassword").value="";
+    await handleSession(data.session);
+    toast("Welcome back to RIVEN!","success");
+  }catch(error){console.error("Login error:",error);toast("Login failed: "+error.message,"error");}
+  finally{setBusy(button,false,"Logging in...","Log in →");}
+});
+$("resendButton").addEventListener("click",async()=>{
+  const email=$("loginEmail").value.trim();
+  if(!email){toast("Enter your email address first.","error");return;}
+  const button=$("resendButton");setBusy(button,true,"Sending...","Resend confirmation email");
+  try{
+    const {error}=await db.auth.resend({type:"signup",email,options:{emailRedirectTo:SITE_URL}});
+    if(error)throw error;
+    toast("If a new confirmation email is available, it should arrive shortly. Check your spam folder too.","success");
+  }catch(error){toast("Could not resend email: "+error.message,"error");}
+  finally{setBusy(button,false,"Sending...","Resend confirmation email");}
+});
 let tosAccepted=false;
 try{tosAccepted=localStorage.getItem(TOS_STORAGE_KEY)==="1";}catch{}
 if(tosAccepted){$("tosGate").hidden=true;}else{showTosGate();}
@@ -1780,6 +1854,30 @@ const priorHandleSessionForSettings=handleSession;
 handleSession=async function(session){await priorHandleSessionForSettings(session);if(session?.user&&currentUser){loadPersonalSettingsUI();await loadMenuAppearance();}else{menuAppearanceCache={};applyMenuAppearance();}};
 // Apply opacity immediately, including before authentication finishes.
 applyMenuAppearance();
+
+
+// Device HUD preference: PC HUD or Phone HUD. Stored locally per browser/device.
+function applyRivenHudMode(mode){
+  const chosen=mode==='phone'?'phone':'pc';
+  document.body.classList.toggle('hud-phone',chosen==='phone');
+  document.body.classList.toggle('hud-pc',chosen==='pc');
+  document.querySelectorAll('input[name="rivenHudMode"]').forEach(el=>{el.checked=el.value===chosen;});
+  const status=document.getElementById('hudModeStatus');
+  if(status)status.textContent=chosen==='phone'?'Phone HUD is active: use the bottom navigation bar to move around RIVEN.':'PC HUD is active: use the side navigation to move around RIVEN.';
+  try{localStorage.setItem('riven_hud_mode',chosen);}catch{}
+}
+function initRivenHudMode(){
+  let saved='';try{saved=localStorage.getItem('riven_hud_mode')||'';}catch{}
+  if(!saved)saved=(window.matchMedia&&window.matchMedia('(max-width: 800px)').matches)?'phone':'pc';
+  applyRivenHudMode(saved);
+}
+document.querySelectorAll('input[name="rivenHudMode"]').forEach(el=>el.addEventListener('change',()=>{if(el.checked){applyRivenHudMode(el.value);toast(el.value==='phone'?'Phone HUD enabled.':'PC HUD enabled.','success');}}));
+document.querySelectorAll('[data-settings-go]').forEach(el=>el.addEventListener('click',()=>navigate(el.dataset.settingsGo)));
+initRivenHudMode();
+const scrollCue=document.getElementById('scrollCue');
+function updateScrollCue(){if(!scrollCue)return;const remaining=document.documentElement.scrollHeight-(window.scrollY+window.innerHeight);scrollCue.hidden=remaining<100;scrollCue.innerHTML=remaining<500?'↑ <span>Back up</span>':'↓ <span>More below</span>';}
+scrollCue?.addEventListener('click',()=>{const atBottom=document.documentElement.scrollHeight-(window.scrollY+window.innerHeight)<500;window.scrollTo({top:atBottom?0:Math.min(document.documentElement.scrollHeight,window.scrollY+Math.max(420,window.innerHeight*.78)),behavior:'smooth'});});
+window.addEventListener('scroll',updateScrollCue,{passive:true});window.addEventListener('resize',updateScrollCue);document.querySelectorAll('.navbtn').forEach(b=>b.addEventListener('click',()=>setTimeout(updateScrollCue,120)));setTimeout(updateScrollCue,250);
 
 </script>
 </body>
