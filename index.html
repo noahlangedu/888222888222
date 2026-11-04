@@ -235,6 +235,16 @@ input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 
 /* Community safety tools */
 .audit-list{max-height:68vh;overflow:auto;display:grid;gap:8px}.audit-entry{padding:10px;border:1px solid var(--border);border-radius:10px;background:var(--panel2);overflow-wrap:anywhere}.audit-entry small{display:block;color:var(--muted);margin-top:4px}.warn-banner{margin:0 0 14px;padding:12px 14px;border:1px solid #f59e0b;border-radius:12px;background:#78350f44;color:#fde68a}.danger-zone{border-color:#fb7185}.staff-nav-note{font-size:12px;color:var(--muted)}
 
+
+.settings-shortcuts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:14px}
+.settings-shortcut{display:flex;align-items:center;gap:12px;min-width:0;padding:14px;border:1px solid var(--border);border-radius:13px;background:var(--theme-surface);color:var(--text);text-align:left}
+.settings-shortcut:hover{border-color:var(--accent);background:var(--theme-soft)}
+.settings-shortcut-icon{display:grid;place-items:center;flex:0 0 38px;height:38px;border-radius:11px;background:var(--theme-soft);font-size:19px}
+.settings-shortcut strong,.settings-shortcut small{display:block}
+.settings-shortcut small{margin-top:4px;color:var(--muted);font-size:11px;line-height:1.4}
+.settings-shortcut-arrow{margin-left:auto;color:var(--muted);font-size:23px}
+@media(max-width:650px){.settings-shortcuts{grid-template-columns:1fr}}
+
 /* PILTAE menu customization + member settings */
 :root{--member-menu-opacity:1}
 .sidebar .navbtn:not(.quickcard){opacity:var(--member-menu-opacity);transition:opacity .15s ease,filter .15s ease,transform .15s ease;background-size:cover;background-position:center;background-repeat:no-repeat;text-shadow:0 1px 3px #000}
@@ -437,8 +447,6 @@ body{background-image:radial-gradient(ellipse at 12% -8%,color-mix(in srgb,var(-
   <button class="navbtn" data-page="admin" id="adminNav" hidden><span class="navicon">⚙</span> Admin panel</button>
   <button class="navbtn" data-page="terms"><span class="navicon">ⓘ</span> Terms of Service</button>
   <button class="navbtn" data-page="audit" id="auditNav" hidden><span class="navicon">≡</span> Audit log</button>
-  <button class="navbtn" data-page="reports" id="reportsNav"><span class="navicon">⚑</span> Report a member</button>
-  <button class="navbtn" data-page="credits" id="creditsNav"><span class="navicon">✦</span> Credits</button>
   <button class="navbtn" data-page="settings" id="settingsNav"><span class="navicon">⚙</span> Settings</button>
 </nav>
 <div class="maincol">
@@ -747,6 +755,14 @@ body{background-image:radial-gradient(ellipse at 12% -8%,color-mix(in srgb,var(-
       <div class="field"><label for="musicVolumeRange">VOLUME: <span id="musicVolumeValue">25%</span></label><input class="settings-range" id="musicVolumeRange" type="range" min="0" max="100" step="5" value="25"></div>
       <div class="music-controls"><button class="btn" id="musicPlayButton" type="button">▶ Play music</button><button class="smallbtn" id="musicPauseButton" type="button">Ⅱ Pause</button></div>
       <div id="musicStatus" class="notice sectiongap" role="status" aria-live="polite">Built-in music is paused.</div>
+    </div>
+  </div>
+  <div class="card sectiongap">
+    <h3>Community &amp; information</h3>
+    <p class="muted">Member tools and website information are kept here so the main menu stays focused.</p>
+    <div class="settings-shortcuts">
+      <button class="settings-shortcut" type="button" data-page="reports"><span class="settings-shortcut-icon">⚑</span><span><strong>Report a member</strong><small>Send a private report to the moderation team</small></span><span class="settings-shortcut-arrow">›</span></button>
+      <button class="settings-shortcut" type="button" data-page="credits"><span class="settings-shortcut-icon">✦</span><span><strong>Credits</strong><small>See the people who helped make PILTAE CHATTER</small></span><span class="settings-shortcut-arrow">›</span></button>
     </div>
   </div>
 </section>
