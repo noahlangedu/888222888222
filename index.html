@@ -883,6 +883,80 @@ $("signupTab").addEventListener("click",()=>showAuthMode("signup"));
 $("loginTab").addEventListener("click",()=>showAuthMode("login"));
 $("profileBio").addEventListener("input",()=>$("bioCount").textContent=$("profileBio").value.length);
 
+// Authentication handlers. These were missing from the refreshed page, so the
+// login and account-creation forms displayed but never submitted to Supabase.
+$("signupForm").addEventListener("submit", async (event) => {
+  event.preventDefault();
+  if (!db) { toast("Authentication is still starting. Refresh the page and try again.", "error"); return; }
+  const name = $("signupName").value.trim();
+  const email = $("signupEmail").value.trim();
+  const password = $("signupPassword").value;
+  if (!name || name.length > 24) { toast("Display name must be 1–24 characters.", "error"); return; }
+  const button = $("signupButton");
+  setBusy(button, true, "Creating account...", "Create account →");
+  try {
+    const { data, error } = await db.auth.signUp({
+      email, password,
+      options: { data: { display_name: name }, emailRedirectTo: SITE_URL }
+    });
+    if (error) throw error;
+    $("signupPassword").value = "";
+    if (data.session?.user) {
+      await handleSession(data.session);
+      toast("Account created. Welcome to PILTAE!", "success");
+    } else {
+      showAuthMode("login");
+      $("loginEmail").value = email;
+      toast("Account created. Confirm your email using the link we sent, then log in. Your link returns to PILTAE CHATTER.", "success");
+    }
+  } catch (error) {
+    console.error("Signup failed:", error);
+    toast("Signup failed: " + (error?.message || "Unknown error"), "error");
+  } finally {
+    setBusy(button, false, "Creating account...", "Create account →");
+  }
+});
+
+$("loginForm").addEventListener("submit", async (event) => {
+  event.preventDefault();
+  if (!db) { toast("Authentication is still starting. Refresh the page and try again.", "error"); return; }
+  const email = $("loginEmail").value.trim();
+  const password = $("loginPassword").value;
+  const button = $("loginButton");
+  setBusy(button, true, "Logging in...", "Log in →");
+  try {
+    const { data, error } = await db.auth.signInWithPassword({ email, password });
+    if (error) throw error;
+    if (!data.session?.user) throw new Error("Supabase did not return a signed-in session. Try again.");
+    $("loginPassword").value = "";
+    await handleSession(data.session);
+    toast("Welcome back!", "success");
+  } catch (error) {
+    console.error("Login failed:", error);
+    toast("Login failed: " + (error?.message || "Unknown error"), "error");
+  } finally {
+    setBusy(button, false, "Logging in...", "Log in →");
+  }
+});
+
+$("resendButton").addEventListener("click", async () => {
+  if (!db) { toast("Authentication is still starting. Refresh the page and try again.", "error"); return; }
+  const email = $("loginEmail").value.trim();
+  if (!email) { toast("Enter your email address first.", "error"); return; }
+  const button = $("resendButton");
+  setBusy(button, true, "Sending...", "Resend confirmation email");
+  try {
+    const { error } = await db.auth.resend({ type: "signup", email, options: { emailRedirectTo: SITE_URL } });
+    if (error) throw error;
+    toast("If a new confirmation email is available, it should arrive shortly. Check your spam folder too.", "success");
+  } catch (error) {
+    toast("Could not resend email: " + (error?.message || "Unknown error"), "error");
+  } finally {
+    setBusy(button, false, "Sending...", "Resend confirmation email");
+  }
+});
+
+
 function navigate(page){
   const allowed=["dashboard","profile","chat","suggestions","redeem","friends","dm","shop","inventory","mines","crypto","tower","arcade","events","admin","terms","audit","reports","credits"];
   allowed.push("settings");
