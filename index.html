@@ -1000,7 +1000,14 @@ function navigate(page){
   if(page==="credits")loadCredits();
   if(page==="settings")loadPersonalSettingsUI();
 }
-document.querySelectorAll("[data-page]").forEach(el=>el.addEventListener("click",()=>navigate(el.dataset.page)));
+// Use one delegated navigation handler so dynamically rendered shortcut cards
+// and sidebar buttons remain clickable after page content is refreshed.
+document.addEventListener("click", event => {
+  const nav = event.target.closest("[data-page]");
+  if (!nav || nav.disabled) return;
+  event.preventDefault();
+  navigate(nav.dataset.page);
+});
 
 async function refreshMyProfile(){
   if(!currentUser)return;
@@ -1806,7 +1813,8 @@ let moderationPollTimer=null;
 const priorHandleSession=handleSession;
 handleSession=async function(session){await priorHandleSession(session);if(session?.user&&currentUser){try{await refreshMyModerationStatus();await loadCredits();if(moderationPollTimer)clearInterval(moderationPollTimer);moderationPollTimer=setInterval(()=>{if(currentUser)refreshMyModerationStatus();},60000);}catch(e){console.warn(e);}}};
 // Broad action trail: record button/form actions without collecting password fields or private-message text. Public chat body is logged by the database trigger.
-document.addEventListener("click",event=>{const el=event.target.closest("button,[role=button]");if(!el||!currentUser)return;const label=(el.innerText||el.getAttribute("aria-label")||el.id||"button action").trim().replace(/\s+/g," ").slice(0,100);if(label)logClientAction("clicked control",{label,page:activePage});},true);
+// Click auditing is intentionally omitted here: it was running in capture phase
+// for every control and could interfere with interactive UI on slow connections.
 document.addEventListener("submit",event=>{if(!currentUser)return;const id=event.target?.id;if(id&&id!=="loginForm"&&id!=="signupForm")logClientAction("submitted form",{form:id,page:activePage});},true);
 // Record navigation and the public-chat message content only. Private messages and credentials are deliberately excluded.
 const priorNavigate=navigate;
