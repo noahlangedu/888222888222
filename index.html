@@ -18,6 +18,9 @@ button:disabled{opacity:.55;cursor:wait}
 [hidden]{display:none!important}
 .shell{width:min(1180px,100%);margin:auto}
 .topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:24px}
+.header-right{display:flex;align-items:center;justify-content:flex-end;gap:12px;min-width:0}
+.version-badge{display:inline-flex;align-items:center;gap:6px;flex:0 0 auto;padding:7px 11px;border:1px solid #7957d5;border-radius:999px;background:linear-gradient(135deg,#211a3c,#171b2b);box-shadow:0 0 18px #8b5cf626;color:#cdbaff;font-size:11px;font-weight:850;letter-spacing:.35px;white-space:nowrap}
+.version-badge svg{width:14px;height:14px;fill:none;stroke:#b99aff;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
 .brand{display:flex;align-items:center;gap:11px;font-size:16px;font-weight:900;letter-spacing:1.4px}
 .logo{display:grid;place-items:center;width:42px;height:42px;border-radius:13px;background:linear-gradient(135deg,#a78bfa,#4338ca);box-shadow:0 8px 30px #8b5cf633;font-size:20px}
 .topright{display:flex;align-items:center;gap:10px}
@@ -31,8 +34,8 @@ button:disabled{opacity:.55;cursor:wait}
 .presence-dot{width:8px;height:8px;flex:0 0 8px;border-radius:50%;background:#64748b;box-shadow:0 0 0 2px #64748b22}
 .presence-dot.online{background:#34d399;box-shadow:0 0 0 3px #34d39920}
 .member-roster-empty{padding:12px 5px;color:var(--muted);font-size:11px}
-@media(max-width:800px){.topbar{align-items:flex-start}.topright{flex-wrap:wrap;justify-content:flex-end}.member-roster{order:3;width:min(320px,100%);max-width:100%}}
-@media(max-width:520px){.topbar{flex-wrap:wrap}.topright{width:100%;flex-direction:row;align-items:flex-start;justify-content:space-between}.member-roster{width:min(62%,320px)}.wallet{font-size:11px}}
+@media(max-width:800px){.topbar{align-items:flex-start}.header-right{align-items:flex-end;flex-direction:column;gap:8px}.topright{flex-wrap:wrap;justify-content:flex-end}.member-roster{order:3;width:min(320px,100%);max-width:100%}}
+@media(max-width:520px){.topbar{flex-wrap:wrap}.header-right{margin-left:auto;align-items:flex-end}.topright{width:100%;flex-direction:row;align-items:flex-start;justify-content:space-between}.member-roster{width:min(62%,320px)}.wallet{font-size:11px}}
 
 .wallet{padding:9px 12px;border:1px solid #3e365e;border-radius:999px;background:#1b1730;color:#ddd6fe;font-weight:800;font-size:13px}
 .smallbtn,.navbtn,.btn{border:1px solid var(--border);border-radius:11px;padding:10px 13px;background:#202637;color:var(--text);font-weight:750}
@@ -418,7 +421,10 @@ body{background-image:radial-gradient(ellipse at 12% -8%,color-mix(in srgb,var(-
 <main class="shell">
 <header class="topbar">
   <div class="brand"><div class="logo">P</div><span>PILTAE CHATTER</span></div>
-  <div class="topright" id="topRight" hidden><div class="member-roster" id="memberRoster" aria-label="Community member online status"><div class="member-roster-head"><span>👥 MEMBERS</span><span class="member-roster-count" id="rosterOnlineCount">0 online</span></div><div class="member-roster-list" id="memberRosterList" aria-live="polite"><div class="member-roster-empty">Loading members…</div></div></div><div class="wallet">🪙 <span id="topCoins">0</span> coins</div><button class="smallbtn" id="topLogout" type="button">Log out</button></div>
+  <div class="header-right">
+    <div class="topright" id="topRight" hidden><div class="member-roster" id="memberRoster" aria-label="Community member online status"><div class="member-roster-head"><span>👥 MEMBERS</span><span class="member-roster-count" id="rosterOnlineCount">0 online</span></div><div class="member-roster-list" id="memberRosterList" aria-live="polite"><div class="member-roster-empty">Loading members…</div></div></div><div class="wallet">🪙 <span id="topCoins">0</span> coins</div><button class="smallbtn" id="topLogout" type="button">Log out</button></div>
+    <div class="version-badge" title="Website version 1.25"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M6.2 1.7h3.6l.5 1.5 1.4.8 1.5-.3 1.8 3.1-1 1.2v1.6l1 1.2-1.8 3.1-1.5-.3-1.4.8-.5 1.5H6.2l-.5-1.5-1.4-.8-1.5.3L1 10.8l1-1.2V8l-1-1.2 1.8-3.1 1.5.3 1.4-.8.5-1.5Z"/><path d="m5.2 8.2 1.8 1.8 3.8-4"/></svg><span>v1.25</span></div>
+  </div>
 </header>
 
 <section id="authView" class="auth-wrap">
